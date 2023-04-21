@@ -1,0 +1,35 @@
+﻿@section endBodyArea{
+    <script src="~/assets/js/UserScripts/User.js"></script>
+    <script>
+        getUsers();
+    </script>
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Kullanıcılar</h4>
+                    <button type="button" class="btn btn-custom" data-toggle="modal" data-target="#addStudentModal">Kullanıcı Ekle</button>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table id="userTable" class="display dataTable" style="width: 100%; min-width: 845px">
+                            <thead>
+                                <tr>
+                                    <th>Ad</th>
+                                    <th>Soyad</th>
+                                    <th>Kullanıcı Adı</th>
+                                    <th>E-Posta</th>
+                                    <th>Şifre</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
