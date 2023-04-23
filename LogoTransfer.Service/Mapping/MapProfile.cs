@@ -9,7 +9,8 @@ namespace LogoTransfer.Service.Mapping
     {
         public MapProfile()
         {
-            CreateMap<User, UserDto>().ReverseMap();
+            CreateMap<InsertUserDto, User>();
+            CreateMap<User, UserDto>();
             CreateMap<SignInDto, User>();
             CreateMap<Role, RoleDto>().ReverseMap();
             CreateMap<MenuItem, MenuItemDto>();

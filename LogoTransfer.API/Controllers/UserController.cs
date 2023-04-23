@@ -50,7 +50,7 @@ namespace LogoTransfer.API.Controllers
         }
 
         [HttpPost("[action]")]
-        public async Task<IActionResult> AddUser(UserDto user)
+        public async Task<IActionResult> AddUser(InsertUserDto user)
         {
             User newUser = _mapper.Map<User>(user);
             await _userService.AddAsync(newUser);
