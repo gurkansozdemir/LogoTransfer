@@ -1,41 +1,33 @@
 ﻿@model List<MenuItemModel>
 
-<!--********************************** Sidebar start ***********************************-->
-<div class="dlabnav">
-    <div class="dlabnav-scroll">
-        <ul class="metismenu" id="menu">
-            <li class="nav-label first">MENÜ</li>
-            @foreach (var levelOne in Model.Where(x => x.MainMenuItem == null).OrderBy(x => x.RowNumber))
-            {
-                <li>
-                    <a class="has-arrow" href="javascript:void()" aria-expanded="false">
-                        <i class="@levelOne.Icon"></i>
-                        <span class="nav-text">@levelOne.Title</span>
-                    </a>
-                    <ul aria-expanded="false">
-                        @foreach (var levelTwo in Model.Where(x => x.MainMenuItemId == levelOne.Id))
-                        {
-                            if (Model.Where(x => x.MainMenuItemId == levelTwo.Id).Count() > 0)
-                            {
-                                <li>
-                                    <a class="has-arrow" href="javascript:void()" aria-expanded="false">@levelTwo.Title</a>
-                                    <ul aria-expanded="false">
-                                        @foreach (var levelThree in Model.Where(x => x.MainMenuItemId == levelTwo.Id))
-                                        {
-                                            <li><a href="@levelThree.URL">@levelThree.Title</a></li>
-                                        }
-                                    </ul>
-                                </li>
-                            }
-                            else
-                            {
-                                <li><a href="@levelTwo.URL">@levelTwo.Title</a></li>
-                            }
-                        }
-                    </ul>
-                </li>
-            }
-        </ul>
-    </div>
-</div>
-<!--********************************** Sidebar end ***********************************-->
+
+    @foreach (var levelOne in Model.Where(x => x.MainMenuItem == null).OrderBy(x => x.RowNumber))
+    {
+        <li>
+            <a href="javascript:void()" class="menu-toggle">
+                <i class="@levelOne.Icon"></i>
+                <span class="nav-text">@levelOne.Title</span>
+            </a>
+            <ul class="ml-menu">
+                @foreach (var levelTwo in Model.Where(x => x.MainMenuItemId == levelOne.Id))
+                {
+                    if (Model.Where(x => x.MainMenuItemId == levelTwo.Id).Count() > 0)
+                    {
+                        <li>
+                            <a  href="javascript:void()" class="menu-toggle">@levelTwo.Title</a>
+                            <ul class="ml-menu">
+                                @foreach (var levelThree in Model.Where(x => x.MainMenuItemId == levelTwo.Id))
+                                {
+                                    <li><a href="@levelThree.URL">@levelThree.Title</a></li>
+                                }
+                            </ul>
+                        </li>
+                    }
+                    else
+                    {
+                        <li><a href="@levelTwo.URL">@levelTwo.Title</a></li>
+                    }
+                }
+            </ul>
+        </li>
+    }

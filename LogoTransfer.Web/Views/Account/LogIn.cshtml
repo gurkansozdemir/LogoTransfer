@@ -2,88 +2,76 @@
     Layout = null;
 }
 
-<!DOCTYPE html>
-<html lang="en" class="h-100">
+<!doctype html>
+<html class="no-js " lang="en">
 <head>
-
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="keywords" content="" />
-    <meta name="author" content="" />
-    <meta name="robots" content="" />
-    <meta name="description" content="Edumin - Bootstrap Admin Dashboard" />
-    <meta property="og:title" content="Edumin - Bootstrap Admin Dashboard" />
-    <meta property="og:description" content="Edumin - Bootstrap Admin Dashboard" />
-    <meta property="og:image" content="https://edumin.dexignlab.com/xhtml/social-image.png" />
-    <meta name="format-detection" content="telephone=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <meta name="description" content="Responsive Bootstrap 4 and web Application ui kit.">
 
-    <!-- FAVICONS ICON -->
-    <link rel="icon" href="images/favicon.ico" type="image/x-icon" />
-    <link rel="shortcut icon" type="image/x-icon" href="images/favicon.png" />
-
-    <!-- PAGE TITLE HERE -->
-    <title>LOGO | Sipariş & Fatura Aktarma</title>
-
-    <!-- MOBILE SPECIFIC -->
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <!-- STYLESHEETS -->
-    <link href="~/css/style.css" rel="stylesheet">
-
+    <title>:: Aero Bootstrap4 Admin :: Sign In</title>
+    <!-- Favicon-->
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <!-- Custom Css -->
+    <link rel="stylesheet" href="~/assets/plugins/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="~/assets/css/style.min.css">
 </head>
-<body class="h-100">
-    <div class="authincation h-100">
-        <div class="container h-100">
-            <div class="row justify-content-center h-100 align-items-center">
-                <div class="col-md-6">
-                    <div class="authincation-content">
-                        <div class="row no-gutters">
-                            <div class="col-xl-12">
-                                <div class="auth-form">
-                                    <h4 class="text-center mb-4">Sign in your account</h4>
-                                    <form id="loginForm" method="post">
-                                        <div class="form-group">
-                                            <label><strong>Email</strong></label>
-                                            <input type="text" class="form-control" value="supervisor" name="email">
-                                        </div>
-                                        <div class="form-group">
-                                            <label><strong>Password</strong></label>
-                                            <input type="password" class="form-control" value="123" name="password">
-                                        </div>
-                                        <div class="form-row d-flex justify-content-between mt-4 mb-2">
-                                            <div class="form-group">
-                                                <div class="custom-control custom-checkbox ml-1">
-                                                    <input type="checkbox" class="custom-control-input" id="basic_checkbox_1">
-                                                    <label class="custom-control-label" for="basic_checkbox_1">Remember my preference</label>
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <a href="page-forgot-password.html">Forgot Password?</a>
-                                            </div>
-                                        </div>
-                                        <div class="text-center">
-                                            <button type="submit" class="btn btn-primary btn-block">Sign me in</button>
-                                        </div>
-                                    </form>
-                                    <div class="new-account mt-3">
-                                        <p>Don't have an account? <a class="text-primary" href="./page-register.html">Sign up</a></p>
-                                    </div>
+
+<body class="theme-blush">
+
+    <div class="authentication">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 col-sm-12">
+                    <form class="card auth_form" method="post">
+                        <div class="header">
+                            <img class="logo" src="~/assets/images/logo.svg" alt="">
+                            <h5>Log in</h5>
+                        </div>
+                        <div class="body">
+                            <div class="input-group mb-3">
+                                <input type="text" class="form-control" placeholder="Username" value="supervisor" name="email">
+                                <div class="input-group-append">
+                                    <span class="input-group-text"><i class="zmdi zmdi-account-circle"></i></span>
                                 </div>
                             </div>
+                            <div class="input-group mb-3">
+                                <input type="text" class="form-control" placeholder="Password" value="123" name="password">
+                                <div class="input-group-append">
+                                    <span class="input-group-text"><a href="forgot-password.html" class="forgot" title="Forgot Password"><i class="zmdi zmdi-lock"></i></a></span>
+                                </div>
+                            </div>
+                            <div class="checkbox">
+                                <input id="remember_me" type="checkbox">
+                                <label for="remember_me">Remember Me</label>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-block waves-effect waves-light">SIGN IN</button>
+                            <div class="signin_with mt-3">
+                                <p class="mb-0">or Sign Up using</p>
+                                <button class="btn btn-primary btn-icon btn-icon-mini btn-round facebook"><i class="zmdi zmdi-facebook"></i></button>
+                                <button class="btn btn-primary btn-icon btn-icon-mini btn-round twitter"><i class="zmdi zmdi-twitter"></i></button>
+                                <button class="btn btn-primary btn-icon btn-icon-mini btn-round google"><i class="zmdi zmdi-google-plus"></i></button>
+                            </div>
                         </div>
+                    </form>
+                    <div class="copyright text-center">
+                        &copy;
+                        <script>document.write(new Date().getFullYear())</script>,
+                        <span>Designed by <a href="https://thememakker.com/" target="_blank">ThemeMakker</a></span>
+                    </div>
+                </div>
+                <div class="col-lg-8 col-sm-12">
+                    <div class="card">
+                        <img src="~/assets/images/signin.svg" alt="Sign In" />
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <!--********************************** Scripts ***********************************-->
-    <!-- Required vendors -->
-    <script src="~/vendor/global/global.min.js"></script>
-    <script src="~/vendor/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
-    <script src="~/js/custom.min.js"></script>
-    <script src="~/js/dlabnav-init.js"></script>
 
-    <!-- Custom Scripts -->
-    <script src="~/assets/js/UserScripts/Login.js"></script>
+    <!-- Jquery Core Js -->
+    <script src="~/assets/bundles/libscripts.bundle.js"></script>
+    <script src="~/assets/bundles/vendorscripts.bundle.js"></script> <!-- Lib Scripts Plugin Js -->
 </body>
 </html>
