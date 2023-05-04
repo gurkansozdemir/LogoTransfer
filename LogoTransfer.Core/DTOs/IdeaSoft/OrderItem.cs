@@ -2,23 +2,23 @@
 {
     public class OrderItem
     {
-        public int id { get; set; }
-        public string productName { get; set; }
-        public string productSku { get; set; }
-        public object productBarcode { get; set; }
-        public double productPrice { get; set; }
-        public string productCurrency { get; set; }
-        public double productQuantity { get; set; }
-        public int productTax { get; set; }
-        public double productDiscount { get; set; }
-        public double productMoneyOrderDiscount { get; set; }
-        public double productWeight { get; set; }
-        public string productStockTypeLabel { get; set; }
-        public int isProductPromotioned { get; set; }
-        public double discount { get; set; }
-        public double priceRatio { get; set; }
-        public object product { get; set; }
-        public List<object> orderItemCustomizations { get; set; }
-        public object orderItemSubscription { get; set; }
+        public int Id { get; set; }
+        public string ProductName { get; set; }
+        public string ProductSku { get; set; }
+        public object ProductBarcode { get; set; }
+        public double ProductPrice { get; set; }
+        public string ProductCurrency { get; set; }
+        public double ProductQuantity { get; set; }
+        public int ProductTax { get; set; }
+        public double ProductDiscount { get; set; }
+        public double ProductMoneyOrderDiscount { get; set; }
+        public double ProductWeight { get; set; }
+        public string ProductStockTypeLabel { get; set; }
+        public int IsProductPromotioned { get; set; }
+        public double Discount { get; set; }
+        public double PriceRatio { get; set; }
+        public object Product { get; set; }
+        public List<object> OrderItemCustomizations { get; set; }
+        public object OrderItemSubscription { get; set; }
     }
 }

@@ -2,9 +2,9 @@
 {
     public class Maillist
     {
-        public int id { get; set; }
-        public string name { get; set; }
-        public string email { get; set; }
-        public MaillistGroup maillistGroup { get; set; }
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string Email { get; set; }
+        public MaillistGroup MaillistGroup { get; set; }
     }
 }

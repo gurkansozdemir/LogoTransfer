@@ -2,8 +2,8 @@
 {
     public class OrderDetail
     {
-        public int id { get; set; }
-        public string varKey { get; set; }
-        public string varValue { get; set; }
+        public int Id { get; set; }
+        public string VarKey { get; set; }
+        public string VarValue { get; set; }
     }
 }
