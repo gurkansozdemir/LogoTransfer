@@ -30,6 +30,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 builder.Services.AddScoped(typeof(IService<>), typeof(Service<>));
 
+builder.Services.AddScoped(typeof(IAuthorizationService), typeof(AuthorizationService));
+
 builder.Services.AddScoped(typeof(IUserRepository), typeof(UserRepository));
 builder.Services.AddScoped(typeof(IUserService), typeof(UserService));
 
@@ -43,6 +45,11 @@ builder.Services.AddDbContext<AppDbContext>(x =>
         options.MigrationsAssembly(Assembly.GetAssembly(typeof(AppDbContext)).GetName().Name);
         options.EnableRetryOnFailure();
     });
+});
+
+builder.Services.AddHttpClient("IdeaSoftAPI", x =>
+{
+    x.BaseAddress = new Uri("https://formaram.myideasoft.com/");
 });
 
 var app = builder.Build();
