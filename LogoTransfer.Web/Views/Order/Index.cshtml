@@ -1,38 +1,15 @@
 ﻿@section headArea{
-<!-- JQuery DataTable Css -->
-<link rel="stylesheet" href="~/assets/plugins/jquery-datatable/dataTables.bootstrap4.min.css">
+
 }
 
 @section endBodyArea{
-<!-- Jquery DataTable Plugin Js --> 
-<script src="~/assets/bundles/datatablescripts.bundle.js"></script>
-<script src="~/assets/plugins/jquery-datatable/buttons/dataTables.buttons.min.js"></script>
-<script src="~/assets/plugins/jquery-datatable/buttons/buttons.bootstrap4.min.js"></script>
-<script src="~/assets/plugins/jquery-datatable/buttons/buttons.colVis.min.js"></script>
-<script src="~/assets/plugins/jquery-datatable/buttons/buttons.flash.min.js"></script>
-<script src="~/assets/plugins/jquery-datatable/buttons/buttons.html5.min.js"></script>
-<script src="~/assets/plugins/jquery-datatable/buttons/buttons.print.min.js"></script>
-
-<script src="~/assets/js/pages/tables/jquery-datatable.js"></script>
 <script src="~/assets/custom/js/OrderScript.js"></script>
 <script>
     getOrders();
 </script>
 }
 
-
 <div class="body_scroll">
-    <div class="block-header">
-        <div class="row">
-            <div class="col-lg-7 col-md-6 col-sm-12">
-                <a class="btn btn-primary" href="https://formaram.myideasoft.com/admin/user/auth?client_id=ntmyj19qnbk8g8skwwsgkw0kg8ww084ckswkgwk0w80owgwso&response_type=code&state=teststatecode&redirect_uri=https://localhost:7096/api/authorization/getIdeasoftToken">IdeaSoft Yetki Talebi</a>
-            </div>
-            <div class="col-lg-5 col-md-6 col-sm-12">
-                <button class="btn btn-primary btn-icon float-right right_icon_toggle_btn" type="button"><i class="zmdi zmdi-arrow-right"></i></button>
-            </div>
-        </div>
-    </div>
-
     <div class="container-fluid">
         <!-- Basic Examples -->
         <div class="row clearfix">
@@ -40,23 +17,10 @@
                 <div class="card">
                     <div class="header">
                         <h2>Siparişler</h2>
-                        <ul class="header-dropdown">
-                            <li class="dropdown">
-                                <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <i class="zmdi zmdi-more"></i> </a>
-                                <ul class="dropdown-menu dropdown-menu-right slideUp">
-                                    <li><a href="javascript:void(0);">Action</a></li>
-                                    <li><a href="javascript:void(0);">Another action</a></li>
-                                    <li><a href="javascript:void(0);">Something else</a></li>
-                                </ul>
-                            </li>
-                            <li class="remove">
-                                <a role="button" class="boxs-close"><i class="zmdi zmdi-close"></i></a>
-                            </li>
-                        </ul>
                     </div>
                     <div class="body">
                         <div class="table-responsive">
-                            <table id="orderTable" class="table table-bordered table-striped table-hover js-basic-example dataTable">
+                            <table id="orderTable" class="table table-bordered table-striped table-hover js-basic-example dataTable" style="width:100%;">
                                 <thead>
                                     <tr>
                                         <th>Mağaza</th>
@@ -65,6 +29,9 @@
                                         <th>Tarih</th>
                                         <th>Döviz Tipi</th>
                                         <th>Tutar</th>
+                                        <th>Aktarım</th>
+                                        <th>Entegrasyon</th>
+                                        <th>İşlemler</th>
                                     </tr>
                                 </thead>
                             </table>

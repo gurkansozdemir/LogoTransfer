@@ -1,3 +1,4 @@
+using LogoTransfer.Web.Caching;
 using LogoTransfer.Web.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 
@@ -23,7 +24,15 @@ builder.Services.Configure<CookiePolicyOptions>(options =>
 {
     options.MinimumSameSitePolicy = SameSiteMode.None;
 });
+
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
+
+builder.Services.AddHttpClient("LogoTransferAPI", x =>
+{
+    x.BaseAddress = new Uri("https://localhost:7096/api/");
+});
+
+builder.Services.AddSingleton<CacheData>();
 
 var app = builder.Build();
 
@@ -49,5 +58,7 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+await app.Services.GetRequiredService<CacheData>().MenuItemsSaveCash();
 
 app.Run();

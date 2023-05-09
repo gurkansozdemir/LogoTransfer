@@ -1,4 +1,5 @@
-﻿using LogoTransfer.Web.Models;
+﻿using LogoTransfer.Web.Caching;
+using LogoTransfer.Web.Models;
 using LogoTransfer.Web.Models.RoleModels;
 using LogoTransfer.Web.Models.UserModels;
 
@@ -18,12 +19,6 @@ namespace LogoTransfer.Web.Services
             if (!response.IsSuccessStatusCode) return null;
             var responseBody = await response.Content.ReadFromJsonAsync<ResponseModel<UserModel>>();
             return responseBody.Data;
-        }
-
-        public async Task<List<MenuItemModel>> GetMenus(Guid id)
-        {
-            var response = await _httpClient.GetFromJsonAsync<ResponseModel<List<MenuItemModel>>>($"User/GetMenuItemsByRoleId/{id}");
-            return response.Data;
         }
     }
 }

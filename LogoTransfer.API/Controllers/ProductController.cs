@@ -6,11 +6,11 @@ using System.Net;
 
 namespace LogoTransfer.API.Controllers
 {
-    public class OrderController : CustomBaseController
+    public class ProductController : CustomBaseController
     {
-        private readonly IService<Order> _service;
+        private readonly IService<Product> _service;
 
-        public OrderController(IService<Order> service)
+        public ProductController(IService<Product> service)
         {
             _service = service;
         }
@@ -19,7 +19,7 @@ namespace LogoTransfer.API.Controllers
         public async Task<IActionResult> All()
         {
             var orders = await _service.GetAllAsync();
-            return CreateActionResult(CustomResponseDto<List<Order>>.Success(HttpStatusCode.OK, orders.ToList()));
+            return CreateActionResult(CustomResponseDto<List<Product>>.Success(HttpStatusCode.OK, orders.ToList()));
         }
     }
 }

@@ -5,44 +5,42 @@
             url: baseApiUrl + '/Order',
             type: 'GET',
             contentType: 'application/json; charset=utf-8',
-            dataType: "json",
-            data: {
-                pagination: {
-                    perpage: 50,
-                },
-            },
+            dataType: "json"
         },
         columns: [
-            {
-                data: 'store',
-                "render": function (data, type, full, meta) {
-                    return 'IdeaSoft';
-                }
-            },
-            {
-                data: 'orderNo',
-                "render": function (data, type, full, meta) {
-                    debugger;
-                    return full['transactionId'];
-                }
-            },
+            { data: 'storeName' },
+            { data: 'orderNo' },
             {
                 data: 'customer',
                 "render": function (data, type, full, meta) {
-                    return '<a>' + full['customerFirstname'] + ' ' + full['customerSurname'] + '</a>';
+                    return '<a>' + full['customerFirstName'] + ' ' + full['customerLastName'] + '</a>';
                 }
             },
             {
                 data: 'date',
                 "render": function (data, type, full, meta) {
-                    return full['createdAt'];
+                    return full['createdOn'];
                 }
             },
             { data: 'currency' },
             {
                 data: 'Amount',
                 "render": function (data, type, full, meta) {
-                    return full['finalAmount'];
+                    return full['amount'];
+                }
+            },
+            {
+                data: 'transferStatus',
+                "render": function (data, type, full, meta) {
+                    return '<span class="badge badge-success">Tamamlandı</span>';
+                }
+            },
+            { data: 'integration' },
+            {
+                data: 'process',
+                "render": function (data, type, full, meta) {
+                    return `<button class="btn btn-warning btn-sm"><i class="zmdi"></i></button>
+                            <button class="btn btn-success btn-sm"><i class="zmdi"></i></button>`;
                 }
             }
         ],
