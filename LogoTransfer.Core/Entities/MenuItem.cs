@@ -1,4 +1,6 @@
-﻿namespace LogoTransfer.Core.Entities
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace LogoTransfer.Core.Entities
 {
     public class MenuItem : BaseEntity
     {
@@ -7,8 +9,10 @@
         public string URL { get; set; }
         public int RowNumber { get; set; }
         public string Icon { get; set; }
-        public ICollection<Role> Roles { get; set; }
+        public virtual ICollection<Role> Roles { get; set; }
+
+        [ForeignKey("MainMenuItemId")]
         public Guid? MainMenuItemId { get; set; }
-        public MenuItem MainMenuItem { get; set; }
+        public virtual MenuItem MainMenuItem { get; set; }
     }
 }

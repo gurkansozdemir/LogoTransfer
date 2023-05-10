@@ -1,8 +1,9 @@
 ﻿function getOrders() {
     var table = $('#orderTable');
+    table.DataTable().destroy();
     table.DataTable({
         ajax: {
-            url: baseApiUrl + '/Order',
+            url: baseApiUrl + '/order',
             type: 'GET',
             contentType: 'application/json; charset=utf-8',
             dataType: "json"
@@ -39,8 +40,49 @@
             {
                 data: 'process',
                 "render": function (data, type, full, meta) {
-                    return `<button class="btn btn-warning btn-sm"><i class="zmdi"></i></button>
+                    return `<button type="button" class="btn btn-warning btn-sm" onclick="openOrderDetailModal('` + full.id + `')"><i class="zmdi"></i></button>
                             <button class="btn btn-success btn-sm"><i class="zmdi"></i></button>`;
+                }
+            }
+        ],
+        "language": {
+            "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Turkish.json"
+        }
+    });
+};
+
+function openOrderDetailModal(id) {
+    getOrderDetails(id);
+    $('#orderDetailModal').modal('show');
+}
+
+function getOrderDetails(id) {
+    var table = $('#orderDetailTable');
+    table.DataTable().destroy();
+    table.DataTable({
+        ajax: {
+            url: baseApiUrl + '/product/getByOrderId/' + id,
+            type: 'GET',
+            contentType: 'application/json; charset=utf-8',
+            dataType: "json"
+        },
+        columns: [
+            { data: 'name' },
+            { data: 'code' },
+            { data: 'quantity' },
+            { data: 'price' },
+            { data: 'priceRatio' },
+            {
+                data: 'totalAmount',
+                "render": function (data, type, full, meta) {
+                    return `0`;
+                }
+            },
+            { data: 'currency' },
+            {
+                data: 'process',
+                "render": function (data, type, full, meta) {
+                    return `<button class="btn btn-success btn-sm"><i class="zmdi"></i></button>`;
                 }
             }
         ],

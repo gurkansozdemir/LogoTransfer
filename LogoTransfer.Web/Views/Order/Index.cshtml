@@ -1,12 +1,6 @@
-﻿@section headArea{
-
-}
-
-@section endBodyArea{
+﻿@section endBodyArea{
 <script src="~/assets/custom/js/OrderScript.js"></script>
-<script>
-    getOrders();
-</script>
+<script>getOrders();</script>
 }
 
 <div class="body_scroll">
@@ -42,3 +36,6 @@
         </div>
     </div>
 </div>
+
+
+@await Html.PartialAsync("../Shared/PartialViews/_OrderDetailPartial.cshtml")

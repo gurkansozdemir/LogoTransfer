@@ -8,17 +8,17 @@ namespace LogoTransfer.API.Controllers
 {
     public class OrderController : CustomBaseController
     {
-        private readonly IService<Order> _service;
+        private readonly IOrderService _orderService;
 
-        public OrderController(IService<Order> service)
+        public OrderController(IOrderService orderService)
         {
-            _service = service;
+            _orderService = orderService;
         }
 
         [HttpGet]
         public async Task<IActionResult> All()
         {
-            var orders = await _service.GetAllAsync();
+            var orders = await _orderService.GetAllAsync();
             return CreateActionResult(CustomResponseDto<List<Order>>.Success(HttpStatusCode.OK, orders.ToList()));
         }
     }

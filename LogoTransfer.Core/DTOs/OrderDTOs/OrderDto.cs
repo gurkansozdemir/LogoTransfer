@@ -1,11 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using LogoTransfer.Core.DTOs.ProductDTOs;
 
-namespace LogoTransfer.Core.Entities
+namespace LogoTransfer.Core.DTOs.OrderDTOs
 {
-    public class Order : BaseEntity
+    public class OrderDto : BaseDto
     {
-        public virtual Store Store { get; set; }
-        [ForeignKey("StoreId")]
         public Guid StoreId { get; set; }
         public string StoreName { get; set; }
         public string OrderNo { get; set; }
@@ -13,7 +11,7 @@ namespace LogoTransfer.Core.Entities
         public string CustomerLastName { get; set; }
         public decimal Amount { get; set; }
         public string Currency { get; set; }
-        public virtual List<Product> Products { get; set; }
+        public List<ProductDto> Products { get; set; }
         public string TransferStatus { get; set; }
         public string Integration { get; set; }
     }

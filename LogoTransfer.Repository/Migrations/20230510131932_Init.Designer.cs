@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LogoTransfer.Repository.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230421012003_Initialize")]
-    partial class Initialize
+    [Migration("20230510131932_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -69,6 +69,136 @@ namespace LogoTransfer.Repository.Migrations
                     b.ToTable("MenuItem");
                 });
 
+            modelBuilder.Entity("LogoTransfer.Core.Entities.Order", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Currency")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CustomerFirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CustomerLastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Integration")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("OrderNo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("StoreId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("StoreName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TransferStatus")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("StoreId");
+
+                    b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("LogoTransfer.Core.Entities.Product", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Currency")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("OrderId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("PriceRatio")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("Quantity")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime?>("UpdatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
+
+                    b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("LogoTransfer.Core.Entities.ProductMatching", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("OtherProductCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ProductCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ProductMatchings");
+                });
+
             modelBuilder.Entity("LogoTransfer.Core.Entities.Role", b =>
                 {
                     b.Property<Guid>("Id")
@@ -100,7 +230,7 @@ namespace LogoTransfer.Repository.Migrations
                         new
                         {
                             Id = new Guid("45456c11-f1f1-447b-a55d-c8f4110da3fe"),
-                            CreatedOn = new DateTime(2023, 4, 21, 4, 20, 3, 463, DateTimeKind.Local).AddTicks(1352),
+                            CreatedOn = new DateTime(2023, 5, 10, 16, 19, 31, 919, DateTimeKind.Local).AddTicks(5374),
                             Description = "Full Authorize",
                             IsDeleted = false,
                             Name = "Supervisor"
@@ -108,11 +238,35 @@ namespace LogoTransfer.Repository.Migrations
                         new
                         {
                             Id = new Guid("7e212bbe-3059-464f-be67-ec8064063f6b"),
-                            CreatedOn = new DateTime(2023, 4, 21, 4, 20, 3, 463, DateTimeKind.Local).AddTicks(1357),
+                            CreatedOn = new DateTime(2023, 5, 10, 16, 19, 31, 919, DateTimeKind.Local).AddTicks(5378),
                             Description = "Default User",
                             IsDeleted = false,
                             Name = "StandartUser"
                         });
+                });
+
+            modelBuilder.Entity("LogoTransfer.Core.Entities.Store", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Stores");
                 });
 
             modelBuilder.Entity("LogoTransfer.Core.Entities.User", b =>
@@ -169,7 +323,7 @@ namespace LogoTransfer.Repository.Migrations
                         new
                         {
                             Id = new Guid("b2f9cba8-d1ab-477d-91cf-caf4ba435b83"),
-                            CreatedOn = new DateTime(2023, 4, 21, 4, 20, 3, 463, DateTimeKind.Local).AddTicks(1618),
+                            CreatedOn = new DateTime(2023, 5, 10, 16, 19, 31, 919, DateTimeKind.Local).AddTicks(5670),
                             EMail = "admin@logo.com.tr",
                             FirstName = "Super",
                             IsDeleted = false,
@@ -204,6 +358,28 @@ namespace LogoTransfer.Repository.Migrations
                     b.Navigation("MainMenuItem");
                 });
 
+            modelBuilder.Entity("LogoTransfer.Core.Entities.Order", b =>
+                {
+                    b.HasOne("LogoTransfer.Core.Entities.Store", "Store")
+                        .WithMany()
+                        .HasForeignKey("StoreId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Store");
+                });
+
+            modelBuilder.Entity("LogoTransfer.Core.Entities.Product", b =>
+                {
+                    b.HasOne("LogoTransfer.Core.Entities.Order", "Order")
+                        .WithMany("Products")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Order");
+                });
+
             modelBuilder.Entity("LogoTransfer.Core.Entities.User", b =>
                 {
                     b.HasOne("LogoTransfer.Core.Entities.Role", "Role")
@@ -228,6 +404,11 @@ namespace LogoTransfer.Repository.Migrations
                         .HasForeignKey("RolesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("LogoTransfer.Core.Entities.Order", b =>
+                {
+                    b.Navigation("Products");
                 });
 #pragma warning restore 612, 618
         }

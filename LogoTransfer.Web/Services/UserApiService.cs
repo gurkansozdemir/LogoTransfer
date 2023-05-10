@@ -1,6 +1,4 @@
-﻿using LogoTransfer.Web.Caching;
-using LogoTransfer.Web.Models;
-using LogoTransfer.Web.Models.RoleModels;
+﻿using LogoTransfer.Web.Models;
 using LogoTransfer.Web.Models.UserModels;
 
 namespace LogoTransfer.Web.Services

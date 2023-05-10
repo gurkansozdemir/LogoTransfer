@@ -1,5 +1,4 @@
 ﻿using LogoTransfer.Web.Caching;
-using LogoTransfer.Web.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LogoTransfer.Web.ViewComponents

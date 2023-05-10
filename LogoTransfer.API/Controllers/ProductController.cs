@@ -8,18 +8,31 @@ namespace LogoTransfer.API.Controllers
 {
     public class ProductController : CustomBaseController
     {
-        private readonly IService<Product> _service;
+        private readonly IProductService _productService;
 
-        public ProductController(IService<Product> service)
+        public ProductController(IProductService productService)
         {
-            _service = service;
+            _productService = productService;
         }
 
         [HttpGet]
         public async Task<IActionResult> All()
         {
-            var orders = await _service.GetAllAsync();
+            var orders = await _productService.GetAllAsync();
             return CreateActionResult(CustomResponseDto<List<Product>>.Success(HttpStatusCode.OK, orders.ToList()));
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(Guid id)
+        {
+            var order = await _productService.GetByIdAsync(id);
+            return CreateActionResult(CustomResponseDto<Product>.Success(HttpStatusCode.OK, order));
+        }
+
+        [HttpGet("[action]/{id}")]
+        public async Task<IActionResult> GetByOrderId(Guid id)
+        {
+            return CreateActionResult(await _productService.GetByOrderIdAsync(id));
         }
     }
 }

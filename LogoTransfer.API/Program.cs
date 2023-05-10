@@ -35,6 +35,12 @@ builder.Services.AddScoped(typeof(IAuthorizationService), typeof(AuthorizationSe
 builder.Services.AddScoped(typeof(IUserRepository), typeof(UserRepository));
 builder.Services.AddScoped(typeof(IUserService), typeof(UserService));
 
+builder.Services.AddScoped(typeof(IProductRepository), typeof(ProductRepository));
+builder.Services.AddScoped(typeof(IProductService), typeof(ProductService));
+
+builder.Services.AddScoped(typeof(IOrderRepository), typeof(OrderRepository));
+builder.Services.AddScoped(typeof(IOrderService), typeof(OrderService));
+
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddAutoMapper(typeof(MapProfile));
 
