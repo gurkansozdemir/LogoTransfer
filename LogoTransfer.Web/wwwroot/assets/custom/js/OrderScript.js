@@ -91,3 +91,11 @@ function getOrderDetails(id) {
         }
     });
 };
+
+$("body").on('click', '#orderTable tbody tr', function () {
+    $(this).toggleClass("selected");
+});
+
+function startTransfer() {
+    $('#orderTable').DataTable().rows('.selected').data();
+}

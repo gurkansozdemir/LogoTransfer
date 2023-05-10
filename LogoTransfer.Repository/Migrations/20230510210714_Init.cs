@@ -196,14 +196,14 @@ namespace LogoTransfer.Repository.Migrations
                 columns: new[] { "Id", "CreatedOn", "Description", "IsDeleted", "Name", "UpdatedOn" },
                 values: new object[,]
                 {
-                    { new Guid("45456c11-f1f1-447b-a55d-c8f4110da3fe"), new DateTime(2023, 5, 10, 16, 19, 31, 919, DateTimeKind.Local).AddTicks(5374), "Full Authorize", false, "Supervisor", null },
-                    { new Guid("7e212bbe-3059-464f-be67-ec8064063f6b"), new DateTime(2023, 5, 10, 16, 19, 31, 919, DateTimeKind.Local).AddTicks(5378), "Default User", false, "StandartUser", null }
+                    { new Guid("45456c11-f1f1-447b-a55d-c8f4110da3fe"), new DateTime(2023, 5, 11, 0, 7, 14, 253, DateTimeKind.Local).AddTicks(6457), "Full Authorize", false, "Supervisor", null },
+                    { new Guid("7e212bbe-3059-464f-be67-ec8064063f6b"), new DateTime(2023, 5, 11, 0, 7, 14, 253, DateTimeKind.Local).AddTicks(6461), "Default User", false, "StandartUser", null }
                 });
 
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "CreatedOn", "EMail", "FirstName", "IsDeleted", "LastName", "Password", "RoleId", "UpdatedOn", "UserName" },
-                values: new object[] { new Guid("b2f9cba8-d1ab-477d-91cf-caf4ba435b83"), new DateTime(2023, 5, 10, 16, 19, 31, 919, DateTimeKind.Local).AddTicks(5670), "admin@logo.com.tr", "Super", false, "User", "123", new Guid("45456c11-f1f1-447b-a55d-c8f4110da3fe"), null, "supervisor" });
+                values: new object[] { new Guid("b2f9cba8-d1ab-477d-91cf-caf4ba435b83"), new DateTime(2023, 5, 11, 0, 7, 14, 253, DateTimeKind.Local).AddTicks(6665), "admin@logo.com.tr", "Super", false, "User", "123", new Guid("45456c11-f1f1-447b-a55d-c8f4110da3fe"), null, "supervisor" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_MenuItem_MainMenuItemId",
