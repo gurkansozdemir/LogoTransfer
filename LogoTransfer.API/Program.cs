@@ -4,6 +4,7 @@ using LogoTransfer.Core.UnitOfWorks;
 using LogoTransfer.Repository;
 using LogoTransfer.Repository.Repositories;
 using LogoTransfer.Repository.UnitOfWorks;
+using LogoTransfer.Service.Caching;
 using LogoTransfer.Service.Mapping;
 using LogoTransfer.Service.Services;
 using Microsoft.EntityFrameworkCore;
@@ -44,6 +45,8 @@ builder.Services.AddScoped(typeof(IOrderService), typeof(OrderService));
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddAutoMapper(typeof(MapProfile));
 
+builder.Services.AddSingleton<CacheData>();
+
 builder.Services.AddDbContext<AppDbContext>(x =>
 {
     x.UseSqlServer(builder.Configuration.GetConnectionString("SqlConnection"), options =>
@@ -55,10 +58,17 @@ builder.Services.AddDbContext<AppDbContext>(x =>
 
 builder.Services.AddHttpClient("IdeaSoftAPI", x =>
 {
-    x.BaseAddress = new Uri("https://formaram.myideasoft.com/");
+    x.BaseAddress = new Uri(builder.Configuration.GetValue<string>("APIList:IdeaSoft"));
+});
+
+builder.Services.AddHttpClient("LOGOAPI", x =>
+{
+    x.BaseAddress = new Uri(builder.Configuration.GetValue<string>("APIList:Logo"));
 });
 
 var app = builder.Build();
+
+await app.Services.GetService<CacheData>().StartAsync();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
