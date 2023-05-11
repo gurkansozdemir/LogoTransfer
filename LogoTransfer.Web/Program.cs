@@ -8,10 +8,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
 builder.Services.AddRazorPages();
 builder.Services.AddControllersWithViews();
-builder.Services.AddHttpClient<UserApiService>(opt =>
-{
-    opt.BaseAddress = new Uri(builder.Configuration["BaseUrl"]);
-});
+//builder.Services.AddHttpClient<UserApiService>(opt =>
+//{
+//    opt.BaseAddress = new Uri(builder.Configuration["BaseUrl"]);
+//});
 
 builder.Services.AddSession(opt =>
 {
@@ -27,9 +27,9 @@ builder.Services.Configure<CookiePolicyOptions>(options =>
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
 
-builder.Services.AddHttpClient("LogoTransferAPI", x =>
+builder.Services.AddHttpClient("BaseAPI", x =>
 {
-    x.BaseAddress = new Uri("https://localhost:7096/api/");
+    x.BaseAddress = new Uri(builder.Configuration.GetValue<string>("APIList:Base"));
 });
 
 builder.Services.AddSingleton<CacheData>();

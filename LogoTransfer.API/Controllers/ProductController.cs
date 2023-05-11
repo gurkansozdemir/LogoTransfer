@@ -18,21 +18,27 @@ namespace LogoTransfer.API.Controllers
         [HttpGet]
         public async Task<IActionResult> All()
         {
-            var orders = await _productService.GetAllAsync();
-            return CreateActionResult(CustomResponseDto<List<Product>>.Success(HttpStatusCode.OK, orders.ToList()));
+            var products = await _productService.GetAllAsync();
+            return CreateActionResult(CustomResponseDto<List<Product>>.Success(HttpStatusCode.OK, products.ToList()));
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(Guid id)
         {
-            var order = await _productService.GetByIdAsync(id);
-            return CreateActionResult(CustomResponseDto<Product>.Success(HttpStatusCode.OK, order));
+            var product = await _productService.GetByIdAsync(id);
+            return CreateActionResult(CustomResponseDto<Product>.Success(HttpStatusCode.OK, product));
         }
 
         [HttpGet("[action]/{id}")]
         public async Task<IActionResult> GetByOrderId(Guid id)
         {
             return CreateActionResult(await _productService.GetByOrderIdAsync(id));
+        }
+
+        [HttpGet("[action]")]
+        public async Task<IActionResult> GetExternalProducts()
+        {
+            return CreateActionResult(await _productService.GetExternalProducts());
         }
     }
 }

@@ -6,7 +6,7 @@ namespace LogoTransfer.Service.Caching
 {
     public class CacheData
     {
-        public static List<ExternalProductDto> externalProductDtos;
+        public static CustomResponseDto<List<ExternalProductDto>> ExternalProductDtos { get; set; }
         public static string Token { get; set; }
 
         private readonly HttpClient _httpClient;
@@ -18,8 +18,12 @@ namespace LogoTransfer.Service.Caching
 
         public async Task StartAsync()
         {
-            var products = await _httpClient.GetFromJsonAsync<CustomResponseDto<List<ExternalProductDto>>>("product");
-            externalProductDtos = products.Data;
+            ExternalProductDtos = await GetExternalProducts();
+        }
+
+        public async Task<CustomResponseDto<List<ExternalProductDto>>> GetExternalProducts()
+        {
+            return await _httpClient.GetFromJsonAsync<CustomResponseDto<List<ExternalProductDto>>>("product");
         }
 
     }

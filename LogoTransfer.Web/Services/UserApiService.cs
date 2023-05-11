@@ -6,9 +6,9 @@ namespace LogoTransfer.Web.Services
     public class UserApiService
     {
         private readonly HttpClient _httpClient;
-        public UserApiService(HttpClient httpClient)
+        public UserApiService(IHttpClientFactory httpClientFactory)
         {
-            _httpClient = httpClient;
+            _httpClient = httpClientFactory.CreateClient("BaseAPI");
         }
 
         public async Task<UserModel> LogIn(SignInModel signIn)
