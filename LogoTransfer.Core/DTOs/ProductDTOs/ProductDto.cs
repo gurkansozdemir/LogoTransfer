@@ -9,5 +9,6 @@
         public decimal Quantity { get; set; }
         public decimal PriceRatio { get; set; }
         public string Currency { get; set; }
+        public bool IsMatch { get; set; }
     }
 }

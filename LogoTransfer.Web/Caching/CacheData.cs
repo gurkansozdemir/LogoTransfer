@@ -11,7 +11,7 @@ namespace LogoTransfer.Web.Caching
 
         public CacheData(IHttpClientFactory httpClientFactory)
         {
-            _httpClient = httpClientFactory.CreateClient("LogoTransferAPI");
+            _httpClient = httpClientFactory.CreateClient("BaseAPI");
         }
 
         public async Task MenuItemsSaveCash()

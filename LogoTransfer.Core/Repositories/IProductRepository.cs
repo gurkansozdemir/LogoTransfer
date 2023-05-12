@@ -5,5 +5,6 @@ namespace LogoTransfer.Core.Repositories
     public interface IProductRepository : IGenericRepository<Product>
     {
         public Task<List<Product>> GetByOrderIdAsync(Guid id);
+        public Task<List<ProductMatching>> GetProductMatchAsync();
     }
 }

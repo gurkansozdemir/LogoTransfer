@@ -27,6 +27,9 @@ namespace LogoTransfer.Service.Services
         {
             var products = await _productRepository.GetByOrderIdAsync(id);
             var productDtos = _mapper.Map<List<ProductDto>>(products);
+            var productMatch = await _productRepository.GetProductMatchAsync();
+            productDtos.ForEach(x => x.IsMatch = productMatch.Exists(pm => pm.ProductCode == x.Code && !pm.IsDeleted));
+
             return CustomResponseDto<List<ProductDto>>.Success(HttpStatusCode.OK, productDtos);
         }
 

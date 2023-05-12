@@ -80,6 +80,15 @@ function getOrderDetails(id) {
             },
             { data: 'currency' },
             {
+                data: 'mathing',
+                "render": function (data, type, full, meta) {
+                    if (full.isMatch) {
+                        return '<span class="badge badge-success">Eşleşdi</span>';
+                    }
+                    return '<span class="badge badge-danger">Eşleşmedi</span>';
+                }
+            },
+            {
                 data: 'process',
                 "render": function (data, type, full, meta) {
                     return `<button class="btn btn-success btn-sm"><i class="zmdi"></i></button>`;

@@ -8,10 +8,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
 builder.Services.AddRazorPages();
 builder.Services.AddControllersWithViews();
-//builder.Services.AddHttpClient<UserApiService>(opt =>
-//{
-//    opt.BaseAddress = new Uri(builder.Configuration["BaseUrl"]);
-//});
+
+builder.Services.AddScoped<UserApiService>();
 
 builder.Services.AddSession(opt =>
 {
