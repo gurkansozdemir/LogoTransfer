@@ -4,5 +4,6 @@
     {
         public Task SaveOrdersAsync();
         public Task SaveProductsAsync();
+        public void StartAsync(Object state);
     }
 }

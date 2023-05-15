@@ -14,13 +14,12 @@ namespace LogoTransfer.ImportService.Services
         private readonly IProductService _productService;
         private readonly IMapper _mapper;
 
-        public IdeaSoftService(IOrderService orderService, IProductService productService, IMapper mapper)
+        public IdeaSoftService(IOrderService orderService, IProductService productService, IMapper mapper, IHttpClientFactory httpClient)
         {
             _mapper = mapper;
-            _httpClient.BaseAddress = new Uri("https://formaram.myideasoft.com/");
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", CacheData.Token);
+            _httpClient = httpClient.CreateClient("IdeaSoftAPI");
             _orderService = orderService;
-            _productService = productService;   
+            _productService = productService;
         }
         public async Task SaveOrdersAsync()
         {
@@ -34,6 +33,12 @@ namespace LogoTransfer.ImportService.Services
             var products = await _httpClient.GetFromJsonAsync<List<Core.DTOs.IdeaSoft.Order>>("api/products");
             var baseProducts = _mapper.Map<List<Product>>(products);
             await _productService.AddRangeAsync(baseProducts);
+        }
+
+        public void StartAsync(Object state)
+        {
+            SaveOrdersAsync();
+            SaveProductsAsync();
         }
     }
 }
