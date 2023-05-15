@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LogoTransfer.API", "LogoTra
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LogoTransfer.Web", "LogoTransfer.Web\LogoTransfer.Web.csproj", "{C11D1697-994D-4538-A467-57B7B2A82683}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogoTransfer.ImportService", "LogoTransfer.ImportService\LogoTransfer.ImportService.csproj", "{FBD8CEC4-9B7B-4202-855D-96B3A3EC8780}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{C11D1697-994D-4538-A467-57B7B2A82683}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C11D1697-994D-4538-A467-57B7B2A82683}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C11D1697-994D-4538-A467-57B7B2A82683}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FBD8CEC4-9B7B-4202-855D-96B3A3EC8780}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FBD8CEC4-9B7B-4202-855D-96B3A3EC8780}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FBD8CEC4-9B7B-4202-855D-96B3A3EC8780}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FBD8CEC4-9B7B-4202-855D-96B3A3EC8780}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

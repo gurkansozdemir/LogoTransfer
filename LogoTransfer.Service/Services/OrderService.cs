@@ -9,6 +9,7 @@ namespace LogoTransfer.Service.Services
     {
         public OrderService(IGenericRepository<Order> repository, IUnitOfWork unitOfWork) : base(repository, unitOfWork)
         {
+
         }
     }
 }
