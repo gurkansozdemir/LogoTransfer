@@ -5,12 +5,10 @@ using LogoTransfer.ImportService.Services;
 using LogoTransfer.Repository;
 using LogoTransfer.Repository.Repositories;
 using LogoTransfer.Repository.UnitOfWorks;
-using LogoTransfer.Service.Caching;
 using LogoTransfer.Service.Mapping;
 using LogoTransfer.Service.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using System.Net.Http.Headers;
 using System.Reflection;
 
 class Program
@@ -35,7 +33,7 @@ class Program
         serviceProvider.AddHttpClient("IdeaSoftAPI", x =>
         {
             x.BaseAddress = new Uri("https://formaram.myideasoft.com/");
-            x.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", CacheData.Token);
+            // x.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", CacheData.Token);
         });
         serviceProvider.AddDbContext<AppDbContext>(x =>
         {

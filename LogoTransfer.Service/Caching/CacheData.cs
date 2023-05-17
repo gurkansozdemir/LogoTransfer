@@ -1,15 +1,30 @@
 ﻿using LogoTransfer.Core.DTOs;
 using LogoTransfer.Core.DTOs.ProductDTOs;
+using LogoTransfer.Core.DTOs.UserDTOs;
 using System.Net.Http.Json;
 
 namespace LogoTransfer.Service.Caching
 {
     public class CacheData
     {
-        public static CustomResponseDto<List<ExternalProductDto>> ExternalProductDtos { get; set; }
-        public static string Token { get; set; }
+        private CustomResponseDto<List<ExternalProductDto>> externalProductDtos;
+        public CustomResponseDto<List<ExternalProductDto>> ExternalProductDtos
+        {
+            get
+            {
+                if (externalProductDtos == null)
+                {
+                    GetExternalProducts();
+                }
+                return externalProductDtos;
+            }
+        }
+
+        public LogoUserDto logoUser;
+        public LogoUserDto LogoUser { get; set; }
 
         private readonly HttpClient _httpClient;
+        public string Token { get; set; }
 
         public CacheData(IHttpClientFactory httpClientFactory)
         {
@@ -18,13 +33,12 @@ namespace LogoTransfer.Service.Caching
 
         public async Task StartAsync()
         {
-            ExternalProductDtos = await GetExternalProducts();
+            await GetExternalProducts();
         }
 
-        public async Task<CustomResponseDto<List<ExternalProductDto>>> GetExternalProducts()
+        public async Task GetExternalProducts()
         {
-            return await _httpClient.GetFromJsonAsync<CustomResponseDto<List<ExternalProductDto>>>("product");
+            externalProductDtos = await _httpClient.GetFromJsonAsync<CustomResponseDto<List<ExternalProductDto>>>("product");
         }
-
     }
 }

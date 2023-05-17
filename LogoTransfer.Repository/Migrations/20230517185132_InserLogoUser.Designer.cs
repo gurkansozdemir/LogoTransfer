@@ -4,6 +4,7 @@ using LogoTransfer.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LogoTransfer.Repository.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230517185132_InserLogoUser")]
+    partial class InserLogoUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -55,7 +58,7 @@ namespace LogoTransfer.Repository.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("LogoUsers");
+                    b.ToTable("LogoUser");
                 });
 
             modelBuilder.Entity("LogoTransfer.Core.Entities.MenuItem", b =>
@@ -263,7 +266,7 @@ namespace LogoTransfer.Repository.Migrations
                         new
                         {
                             Id = new Guid("45456c11-f1f1-447b-a55d-c8f4110da3fe"),
-                            CreatedOn = new DateTime(2023, 5, 17, 21, 53, 47, 828, DateTimeKind.Local).AddTicks(9391),
+                            CreatedOn = new DateTime(2023, 5, 17, 21, 51, 31, 678, DateTimeKind.Local).AddTicks(9617),
                             Description = "Full Authorize",
                             IsDeleted = false,
                             Name = "Supervisor"
@@ -271,7 +274,7 @@ namespace LogoTransfer.Repository.Migrations
                         new
                         {
                             Id = new Guid("7e212bbe-3059-464f-be67-ec8064063f6b"),
-                            CreatedOn = new DateTime(2023, 5, 17, 21, 53, 47, 828, DateTimeKind.Local).AddTicks(9398),
+                            CreatedOn = new DateTime(2023, 5, 17, 21, 51, 31, 678, DateTimeKind.Local).AddTicks(9626),
                             Description = "Default User",
                             IsDeleted = false,
                             Name = "StandartUser"
@@ -356,7 +359,7 @@ namespace LogoTransfer.Repository.Migrations
                         new
                         {
                             Id = new Guid("b2f9cba8-d1ab-477d-91cf-caf4ba435b83"),
-                            CreatedOn = new DateTime(2023, 5, 17, 21, 53, 47, 829, DateTimeKind.Local).AddTicks(1576),
+                            CreatedOn = new DateTime(2023, 5, 17, 21, 51, 31, 679, DateTimeKind.Local).AddTicks(1386),
                             EMail = "admin@logo.com.tr",
                             FirstName = "Super",
                             IsDeleted = false,

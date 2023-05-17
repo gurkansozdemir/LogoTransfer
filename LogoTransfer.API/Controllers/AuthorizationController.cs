@@ -17,5 +17,11 @@ namespace LogoTransfer.API.Controllers
         {
             return CreateActionResult(await _authorizationService.GetIdeasoftToken(model));
         }
+
+        [HttpGet("[action]")]
+        public async Task<IActionResult> GetUserInfo()
+        {
+            return CreateActionResult(await _authorizationService.GetLogoUserInfo());
+        }
     }
 }

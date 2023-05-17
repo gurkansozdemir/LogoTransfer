@@ -59,6 +59,7 @@ builder.Services.AddDbContext<AppDbContext>(x =>
 builder.Services.AddHttpClient("IdeaSoftAPI", x =>
 {
     x.BaseAddress = new Uri(builder.Configuration.GetValue<string>("APIList:IdeaSoft"));
+    // x.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", CacheData.Token);
 });
 
 builder.Services.AddHttpClient("LOGOAPI", x =>

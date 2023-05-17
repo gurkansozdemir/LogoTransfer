@@ -13,6 +13,7 @@ namespace LogoTransfer.Service.Mapping
         {
             CreateMap<InsertUserDto, User>();
             CreateMap<User, UserDto>();
+            CreateMap<LogoUser, LogoUserDto>();
             CreateMap<SignInDto, User>();
             CreateMap<Role, RoleDto>().ReverseMap();
             CreateMap<MenuItem, MenuItemDto>();

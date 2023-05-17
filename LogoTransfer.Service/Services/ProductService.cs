@@ -16,11 +16,13 @@ namespace LogoTransfer.Service.Services
         private readonly IProductRepository _productRepository;
         private readonly IMapper _mapper;
         private readonly HttpClient _httpClient;
-        public ProductService(IGenericRepository<Product> repository, IUnitOfWork unitOfWork, IProductRepository productRepository, IMapper mapper, IHttpClientFactory httpClientFactory) : base(repository, unitOfWork)
+        private readonly CacheData _cacheData;
+        public ProductService(IGenericRepository<Product> repository, IUnitOfWork unitOfWork, IProductRepository productRepository, IMapper mapper, IHttpClientFactory httpClientFactory, CacheData cacheData) : base(repository, unitOfWork)
         {
             _productRepository = productRepository;
             _mapper = mapper;
             _httpClient = httpClientFactory.CreateClient("LOGOAPI");
+            _cacheData = cacheData;
         }
 
         public async Task<CustomResponseDto<List<ProductDto>>> GetByOrderIdAsync(Guid id)
@@ -35,9 +37,9 @@ namespace LogoTransfer.Service.Services
 
         public async Task<CustomResponseDto<List<ExternalProductDto>>> GetExternalProducts()
         {
-            if (CacheData.ExternalProductDtos.Data.Count() > 0)
+            if (_cacheData.ExternalProductDtos.Data.Count() > 0)
             {
-                return CacheData.ExternalProductDtos;
+                return _cacheData.ExternalProductDtos;
             }
             return await _httpClient.GetFromJsonAsync<CustomResponseDto<List<ExternalProductDto>>>("product");
         }

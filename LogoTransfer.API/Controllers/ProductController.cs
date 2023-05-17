@@ -9,15 +9,18 @@ namespace LogoTransfer.API.Controllers
     public class ProductController : CustomBaseController
     {
         private readonly IProductService _productService;
+        private readonly ILogger<UserController> _logger;
 
-        public ProductController(IProductService productService)
+        public ProductController(IProductService productService, ILogger<UserController> logger)
         {
             _productService = productService;
+            _logger = logger;
         }
 
         [HttpGet]
         public async Task<IActionResult> All()
         {
+            _logger.LogInformation("{time}: {action} başlatıldı.", DateTimeOffset.UtcNow, nameof(All));
             var products = await _productService.GetAllAsync();
             return CreateActionResult(CustomResponseDto<List<Product>>.Success(HttpStatusCode.OK, products.ToList()));
         }

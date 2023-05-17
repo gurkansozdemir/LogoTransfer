@@ -8,6 +8,6 @@ namespace LogoTransfer.Core.Services
     {
         public Task<CustomResponseDto<List<ProductDto>>> GetByOrderIdAsync(Guid id);
         public Task<CustomResponseDto<List<ExternalProductDto>>> GetExternalProducts();
-        
+
     }
 }

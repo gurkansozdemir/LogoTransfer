@@ -12,11 +12,13 @@ namespace LogoTransfer.API.Controllers
     {
         private readonly IMapper _mapper;
         private readonly IUserService _userService;
+        private readonly ILogger<UserController> _logger;
 
-        public UserController(IMapper mapper, IUserService userService)
+        public UserController(IMapper mapper, IUserService userService, ILogger<UserController> logger)
         {
             _mapper = mapper;
             _userService = userService;
+            _logger = logger;
         }
 
         [HttpGet]

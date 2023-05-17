@@ -1,8 +1,6 @@
 ﻿using AutoMapper;
 using LogoTransfer.Core.Entities;
 using LogoTransfer.Core.Services;
-using LogoTransfer.Service.Caching;
-using System.Net.Http.Headers;
 using System.Net.Http.Json;
 
 namespace LogoTransfer.ImportService.Services
