@@ -6,6 +6,7 @@ using LogoTransfer.Core.Entities;
 using LogoTransfer.Core.Repositories;
 using LogoTransfer.Core.Services;
 using LogoTransfer.Service.Caching;
+using Microsoft.Extensions.Configuration;
 using System.Net;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
@@ -18,18 +19,20 @@ namespace LogoTransfer.Service.Services
         private readonly IMapper _mapper;
         private readonly HttpClient _httpClient;
         private CacheData _cacheData;
-        public AuthorizationService(IHttpClientFactory httpClientFactory, CacheData cacheData, IMapper mapper, IGenericRepository<LogoUser> logoUserRepository = null)
+        private readonly IConfiguration _configuration;
+        public AuthorizationService(IHttpClientFactory httpClientFactory, CacheData cacheData, IMapper mapper, IGenericRepository<LogoUser> logoUserRepository = null, IConfiguration configuration = null)
         {
             _httpClient = httpClientFactory.CreateClient("IdeaSoftAPI");
             _cacheData = cacheData;
             _mapper = mapper;
             _logoUserRepository = logoUserRepository;
+            _configuration = configuration;
         }
         public async Task<CustomResponseDto<TokenDto>> GetIdeasoftToken(GetTokenModel model)
         {
-            string clientId = "ntmyj19qnbk8g8skwwsgkw0kg8ww084ckswkgwk0w80owgwso";
-            string clientSecret = "4qub43qah2qsw48k8ks0k0c00g4wcg080kcc4ss44kwkss0okg";
-            string redirectUrl = "https://localhost:7096/api/authorization/getIdeasoftToken";
+            string clientId = _configuration.GetSection("IdeaSoftClient:clientId").Value;
+            string clientSecret = _configuration.GetSection("IdeaSoftClient:clientSecret").Value;
+            string redirectUrl = _configuration.GetSection("IdeaSoftClient:redirectUrl").Value;
 
             var response = await _httpClient.GetFromJsonAsync<TokenDto>(@$"oauth/v2/token?grant_type=authorization_code&client_id={clientId}&client_secret={clientSecret}&code={model.Code}&redirect_uri={redirectUrl}");
             _cacheData.Token = response.Access_Token;
@@ -56,6 +59,11 @@ namespace LogoTransfer.Service.Services
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _cacheData.Token);
             var response = await _httpClient.GetFromJsonAsync<List<Core.DTOs.IdeaSoft.Order>>("api/orders");
             return CustomResponseDto<List<Core.DTOs.IdeaSoft.Order>>.Success(HttpStatusCode.OK, response);
+        }
+
+        public string GetIdeaSoftTokenFromCache()
+        {
+            return _cacheData.Token;
         }
     }
 }

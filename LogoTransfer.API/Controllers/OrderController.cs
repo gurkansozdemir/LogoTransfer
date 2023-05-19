@@ -10,17 +10,22 @@ namespace LogoTransfer.API.Controllers
     public class OrderController : CustomBaseController
     {
         private readonly IOrderService _orderService;
+        private readonly ILogger _logger;
 
-        public OrderController(IOrderService orderService)
+        public OrderController(IOrderService orderService, ILogger logger)
         {
             _orderService = orderService;
+            _logger = logger;
         }
 
         [HttpGet]
         public async Task<IActionResult> All()
         {
+            _logger.LogInformation("{time}:{action} start.", DateTime.Now, nameof(All));
             var orders = await _orderService.GetAllAsync();
-            return CreateActionResult(CustomResponseDto<List<Order>>.Success(HttpStatusCode.OK, orders.ToList()));
+            var result = CustomResponseDto<List<Order>>.Success(HttpStatusCode.OK, orders.ToList());
+            _logger.LogInformation("{time}:{action} end. Response:{response}", DateTime.Now, nameof(All), result);
+            return CreateActionResult(result);
         }
 
         [HttpPost("[action]")]

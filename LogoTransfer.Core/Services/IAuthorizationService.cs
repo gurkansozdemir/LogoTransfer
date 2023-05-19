@@ -9,5 +9,6 @@ namespace LogoTransfer.Core.Services
         public Task<CustomResponseDto<TokenDto>> GetIdeasoftToken(GetTokenModel model);
         public Task<CustomResponseDto<List<Order>>> GetOrders();
         public Task<CustomResponseDto<LogoUserDto>> GetLogoUserInfo();
+        public string GetIdeaSoftTokenFromCache();
     }
 }

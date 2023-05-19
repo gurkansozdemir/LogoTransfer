@@ -5,6 +5,7 @@ using LogoTransfer.ImportService.Services;
 using LogoTransfer.Repository;
 using LogoTransfer.Repository.Repositories;
 using LogoTransfer.Repository.UnitOfWorks;
+using LogoTransfer.Service.Caching;
 using LogoTransfer.Service.Mapping;
 using LogoTransfer.Service.Services;
 using Microsoft.EntityFrameworkCore;
@@ -13,7 +14,7 @@ using System.Reflection;
 
 class Program
 {
-    private static Timer _timer;
+    private static System.Timers.Timer _timer;
     static async Task Main(string[] args)
     {
         await Go();
@@ -27,14 +28,17 @@ class Program
         serviceProvider.AddScoped(typeof(IOrderRepository), typeof(OrderRepository));
         serviceProvider.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
         serviceProvider.AddScoped<IUnitOfWork, UnitOfWork>();
-        serviceProvider.AddScoped(typeof(IProductRepository), typeof(ProductRepository));
-        serviceProvider.AddScoped(typeof(IProductService), typeof(ProductService));
         serviceProvider.AddAutoMapper(typeof(MapProfile));
+        serviceProvider.AddSingleton<CacheDataImportService>();
         serviceProvider.AddHttpClient("IdeaSoftAPI", x =>
         {
             x.BaseAddress = new Uri("https://formaram.myideasoft.com/");
-            // x.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", CacheData.Token);
         });
+        serviceProvider.AddHttpClient("LogoTransferAPI", x =>
+        {
+            x.BaseAddress = new Uri("http://89.19.7.130:81/api/api/");
+        });
+
         serviceProvider.AddDbContext<AppDbContext>(x =>
         {
             x.UseSqlServer("Server=94.73.144.17; Database=u8952596_LogoIN; User Id=u8952596_LogoUS; Password=v9P@z7b_W:=jG39U; TrustServerCertificate=True", options =>
@@ -46,7 +50,16 @@ class Program
 
         var appServices = serviceProvider.BuildServiceProvider();
 
-        _timer = new Timer(appServices.GetService<IImportService>().StartAsync, 5, 0, 2000);
-        Thread.Sleep(10000);
+        await appServices.GetService<CacheDataImportService>().StartAsync();
+        await appServices.GetService<IImportService>().SaveOrdersAsync();
+
+        //_timer = new System.Timers.Timer(1 * 5 * 1000);
+        //_timer.Enabled = true;
+        //_timer.Elapsed += new System.Timers.ElapsedEventHandler(appServices.GetService<IImportService>().StartSync);
+
+        //_timer = new Timer(appServices.GetService<IImportService>().StartSync, 5, 0, 2000);
+        //Thread.Sleep(10000);
+
+        Console.ReadLine();
     }
 }
