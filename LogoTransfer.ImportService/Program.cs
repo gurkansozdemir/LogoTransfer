@@ -8,58 +8,41 @@ using LogoTransfer.Repository.UnitOfWorks;
 using LogoTransfer.Service.Caching;
 using LogoTransfer.Service.Mapping;
 using LogoTransfer.Service.Services;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 
-class Program
+var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddScoped<IdeaSoftService>();
+builder.Services.AddScoped(typeof(IOrderService), typeof(OrderService));
+builder.Services.AddScoped(typeof(IOrderRepository), typeof(OrderRepository));
+builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddAutoMapper(typeof(MapProfile));
+builder.Services.AddSingleton<CacheDataImportService>();
+builder.Services.AddHttpClient("IdeaSoftAPI", x =>
 {
-    private static System.Timers.Timer _timer;
-    static async Task Main(string[] args)
+    x.BaseAddress = new Uri("https://formaram.myideasoft.com/");
+});
+builder.Services.AddHttpClient("LogoTransferAPI", x =>
+{
+    x.BaseAddress = new Uri("http://89.19.7.130:81/api/api/");
+});
+
+builder.Services.AddDbContext<AppDbContext>(x =>
+{
+    x.UseSqlServer("Server=94.73.144.17; Database=u8952596_LogoIN; User Id=u8952596_LogoUS; Password=v9P@z7b_W:=jG39U; TrustServerCertificate=True", options =>
     {
-        await Go();
-    }
+        options.MigrationsAssembly(Assembly.GetAssembly(typeof(AppDbContext)).GetName().Name);
+        options.EnableRetryOnFailure();
+    });
+});
 
-    static async Task Go()
-    {
-        var serviceProvider = new ServiceCollection();
-        serviceProvider.AddTransient<IImportService, IdeaSoftService>();
-        serviceProvider.AddScoped(typeof(IOrderService), typeof(OrderService));
-        serviceProvider.AddScoped(typeof(IOrderRepository), typeof(OrderRepository));
-        serviceProvider.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-        serviceProvider.AddScoped<IUnitOfWork, UnitOfWork>();
-        serviceProvider.AddAutoMapper(typeof(MapProfile));
-        serviceProvider.AddSingleton<CacheDataImportService>();
-        serviceProvider.AddHttpClient("IdeaSoftAPI", x =>
-        {
-            x.BaseAddress = new Uri("https://formaram.myideasoft.com/");
-        });
-        serviceProvider.AddHttpClient("LogoTransferAPI", x =>
-        {
-            x.BaseAddress = new Uri("http://89.19.7.130:81/api/api/");
-        });
+var app = builder.Build();
 
-        serviceProvider.AddDbContext<AppDbContext>(x =>
-        {
-            x.UseSqlServer("Server=94.73.144.17; Database=u8952596_LogoIN; User Id=u8952596_LogoUS; Password=v9P@z7b_W:=jG39U; TrustServerCertificate=True", options =>
-            {
-                options.MigrationsAssembly(Assembly.GetAssembly(typeof(AppDbContext)).GetName().Name);
-                options.EnableRetryOnFailure();
-            });
-        });
+await app.Services.GetService<CacheDataImportService>().StartAsync();
+app.Services.GetService<IdeaSoftService>();
 
-        var appServices = serviceProvider.BuildServiceProvider();
-
-        await appServices.GetService<CacheDataImportService>().StartAsync();
-        await appServices.GetService<IImportService>().SaveOrdersAsync();
-
-        //_timer = new System.Timers.Timer(1 * 5 * 1000);
-        //_timer.Enabled = true;
-        //_timer.Elapsed += new System.Timers.ElapsedEventHandler(appServices.GetService<IImportService>().StartSync);
-
-        //_timer = new Timer(appServices.GetService<IImportService>().StartSync, 5, 0, 2000);
-        //Thread.Sleep(10000);
-
-        Console.ReadLine();
-    }
-}
+app.Run();

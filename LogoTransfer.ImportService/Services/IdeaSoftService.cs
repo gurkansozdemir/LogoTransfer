@@ -3,14 +3,16 @@ using LogoTransfer.Core.Services;
 using LogoTransfer.Service.Caching;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
+using System.Timers;
 
 namespace LogoTransfer.ImportService.Services
 {
-    public class IdeaSoftService : IImportService
+    public class IdeaSoftService
     {
         private readonly HttpClient _httpClient;
         private readonly IOrderService _orderService;
         private readonly CacheDataImportService _cacheData;
+        private static System.Timers.Timer _timer;
 
         public IdeaSoftService(IOrderService orderService, IHttpClientFactory httpClient, CacheDataImportService cacheData)
         {
@@ -19,8 +21,12 @@ namespace LogoTransfer.ImportService.Services
             _orderService = orderService;
             _cacheData = cacheData;
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _cacheData.Token);
+            _timer = new System.Timers.Timer(600000);
+            _timer.AutoReset = true;
+            _timer.Enabled = true;
+            _timer.Elapsed += SaveOrdersAsync;
         }
-        public async Task SaveOrdersAsync()
+        public async void SaveOrdersAsync(Object source, ElapsedEventArgs e)
         {
             var orders = await _httpClient.GetFromJsonAsync<List<Core.DTOs.IdeaSoft.Order>>("api/orders");
             List<Order> baseOrders = new List<Order>();
