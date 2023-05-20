@@ -22,14 +22,14 @@ namespace LogoTransfer.API.Controllers
         {
             _logger.LogInformation("{time}: {action} başlatıldı.", DateTimeOffset.UtcNow, nameof(All));
             var products = await _productService.GetAllAsync();
-            return CreateActionResult(CustomResponseDto<List<Product>>.Success(HttpStatusCode.OK, products.ToList()));
+            return CreateActionResult(CustomResponseDto<List<OrderTransaction>>.Success(HttpStatusCode.OK, products.ToList()));
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(Guid id)
         {
             var product = await _productService.GetByIdAsync(id);
-            return CreateActionResult(CustomResponseDto<Product>.Success(HttpStatusCode.OK, product));
+            return CreateActionResult(CustomResponseDto<OrderTransaction>.Success(HttpStatusCode.OK, product));
         }
 
         [HttpGet("[action]/{id}")]

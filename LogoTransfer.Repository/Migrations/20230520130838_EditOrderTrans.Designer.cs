@@ -4,6 +4,7 @@ using LogoTransfer.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LogoTransfer.Repository.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230520130838_EditOrderTrans")]
+    partial class EditOrderTrans
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -143,7 +146,7 @@ namespace LogoTransfer.Repository.Migrations
 
                     b.Property<string>("Number")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
@@ -167,9 +170,6 @@ namespace LogoTransfer.Repository.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("Number")
-                        .IsUnique();
 
                     b.HasIndex("StoreId");
 
@@ -289,7 +289,7 @@ namespace LogoTransfer.Repository.Migrations
                         new
                         {
                             Id = new Guid("45456c11-f1f1-447b-a55d-c8f4110da3fe"),
-                            CreatedOn = new DateTime(2023, 5, 20, 16, 16, 58, 268, DateTimeKind.Local).AddTicks(6023),
+                            CreatedOn = new DateTime(2023, 5, 20, 16, 8, 38, 3, DateTimeKind.Local).AddTicks(9296),
                             Description = "Full Authorize",
                             IsDeleted = false,
                             Name = "Supervisor"
@@ -297,7 +297,7 @@ namespace LogoTransfer.Repository.Migrations
                         new
                         {
                             Id = new Guid("7e212bbe-3059-464f-be67-ec8064063f6b"),
-                            CreatedOn = new DateTime(2023, 5, 20, 16, 16, 58, 268, DateTimeKind.Local).AddTicks(6027),
+                            CreatedOn = new DateTime(2023, 5, 20, 16, 8, 38, 3, DateTimeKind.Local).AddTicks(9300),
                             Description = "Default User",
                             IsDeleted = false,
                             Name = "StandartUser"
@@ -382,7 +382,7 @@ namespace LogoTransfer.Repository.Migrations
                         new
                         {
                             Id = new Guid("b2f9cba8-d1ab-477d-91cf-caf4ba435b83"),
-                            CreatedOn = new DateTime(2023, 5, 20, 16, 16, 58, 268, DateTimeKind.Local).AddTicks(6251),
+                            CreatedOn = new DateTime(2023, 5, 20, 16, 8, 38, 3, DateTimeKind.Local).AddTicks(9539),
                             EMail = "admin@logo.com.tr",
                             FirstName = "Super",
                             IsDeleted = false,

@@ -1,6 +1,7 @@
-﻿using LogoTransfer.Core.DTOs;
+﻿using AutoMapper;
+using LogoTransfer.Core.DTOs;
 using LogoTransfer.Core.DTOs.IntegrationDTOs;
-using LogoTransfer.Core.Entities;
+using LogoTransfer.Core.DTOs.OrderDTOs;
 using LogoTransfer.Core.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
@@ -10,21 +11,19 @@ namespace LogoTransfer.API.Controllers
     public class OrderController : CustomBaseController
     {
         private readonly IOrderService _orderService;
-        private readonly ILogger _logger;
-
-        public OrderController(IOrderService orderService, ILogger logger)
+        private readonly IMapper _mapper;
+        public OrderController(IOrderService orderService, IMapper mapper)
         {
             _orderService = orderService;
-            _logger = logger;
+            _mapper = mapper;
         }
 
         [HttpGet]
         public async Task<IActionResult> All()
         {
-            _logger.LogInformation("{time}:{action} start.", DateTime.Now, nameof(All));
             var orders = await _orderService.GetAllAsync();
-            var result = CustomResponseDto<List<Order>>.Success(HttpStatusCode.OK, orders.ToList());
-            _logger.LogInformation("{time}:{action} end. Response:{response}", DateTime.Now, nameof(All), result);
+            var orderDtos = _mapper.Map<List<OrderDto>>(orders);
+            var result = CustomResponseDto<List<OrderDto>>.Success(HttpStatusCode.OK, orderDtos);
             return CreateActionResult(result);
         }
 

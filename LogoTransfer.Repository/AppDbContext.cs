@@ -15,12 +15,13 @@ namespace LogoTransfer.Repository
         public DbSet<Role> Roles { get; set; }
         public DbSet<Store> Stores { get; set; }
         public DbSet<Order> Orders { get; set; }
-        public DbSet<Product> Products { get; set; }
+        public DbSet<OrderTransaction> OrderTransactions { get; set; }
         public DbSet<LogoUser> LogoUsers { get; set; }
         public DbSet<ProductMatching> ProductMatchings { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Order>().HasIndex(u => u.Number).IsUnique();
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
             base.OnModelCreating(modelBuilder);
         }

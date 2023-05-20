@@ -24,23 +24,50 @@ namespace LogoTransfer.ImportService.Services
         {
             var orders = await _httpClient.GetFromJsonAsync<List<Core.DTOs.IdeaSoft.Order>>("api/orders");
             List<Order> baseOrders = new List<Order>();
-            foreach (Core.DTOs.IdeaSoft.Order item in orders)
+
+            foreach (Core.DTOs.IdeaSoft.Order order in orders)
             {
-                baseOrders.Add(new Order()
+                Order baseOrder = new Order()
                 {
-                    Amount = (decimal)item.Amount,
-                    CreatedOn = item.CreatedAt,
-                    Currency = item.Currency,
-                    CustomerFirstName = item.CustomerFirstname,
-                    CustomerLastName = item.CustomerSurname,
-                    OrderNo = item.TransactionId,
+                    Amount = order.Amount,
+                    CreatedAt = order.CreatedAt,
+                    CurrTransaction = order.Currency,
+                    CustomerName = order.CustomerFirstname,
+                    CustomerSurName = order.CustomerSurname,
+                    Number = order.TransactionId,
                     StoreName = "IdeaSoft",
                     StoreId = new Guid("b38e60bb-2bbe-4c7a-b47b-68eaabb7eeff"),
-                    IsDeleted = false,
                     Integration = "",
-                    TransferStatus = ""
-                });
+                    TransferStatus = "",
+                    AuxilCode = order.Source,
+                    Date_ = order.CreatedAt,
+                    Email = order.CustomerEmail,
+                    PhoneNumber = order.CustomerPhone,
+                    RcXrate = 18.86, // currencyRates içeriisndeki USD değeri
+                    TcXrate = 1 // currency TL ise 1 yoksa currencyRates içerisinde yazan değer
+                };
+
+                foreach (var item in order.OrderItems)
+                {
+                    baseOrder.Transactions.Add(new OrderTransaction()
+                    {
+                        Name = item.ProductName,
+                        MasterCode = item.ProductSku, // orderItems.productSku da yazan malzeme kodunun logo da eşdeğer kodu
+                        Quantity = item.ProductQuantity,
+                        Order = baseOrder,
+                        Price = item.ProductPrice,
+                        TransDescription = order.TransactionId,
+                        UnitCode = item.ProductStockTypeLabel,
+                        UnitConv1 = 1,
+                        UnitConv2 = item.PriceRatio,
+                        CurrTrans = item.ProductCurrency,
+                        TcXrate = 1, // currency TL ise 1 yoksa currencyRates içerisinde yazan değer
+                        VatRate = item.ProductTax
+                    });
+                }
+                baseOrders.Add(baseOrder);
             }
+
             await _orderService.AddRangeAsync(baseOrders);
         }
     }

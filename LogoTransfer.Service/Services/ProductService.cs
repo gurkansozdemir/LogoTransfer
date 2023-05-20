@@ -11,13 +11,13 @@ using System.Net.Http.Json;
 
 namespace LogoTransfer.Service.Services
 {
-    public class ProductService : Service<Product>, IProductService
+    public class ProductService : Service<OrderTransaction>, IProductService
     {
         private readonly IProductRepository _productRepository;
         private readonly IMapper _mapper;
         private readonly HttpClient _httpClient;
         private readonly CacheData _cacheData;
-        public ProductService(IGenericRepository<Product> repository, IUnitOfWork unitOfWork, IProductRepository productRepository, IMapper mapper, IHttpClientFactory httpClientFactory, CacheData cacheData) : base(repository, unitOfWork)
+        public ProductService(IGenericRepository<OrderTransaction> repository, IUnitOfWork unitOfWork, IProductRepository productRepository, IMapper mapper, IHttpClientFactory httpClientFactory, CacheData cacheData) : base(repository, unitOfWork)
         {
             _productRepository = productRepository;
             _mapper = mapper;

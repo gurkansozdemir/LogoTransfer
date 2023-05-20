@@ -4,19 +4,19 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LogoTransfer.Repository.Repositories
 {
-    public class ProductRepository : GenericRepository<Product>, IProductRepository
+    public class ProductRepository : GenericRepository<OrderTransaction>, IProductRepository
     {
-        private readonly DbSet<Product> _dbset;
+        private readonly DbSet<OrderTransaction> _dbset;
         private readonly DbSet<ProductMatching> _dbsetProductMatch;
         public ProductRepository(AppDbContext context) : base(context)
         {
-            _dbset = context.Set<Product>();
+            _dbset = context.Set<OrderTransaction>();
             _dbsetProductMatch = context.Set<ProductMatching>();
         }
 
-        public async Task<List<Product>> GetByOrderIdAsync(Guid id)
+        public async Task<List<OrderTransaction>> GetByOrderIdAsync(Guid id)
         {
-            return await _dbset.Where(x => x.OrderId == id && !x.IsDeleted).ToListAsync();
+            return await _dbset.Where(x => x.OrderId == id).ToListAsync();
         }
 
         public async Task<List<ProductMatching>> GetProductMatchAsync()
