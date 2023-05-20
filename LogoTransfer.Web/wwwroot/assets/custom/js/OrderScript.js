@@ -10,33 +10,21 @@
         },
         columns: [
             { data: 'storeName' },
-            { data: 'orderNo' },
-            {
-                data: 'customer',
-                "render": function (data, type, full, meta) {
-                    return '<a>' + full['customerFirstName'] + ' ' + full['customerLastName'] + '</a>';
-                }
-            },
-            {
-                data: 'date',
-                "render": function (data, type, full, meta) {
-                    return full['createdOn'];
-                }
-            },
-            { data: 'currency' },
-            {
-                data: 'Amount',
-                "render": function (data, type, full, meta) {
-                    return full['amount'];
-                }
-            },
+            { data: 'number' },
+            { data: 'customerName' },
+            { data: 'customerSurName' },
+            { data: 'email' },
+            { data: 'phoneNumber' },
+            { data: 'date_', },
+            { data: 'currTransaction' },
+            { data: 'amount' },
+            { data: 'integration' },
             {
                 data: 'transferStatus',
                 "render": function (data, type, full, meta) {
                     return '<span class="badge badge-success">Tamamlandı</span>';
                 }
             },
-            { data: 'integration' },
             {
                 data: 'process',
                 "render": function (data, type, full, meta) {
@@ -47,7 +35,11 @@
         ],
         "language": {
             "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Turkish.json"
-        }
+        },
+        dom: 'Bfrtip',
+        buttons: [
+            'copy', 'csv', 'excel', 'pdf', 'print'
+        ]
     });
 };
 
@@ -61,7 +53,7 @@ function getOrderDetails(id) {
     table.DataTable().destroy();
     table.DataTable({
         ajax: {
-            url: baseApiUrl + '/product/getByOrderId/' + id,
+            url: baseApiUrl + '/order/GetTransactionsByOrderId/' + id,
             type: 'GET',
             contentType: 'application/json; charset=utf-8',
             dataType: "json"

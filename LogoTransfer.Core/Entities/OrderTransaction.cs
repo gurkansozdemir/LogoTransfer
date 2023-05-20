@@ -20,5 +20,6 @@ namespace LogoTransfer.Core.Entities
         [ForeignKey("OrderId")]
         public Guid OrderId { get; set; }
         public virtual Order Order { get; set; }
+        public bool IsProductMatch { get; set; }
     }
 }

@@ -5,6 +5,7 @@
         public Guid Id { get; set; }
         public string Name { get; set; }
         public string MasterCode { get; set; }
+        public string OtherCode { get; set; }
         public double Quantity { get; set; }
         public double Price { get; set; }
         public string TransDescripntion { get; set; }
@@ -15,5 +16,6 @@
         public double TcXrate { get; set; }
         public double VatRate { get; set; }
         public Guid OrderId { get; set; }
+        public bool IsProductMatch { get; set; }       
     }
 }

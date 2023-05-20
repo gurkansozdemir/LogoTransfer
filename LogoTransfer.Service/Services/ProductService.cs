@@ -25,16 +25,6 @@ namespace LogoTransfer.Service.Services
             _cacheData = cacheData;
         }
 
-        public async Task<CustomResponseDto<List<ProductDto>>> GetByOrderIdAsync(Guid id)
-        {
-            var products = await _productRepository.GetByOrderIdAsync(id);
-            var productDtos = _mapper.Map<List<ProductDto>>(products);
-            var productMatch = await _productRepository.GetProductMatchAsync();
-            productDtos.ForEach(x => x.IsMatch = productMatch.Exists(pm => pm.ProductCode == x.Code && !pm.IsDeleted));
-
-            return CustomResponseDto<List<ProductDto>>.Success(HttpStatusCode.OK, productDtos);
-        }
-
         public async Task<CustomResponseDto<List<ExternalProductDto>>> GetExternalProducts()
         {
             if (_cacheData.ExternalProductDtos.Data.Count() > 0)

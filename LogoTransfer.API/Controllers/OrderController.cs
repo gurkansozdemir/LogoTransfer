@@ -27,6 +27,13 @@ namespace LogoTransfer.API.Controllers
             return CreateActionResult(result);
         }
 
+        [HttpGet("[action]/{orderId}")]
+        public async Task<IActionResult> GetTransactionsByOrderId(Guid orderId)
+        {
+            var result = await _orderService.GetTransactionsByOrderId(orderId);
+            return CreateActionResult(result);
+        }
+
         [HttpPost("[action]")]
         public async Task<IActionResult> OrderImport(List<OrderImportDto> orderImports)
         {

@@ -1,12 +1,14 @@
 ﻿using LogoTransfer.Core.DTOs;
 using LogoTransfer.Core.DTOs.ProductDTOs;
 using LogoTransfer.Core.DTOs.UserDTOs;
+using LogoTransfer.Core.Entities;
 using System.Net.Http.Json;
 
 namespace LogoTransfer.Service.Caching
 {
     public class CacheData
     {
+        public List<ProductMatching> ProductMatches { get; set; }
         private CustomResponseDto<List<ExternalProductDto>> externalProductDtos;
         public CustomResponseDto<List<ExternalProductDto>> ExternalProductDtos
         {
