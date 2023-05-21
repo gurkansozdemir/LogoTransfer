@@ -62,7 +62,7 @@ function getOrderDetails(id) {
             { data: 'name' },
             { data: 'otherCode' },
             { data: 'masterCode' },
-            { data: 'transDescripntion' },
+            { data: 'transDescription' },
             { data: 'quantity' },
             { data: 'unitCode' },
             { data: 'price' },
