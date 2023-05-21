@@ -60,21 +60,24 @@ function getOrderDetails(id) {
         },
         columns: [
             { data: 'name' },
-            { data: 'code' },
+            { data: 'otherCode' },
+            { data: 'masterCode' },
+            { data: 'transDescripntion' },
             { data: 'quantity' },
+            { data: 'unitCode' },
             { data: 'price' },
-            { data: 'priceRatio' },
+            { data: 'vatRate' },
             {
                 data: 'totalAmount',
                 "render": function (data, type, full, meta) {
                     return `0`;
                 }
             },
-            { data: 'currency' },
+            { data: 'currTrans' },          
             {
                 data: 'mathing',
                 "render": function (data, type, full, meta) {
-                    if (full.isMatch) {
+                    if (full.isProductMatch) {
                         return '<span class="badge badge-success">Eşleşdi</span>';
                     }
                     return '<span class="badge badge-danger">Eşleşmedi</span>';

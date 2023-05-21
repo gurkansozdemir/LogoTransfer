@@ -58,6 +58,7 @@ namespace LogoTransfer.ImportService.Services
                     baseOrder.Transactions.Add(new OrderTransaction()
                     {
                         Name = item.ProductName,
+                        OtherCode = item.ProductSku,
                         MasterCode = item.ProductSku, // orderItems.productSku da yazan malzeme kodunun logo da eşdeğer kodu
                         Quantity = item.ProductQuantity,
                         Order = baseOrder,

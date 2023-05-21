@@ -30,7 +30,7 @@ namespace LogoTransfer.Service.Services
         {
             var transactions = await _orderRepository.GetTransactionsByOrderId(orderId);
             var transactionDtos = _mapper.Map<List<OrderTransactionDto>>(transactions);
-            transactionDtos.ForEach(x => x.IsProductMatch = _cacheData.ProductMatches.Exists(pm => pm.OtherProductCode == x.OtherCode && !pm.IsDeleted));
+            //transactionDtos.ForEach(x => x.IsProductMatch = _cacheData.ProductMatches.Exists(pm => pm.OtherProductCode == x.OtherCode && !pm.IsDeleted));
             return CustomResponseDto<List<OrderTransactionDto>>.Success(HttpStatusCode.OK, transactionDtos);
         }
 
