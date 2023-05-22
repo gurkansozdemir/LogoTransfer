@@ -5,6 +5,7 @@ using LogoTransfer.Core.DTOs.OrderDTOs;
 using LogoTransfer.Core.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
+using System.Text.Json;
 
 namespace LogoTransfer.API.Controllers
 {
@@ -12,10 +13,12 @@ namespace LogoTransfer.API.Controllers
     {
         private readonly IOrderService _orderService;
         private readonly IMapper _mapper;
-        public OrderController(IOrderService orderService, IMapper mapper)
+        private readonly ILogger<OrderController> _logger;
+        public OrderController(IOrderService orderService, IMapper mapper, ILogger<OrderController> logger)
         {
             _orderService = orderService;
             _mapper = mapper;
+            _logger = logger;
         }
 
         [HttpGet]
@@ -37,7 +40,9 @@ namespace LogoTransfer.API.Controllers
         [HttpPost("[action]")]
         public async Task<IActionResult> OrderImport(List<OrderImportDto> orderImports)
         {
+            _logger.LogInformation("{time}: {action} run with request data: {requestData}", DateTime.Now, nameof(OrderImport), JsonSerializer.Serialize(orderImports));
             var response = await _orderService.OrderImportAsync(orderImports);
+            _logger.LogInformation("{time}: {action} end with response data: {responseData}", DateTime.Now, nameof(OrderImport), JsonSerializer.Serialize(response));
             return CreateActionResult(response);
         }
     }

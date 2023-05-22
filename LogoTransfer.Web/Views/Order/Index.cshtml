@@ -10,7 +10,16 @@
             <div class="col-lg-12">
                 <div class="card">
                     <div class="header">
-                        <h2>Siparişler</h2>
+                        <h2><strong>Siparişler</strong></h2>
+                        <ul class="header-dropdown">
+                            <li class="dropdown show">
+                                <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true"> <i class="zmdi zmdi-more"></i> </a>
+                                <ul class="dropdown-menu dropdown-menu-right show" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(-127px, 35px, 0px);">
+                                    <li><a href="javascript:void(0);" onclick="startTransfer();">Tümünü Aktar</a></li>
+                                    <li><a href="javascript:void(0);" onclick="startSelectedTransfer();">Seçilenleri Aktar</a></li>
+                                </ul>
+                            </li>
+                        </ul>
                     </div>
                     <div class="body">
                         <div class="table-responsive">
@@ -19,16 +28,14 @@
                                     <tr>
                                         <th>Mağaza</th>
                                         <th>Sipariş Numarası</th>
-                                        <th>Müşteri Adı</th>
-                                        <th>Müşteri Soyadı</th>
+                                        <th>Ad Soyad</th>
                                         <th>E-Posta</th>
                                         <th>Telefon</th>
                                         <th>Tarih</th>
                                         <th>Döviz Tipi</th>
                                         <th>Tutar</th>
                                         <th>Entegrasyon No</th>
-                                        <th>Aktarım Durumu</th>
-                                        <th>İşlemler</th>
+                                        <th></th>
                                     </tr>
                                 </thead>
                             </table>
