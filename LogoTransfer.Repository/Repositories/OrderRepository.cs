@@ -14,6 +14,11 @@ namespace LogoTransfer.Repository.Repositories
             _dbSetTransaction = context.Set<OrderTransaction>();
         }
 
+        public async Task<List<Order>> GettAllWithTransactions()
+        {
+            return await _dbSet.Include(x=>x.Transactions).ToListAsync();
+        }
+
         public async Task<List<OrderTransaction>> GetTransactionsByOrderId(Guid orderId)
         {
             return await _dbSetTransaction.Where(x => x.OrderId == orderId).ToListAsync();

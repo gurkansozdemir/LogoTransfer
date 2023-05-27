@@ -33,6 +33,13 @@ namespace LogoTransfer.Service.Services
             _unitOfWork = unitOfWork;
         }
 
+        public async Task<CustomResponseDto<List<OrderDto>>> GettAllWithTransactions()
+        {
+            var orders = await _orderRepository.GettAllWithTransactions();
+            var orderDtos = _mapper.Map<List<OrderDto>>(orders);
+            return CustomResponseDto<List<OrderDto>>.Success(HttpStatusCode.OK, orderDtos);
+        }
+
         public async Task<CustomResponseDto<List<OrderTransactionDto>>> GetTransactionsByOrderId(Guid orderId)
         {
             var transactions = await _orderRepository.GetTransactionsByOrderId(orderId);

@@ -3,7 +3,7 @@
     table.DataTable().destroy();
     table.DataTable({
         ajax: {
-            url: baseApiUrl + '/order',
+            url: baseApiUrl + '/order/getAllWithTransactions',
             type: 'GET',
             contentType: 'application/json; charset=utf-8',
             dataType: "json"
@@ -53,7 +53,7 @@
                               </a>
                               <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                                 <a class="dropdown-item" href="javascript:void()" onclick="openOrderDetailModal('` + full.id + `')">Sipariş Detayı</a>
-                                <a class="dropdown-item" href="javascript:void()" onclick="startThisTransfer('` + full.id + `')">Siparişi Aktar</a>
+                                <a class="dropdown-item ` + (full.transferStatus == true ? "disabled" : "") + `" href="javascript:void()" onclick="startThisTransfer('` + full.id + `')">Siparişi Aktar</a>
                               </div>
                             </div>`;
                 }
@@ -123,7 +123,7 @@ $("body").on('click', '#orderTable tbody tr', function () {
     $(this).toggleClass("selected");
 });
 
-let data = {
+let orderData = {
     number: "",
     date_: "",
     auxilCode: "",
@@ -135,6 +135,19 @@ let data = {
     currTransaction: "",
     tcXrate: 0,
     transactions: []
+};
+
+let orderTransactionData = {
+    masterCode: "",
+    quantity: 0,
+    price: 0,
+    transDescripntion: "",
+    unitCode: "",
+    unitConv1: 0,
+    unitConv2: 0,
+    currTrans: "",
+    tcXrate: 0,
+    vatRate: 0,
 };
 
 function startAllTransfer() {
@@ -180,35 +193,54 @@ function startThisTransfer(id) {
     var postData = [];
     var selectedData = allData.filter(x => x.transferStatus == false && x.id == id);
 
-    data.number = selectedData.number;
-    data.date_ = selectedData.date_;
-    data.auxilCode = selectedData.auxilCode;
-    data.email = selectedData.email;
-    data.phoneNumber = selectedData.phoneNumber;
-    data.customerName = selectedData.customerName;
-    data.customerSurName = selectedData.customerSurName;
-    data.rcXrate = selectedData.rcXrate;
-    data.currTransaction = selectedData.currTransaction;
-    data.tcXrate = selectedData.tcXrate;
-    data.transactions = selectedData.transactions;
+    if (selectedData.length != 0) {
+        orderData.number = selectedData[0].number;
+        orderData.date_ = selectedData[0].date_;
+        orderData.auxilCode = selectedData[0].auxilCode;
+        orderData.email = selectedData[0].email;
+        orderData.phoneNumber = selectedData[0].phoneNumber;
+        orderData.customerName = selectedData[0].customerName;
+        orderData.customerSurName = selectedData[0].customerSurName;
+        orderData.rcXrate = selectedData[0].rcXrate;
+        orderData.currTransaction = selectedData[0].currTransaction;
+        orderData.tcXrate = selectedData[0].tcXrate;
 
-    postData.push(data);
-    var json = JSON.stringify(postData);
-
-    $.ajax({
-        url: baseApiUrl + '/order/orderImport',
-        type: 'POST',
-        contentType: 'application/json; charset=utf-8',
-        dataType: "json",
-        data: json,
-        success: function (data) {
-            alert(data.data[0].returnNumber);
-            console.log(data.data[0].returnError);
-        },
-        error: function () {
-
+        for (var i = 0; i < selectedData.transactions; i++) {
+            orderTransactionData.masterCode = selectedData[0].transactions[i].masterCode;
+            orderTransactionData.quantity = selectedData[0].transactions[i].masterCode;
+            orderTransactionData.price = selectedData[0].transactions[i].price;
+            orderTransactionData.transDescripntion = selectedData[0].transactions[i].transDescripntion;
+            orderTransactionData.unitCode = selectedData[0].transactions[i].unitCode;
+            orderTransactionData.unitConv1 = selectedData[0].transactions[i].unitConv1;
+            orderTransactionData.unitConv2 = selectedData[0].transactions[i].unitConv2;
+            orderTransactionData.currTrans = selectedData[0].transactions[i].currTrans;
+            orderTransactionData.tcXrate = selectedData[0].transactions[i].tcXrate;
+            orderTransactionData.vatRate = selectedData[0].transactions[i].vatRate;
+            orderData.transactions.push(orderTransactionData);
         }
-    });
+
+        postData.push(orderData);
+        var json = JSON.stringify(postData);
+
+        $.ajax({
+            url: baseApiUrl + '/order/orderImport',
+            type: 'POST',
+            contentType: 'application/json; charset=utf-8',
+            dataType: "json",
+            data: json,
+            success: function (data) {
+                alert(data.data[0].returnNumber);
+                console.log(data.data[0].returnError);
+                $('#orderTable').DataTable().ajax.reload();
+            },
+            error: function () {
+
+            }
+        });
+    }
+    else {
+        alert("Sipariş zaten aktarılmış.");
+    }
 }
 
 //function startSelectedTransfer() {

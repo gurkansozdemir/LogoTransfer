@@ -22,12 +22,19 @@ namespace LogoTransfer.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> All()
+        public async Task<IActionResult> GetAll()
         {
             var orders = await _orderService.GetAllAsync();
             var orderDtos = _mapper.Map<List<OrderDto>>(orders);
             var result = CustomResponseDto<List<OrderDto>>.Success(HttpStatusCode.OK, orderDtos);
             return CreateActionResult(result);
+        }
+
+        [HttpGet("[action]")]
+        public async Task<IActionResult> GetAllWithTransactions()
+        {
+            var orders = await _orderService.GettAllWithTransactions();
+            return CreateActionResult(orders);
         }
 
         [HttpGet("[action]/{orderId}")]
