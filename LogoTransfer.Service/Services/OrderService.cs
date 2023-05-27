@@ -53,7 +53,7 @@ namespace LogoTransfer.Service.Services
             _logger.LogInformation("{time}: {action} end with response data: {responseData}", DateTime.Now, nameof(OrderImportAsync), JsonSerializer.Serialize(result));
 
             await SetIntegratedNo(result.Data);
-            return result;
+            return result.Data;
         }
 
         public async Task SetIntegratedNo(List<OrderImportResponseDto> importedOrder)
