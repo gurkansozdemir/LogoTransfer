@@ -45,7 +45,7 @@ namespace LogoTransfer.API.Controllers
 
             _logger.LogInformation("{time}: {action} end", DateTime.Now, nameof(SyncMasterProduct));
 
-            return CreateActionResult(CustomResponseDto<NoContentDto>.Success(HttpStatusCode.OK));
+            return CreateActionResult(CustomResponseDto<NoContentDto>.Success(HttpStatusCode.NoContent));
         }
     }
 }
