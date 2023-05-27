@@ -8,6 +8,7 @@ namespace LogoTransfer.Core.DTOs
         public T Data { get; set; }
         [JsonIgnore]
         public HttpStatusCode StatusCode { get; set; }
+        public bool IsSuccess { get; set; }
         public List<string> Errors { get; set; }
 
         public static CustomResponseDto<T> Success(HttpStatusCode statusCode, T data)

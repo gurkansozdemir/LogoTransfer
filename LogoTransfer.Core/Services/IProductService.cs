@@ -6,7 +6,6 @@ namespace LogoTransfer.Core.Services
 {
     public interface IProductService : IService<OrderTransaction>
     {
-        public Task<CustomResponseDto<List<ExternalProductDto>>> GetExternalProducts();
 
     }
 }

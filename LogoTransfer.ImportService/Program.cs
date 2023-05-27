@@ -22,6 +22,7 @@ builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepositor
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddAutoMapper(typeof(MapProfile));
 builder.Services.AddSingleton<CacheDataImportService>();
+builder.Services.AddSingleton<CacheData>();
 builder.Services.AddHttpClient("IdeaSoftAPI", x =>
 {
     x.BaseAddress = new Uri("https://formaram.myideasoft.com/");
@@ -43,6 +44,6 @@ builder.Services.AddDbContext<AppDbContext>(x =>
 var app = builder.Build();
 
 await app.Services.GetService<CacheDataImportService>().StartAsync();
-app.Services.GetService<IdeaSoftService>();
+app.Services.GetService<IdeaSoftService>().SaveOrdersAsync();
 
 app.Run();

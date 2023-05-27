@@ -52,7 +52,7 @@
                                 <a class="dropdown-item" href="javascript:void()" onclick="openOrderDetailModal('` + full.id + `')">Sipariş Detayı</a>
                                 <a class="dropdown-item" href="javascript:void()">Siparişi Aktar</a>
                               </div>
-                            </div>`;                    
+                            </div>`;
                 }
             }
         ],
@@ -120,34 +120,68 @@ $("body").on('click', '#orderTable tbody tr', function () {
     $(this).toggleClass("selected");
 });
 
-function startSelectedTransfer() {
-    postData = $('#orderTable').DataTable().rows('.selected').data().toArray();
-    var myJsonString = JSON.stringify(postData);
-    $.ajax({
-        url: baseApiUrl + '/order/orderImport',
-        type: 'POST',
-        contentType: 'application/json; charset=utf-8',
-        dataType: "json",
-        data: myJsonString,
-        success: function () {
+//function startSelectedTransfer() {
+//    postData = $('#orderTable').DataTable().rows('.selected').data().toArray();
+//    var myJsonString = JSON.stringify(postData);
+//    $.ajax({
+//        url: baseApiUrl + '/order/orderImport',
+//        type: 'POST',
+//        contentType: 'application/json; charset=utf-8',
+//        dataType: "json",
+//        data: myJsonString,
+//        success: function () {
 
-        },
-        error: function () {
+//        },
+//        error: function () {
 
-        }
-    });
-}
+//        }
+//    });
+//}
 
 function startTransfer() {
-    postData = $('#orderTable').DataTable().rows().data();
+
+    let data = {
+        number: "",
+        date_: "",
+        auxilCode: "",
+        email: "",
+        phoneNumber: "",
+        customerName: "",
+        customerSurName: "",
+        rcXrate: 0,
+        currTransaction: "",
+        tcXrate: 0,
+        transactions: []
+    };
+
+    var postData = [];
+    var allData = $('#orderTable').DataTable().rows().data().toArray();
+    for (var i = 0; i < allData.length; i++) {
+        data.number = allData[i].number;
+        data.date_ = allData[i].date_;
+        data.auxilCode = allData[i].auxilCode;
+        data.email = allData[i].email;
+        data.phoneNumber = allData[i].phoneNumber;
+        data.customerName = allData[i].customerName;
+        data.customerSurName = allData[i].customerSurName;
+        data.rcXrate = allData[i].rcXrate;
+        data.currTransaction = allData[i].currTransaction;
+        data.tcXrate = allData[i].tcXrate;
+        data.transactions = allData[i].transactions;
+
+        postData.push(data);
+    }
+    var json = JSON.stringify(postData);
+
     $.ajax({
         url: baseApiUrl + '/order/orderImport',
         type: 'POST',
         contentType: 'application/json; charset=utf-8',
         dataType: "json",
-        data: postData,
-        success: function () {
-
+        data: json,
+        success: function (data) {
+            console.log(data.data.ReturnNumber);
+            console.log(data.data.returnError);
         },
         error: function () {
 

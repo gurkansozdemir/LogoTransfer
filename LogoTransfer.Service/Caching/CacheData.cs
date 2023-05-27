@@ -2,15 +2,18 @@
 using LogoTransfer.Core.DTOs.ProductDTOs;
 using LogoTransfer.Core.DTOs.UserDTOs;
 using LogoTransfer.Core.Entities;
+using Microsoft.Extensions.Logging;
 using System.Net.Http.Json;
+using System.Net.WebSockets;
+using System.Text.Json;
 
 namespace LogoTransfer.Service.Caching
 {
     public class CacheData
     {
         public List<ProductMatching> ProductMatches { get; set; }
-        private CustomResponseDto<List<ExternalProductDto>> externalProductDtos;
-        public CustomResponseDto<List<ExternalProductDto>> ExternalProductDtos
+        private List<ExternalProductDto> externalProductDtos;
+        public List<ExternalProductDto> ExternalProductDtos
         {
             get
             {
@@ -40,7 +43,15 @@ namespace LogoTransfer.Service.Caching
 
         public async Task GetExternalProducts()
         {
-            externalProductDtos = await _httpClient.GetFromJsonAsync<CustomResponseDto<List<ExternalProductDto>>>("product");
+            try
+            {
+                var result = await _httpClient.GetFromJsonAsync<CustomResponseDto<List<ExternalProductDto>>>("product");
+                externalProductDtos = result.Data;
+            }
+            catch (Exception)
+            {
+                
+            }           
         }
     }
 }

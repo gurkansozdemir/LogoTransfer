@@ -6,7 +6,6 @@ using LogoTransfer.Core.Repositories;
 using LogoTransfer.Core.Services;
 using LogoTransfer.Core.UnitOfWorks;
 using LogoTransfer.Service.Caching;
-using System.Net;
 using System.Net.Http.Json;
 
 namespace LogoTransfer.Service.Services
@@ -23,15 +22,6 @@ namespace LogoTransfer.Service.Services
             _mapper = mapper;
             _httpClient = httpClientFactory.CreateClient("LOGOAPI");
             _cacheData = cacheData;
-        }
-
-        public async Task<CustomResponseDto<List<ExternalProductDto>>> GetExternalProducts()
-        {
-            if (_cacheData.ExternalProductDtos.Data.Count() > 0)
-            {
-                return _cacheData.ExternalProductDtos;
-            }
-            return await _httpClient.GetFromJsonAsync<CustomResponseDto<List<ExternalProductDto>>>("product");
         }
     }
 }

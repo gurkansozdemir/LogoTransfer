@@ -16,6 +16,6 @@
         public double TcXrate { get; set; }
         public double VatRate { get; set; }
         public Guid OrderId { get; set; }
-        public bool IsProductMatch { get; set; }       
+        public bool IsProductMatch { get; set; }
     }
 }

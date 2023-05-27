@@ -1,3 +1,4 @@
+using LogoTransfer.API.Middlewares;
 using LogoTransfer.Core.Repositories;
 using LogoTransfer.Core.Services;
 using LogoTransfer.Core.UnitOfWorks;
@@ -78,9 +79,12 @@ loggerFactory.AddFile(builder.Configuration["Logging:LogFilePath"].ToString());
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+
 }
+
+app.UseSwagger();
+
+app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
 
@@ -89,5 +93,7 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.UseCors(MyAllowSpecificOrigins);
+
+app.UseCustomException();
 
 app.Run();
