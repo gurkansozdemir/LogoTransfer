@@ -33,7 +33,7 @@ namespace LogoTransfer.API.Controllers
         [HttpGet("[action]")]
         public async Task<IActionResult> GetAllWithTransactions()
         {
-            var orders = await _orderService.GettAllWithTransactions();
+            var orders = await _orderService.GetAllWithTransactions();
             return CreateActionResult(orders);
         }
 

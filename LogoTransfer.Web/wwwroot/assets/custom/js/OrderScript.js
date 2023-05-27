@@ -205,11 +205,11 @@ function startThisTransfer(id) {
         orderData.currTransaction = selectedData[0].currTransaction;
         orderData.tcXrate = selectedData[0].tcXrate;
 
-        for (var i = 0; i < selectedData.transactions; i++) {
+        for (var i = 0; i < selectedData[0].transactions.length; i++) {
             orderTransactionData.masterCode = selectedData[0].transactions[i].masterCode;
             orderTransactionData.quantity = selectedData[0].transactions[i].masterCode;
             orderTransactionData.price = selectedData[0].transactions[i].price;
-            orderTransactionData.transDescripntion = selectedData[0].transactions[i].transDescripntion;
+            orderTransactionData.transDescripntion = selectedData[0].transactions[i].transDescription;
             orderTransactionData.unitCode = selectedData[0].transactions[i].unitCode;
             orderTransactionData.unitConv1 = selectedData[0].transactions[i].unitConv1;
             orderTransactionData.unitConv2 = selectedData[0].transactions[i].unitConv2;

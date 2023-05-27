@@ -11,10 +11,11 @@ namespace LogoTransfer.Repository.Repositories
         private readonly DbSet<OrderTransaction> _dbSetTransaction;
         public OrderRepository(AppDbContext context) : base(context)
         {
+            _dbSet = context.Set<Order>();  
             _dbSetTransaction = context.Set<OrderTransaction>();
         }
 
-        public async Task<List<Order>> GettAllWithTransactions()
+        public async Task<List<Order>> GetAllWithTransactions()
         {
             return await _dbSet.Include(x=>x.Transactions).ToListAsync();
         }

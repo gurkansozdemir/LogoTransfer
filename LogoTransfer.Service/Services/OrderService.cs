@@ -33,9 +33,9 @@ namespace LogoTransfer.Service.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<CustomResponseDto<List<OrderDto>>> GettAllWithTransactions()
+        public async Task<CustomResponseDto<List<OrderDto>>> GetAllWithTransactions()
         {
-            var orders = await _orderRepository.GettAllWithTransactions();
+            var orders = await _orderRepository.GetAllWithTransactions();
             var orderDtos = _mapper.Map<List<OrderDto>>(orders);
             return CustomResponseDto<List<OrderDto>>.Success(HttpStatusCode.OK, orderDtos);
         }
