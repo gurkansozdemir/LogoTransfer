@@ -48,7 +48,7 @@ namespace LogoTransfer.ImportService.Services
                     StoreName = "IdeaSoft",
                     StoreId = new Guid("b38e60bb-2bbe-4c7a-b47b-68eaabb7eeff"),
                     Integration = "",
-                    TransferStatus = "",
+                    TransferStatus = false,
                     AuxilCode = order.Source,
                     Date_ = order.CreatedAt,
                     Email = order.CustomerEmail,

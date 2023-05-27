@@ -7,6 +7,7 @@ using LogoTransfer.Core.Repositories;
 using LogoTransfer.Core.Services;
 using LogoTransfer.Core.UnitOfWorks;
 using LogoTransfer.Service.Caching;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System.Net;
 using System.Net.Http.Json;
@@ -21,6 +22,7 @@ namespace LogoTransfer.Service.Services
         private readonly IMapper _mapper;
         private readonly CacheData _cacheData;
         private readonly ILogger<OrderService> _logger;
+        private readonly IUnitOfWork _unitOfWork;
         public OrderService(IGenericRepository<Order> repository, IUnitOfWork unitOfWork, IHttpClientFactory httpClient, IOrderRepository orderRepository, IMapper mapper, CacheData cacheData, ILogger<OrderService> logger) : base(repository, unitOfWork)
         {
             _httpClient = httpClient.CreateClient("LOGOAPI");
@@ -28,6 +30,7 @@ namespace LogoTransfer.Service.Services
             _mapper = mapper;
             _cacheData = cacheData;
             _logger = logger;
+            _unitOfWork = unitOfWork;
         }
 
         public async Task<CustomResponseDto<List<OrderTransactionDto>>> GetTransactionsByOrderId(Guid orderId)
@@ -49,7 +52,21 @@ namespace LogoTransfer.Service.Services
             var result = await response.Content.ReadFromJsonAsync<CustomResponseDto<List<OrderImportResponseDto>>>();
             _logger.LogInformation("{time}: {action} end with response data: {responseData}", DateTime.Now, nameof(OrderImportAsync), JsonSerializer.Serialize(result));
 
+            await SetIntegratedNo(result.Data);
             return result;
+        }
+
+        public async Task SetIntegratedNo(List<OrderImportResponseDto> importedOrder)
+        {
+            var orders = _orderRepository.GetAll();
+            foreach (var item in importedOrder)
+            {
+                var order = await orders.Where(x => x.Number == item.Number).SingleAsync();
+                order.Integration = item.ReturnNumber;
+                order.TransferStatus = true;
+                _orderRepository.Update(order);
+                await _unitOfWork.CommitAsync();
+            }
         }
     }
 }

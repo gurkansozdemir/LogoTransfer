@@ -22,7 +22,7 @@ namespace LogoTransfer.Core.Entities
         public string CurrTransaction { get; set; }
         public double TcXrate { get; set; }
         public List<OrderTransaction> Transactions { get; set; } = new List<OrderTransaction>();
-        public string TransferStatus { get; set; }
+        public bool TransferStatus { get; set; }
         public string Integration { get; set; }
         public DateTime CreatedAt { get; set; }
         public double Amount { get; set; }
