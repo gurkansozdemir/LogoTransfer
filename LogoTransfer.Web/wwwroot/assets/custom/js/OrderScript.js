@@ -111,11 +111,49 @@ function getOrderDetails(id) {
                     }
                     return '<span class="badge badge-danger">Eşleşmedi</span>';
                 }
+            },
+            {
+                data: 'process',
+                orderable: false,
+                "render": function (data, type, full, meta) {
+                    return `<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#masterProductListModal">Eşleştir</button>`;
+                }
             }
         ],
         "language": {
             "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Turkish.json"
         }
+    });
+};
+
+function getMasterProducts() {
+    var table = $('#masterProductTable');
+    table.DataTable({
+        ajax: {
+            url: baseApiUrl + '/product/getExternalProducts',
+            type: 'GET',
+            contentType: 'application/json; charset=utf-8',
+            dataType: "json"
+        },
+        columns: [
+            {
+                data: 'code'
+            },
+            {
+                data: 'process',
+                orderable: false,
+                "render": function (data, type, full, meta) {
+                    return `<a class="btn btn-secondary">Seç</a>`;
+                }
+            }
+        ],
+        "language": {
+            "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Turkish.json"
+        },
+        dom: 'Bfrtip',
+        buttons: [
+            'copy', 'csv', 'excel', 'pdf', 'print'
+        ]
     });
 };
 
