@@ -29,11 +29,23 @@ namespace LogoTransfer.API.Controllers
 
             var response = _productService.GetExternalProduct();
 
-            _logger.LogInformation("{time}: {action} end with response data count: {responseDataCount}", 
+            _logger.LogInformation("{time}: {action} end with response data count: {responseDataCount}",
                 DateTime.Now, nameof(GetExternalProducts),
                 response.Data.Count);
 
-            return CreateActionResult(response); 
+            return CreateActionResult(response);
+        }
+
+        [HttpGet("[action]")]
+        public async Task<IActionResult> SyncMasterProduct()
+        {
+            _logger.LogInformation("{time}: {action} run", DateTime.Now, nameof(SyncMasterProduct));
+
+            await _productService.SyncMasterProductAsync();
+
+            _logger.LogInformation("{time}: {action} end", DateTime.Now, nameof(SyncMasterProduct));
+
+            return CreateActionResult(CustomResponseDto<NoContentDto>.Success(HttpStatusCode.OK));
         }
     }
 }

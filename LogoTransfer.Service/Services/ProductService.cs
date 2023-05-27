@@ -30,5 +30,12 @@ namespace LogoTransfer.Service.Services
             var data = _cacheData.ExternalProductDtos;
             return CustomResponseDto<List<ExternalProductDto>>.Success(HttpStatusCode.OK, data);
         }
+
+        public async Task SyncMasterProductAsync()
+        {
+            var result = await _httpClient.GetFromJsonAsync<CustomResponseDto<List<ExternalProductDto>>>("product");
+            var productMatch = _mapper.Map<List<ProductMatching>>(result.Data);
+            await _productRepository.SyncMasterProductAsync(productMatch);
+        }
     }
 }

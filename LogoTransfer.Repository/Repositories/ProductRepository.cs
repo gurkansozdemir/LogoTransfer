@@ -23,5 +23,10 @@ namespace LogoTransfer.Repository.Repositories
         {
             return await _dbsetProductMatch.Where(x => !x.IsDeleted).ToListAsync();
         }
+
+        public async Task SyncMasterProductAsync(List<ProductMatching> productMatchings)
+        {
+            await _dbsetProductMatch.AddRangeAsync(productMatchings);
+        }
     }
 }
