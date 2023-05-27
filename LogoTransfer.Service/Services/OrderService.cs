@@ -38,7 +38,7 @@ namespace LogoTransfer.Service.Services
             return CustomResponseDto<List<OrderTransactionDto>>.Success(HttpStatusCode.OK, transactionDtos);
         }
 
-        public async Task<CustomResponseDto<List<OrderImportResponseDto>>> OrderImportAsync(List<OrderImportDto> orderImports)
+        public async Task<List<OrderImportResponseDto>> OrderImportAsync(List<OrderImportDto> orderImports)
         {
             var response = await _httpClient.PostAsJsonAsync("order", orderImports);
             _logger.LogInformation("{time}: {action} end with httpclient response: {responseData}", DateTime.Now, nameof(OrderImportAsync), JsonSerializer.Serialize(response));
@@ -49,7 +49,7 @@ namespace LogoTransfer.Service.Services
             var result = await response.Content.ReadFromJsonAsync<CustomResponseDto<List<OrderImportResponseDto>>>();
             _logger.LogInformation("{time}: {action} end with response data: {responseData}", DateTime.Now, nameof(OrderImportAsync), JsonSerializer.Serialize(result));
 
-            return result;
+            return result.Data;
         }
     }
 }

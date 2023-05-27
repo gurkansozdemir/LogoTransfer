@@ -43,7 +43,7 @@ namespace LogoTransfer.API.Controllers
             _logger.LogInformation("{time}: {action} run with request data: {requestData}", DateTime.Now, nameof(OrderImport), JsonSerializer.Serialize(orderImports));
             var response = await _orderService.OrderImportAsync(orderImports);
             _logger.LogInformation("{time}: {action} end with response data: {responseData}", DateTime.Now, nameof(OrderImport), JsonSerializer.Serialize(response));
-            return CreateActionResult(response);
+            return CreateActionResult(CustomResponseDto<List<OrderImportResponseDto>>.Success(HttpStatusCode.OK, response));
         }
     }
 }
