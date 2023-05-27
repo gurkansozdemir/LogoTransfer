@@ -27,11 +27,13 @@ namespace LogoTransfer.API.Controllers
         {
             _logger.LogInformation("{time}: {action} run", DateTime.Now, nameof(GetExternalProducts));
 
-            _logger.LogInformation("{time}: {action} end with response first example data: {responseData}", 
-                DateTime.Now, nameof(GetExternalProducts),
-            JsonSerializer.Serialize(_cacheData.ExternalProductDtos.FirstOrDefault()));
+            var response = _productService.GetExternalProduct();
 
-            return CreateActionResult(CustomResponseDto<List<ExternalProductDto>>.Success(HttpStatusCode.OK, _cacheData.ExternalProductDtos)); 
+            _logger.LogInformation("{time}: {action} end with response data count: {responseDataCount}", 
+                DateTime.Now, nameof(GetExternalProducts),
+                response.Data.Count);
+
+            return CreateActionResult(response); 
         }
     }
 }
