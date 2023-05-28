@@ -29,8 +29,8 @@ namespace LogoTransfer.Repository.Repositories
 
         public async Task MatchAsync(ProductMatching productMatch)
         {
-            var model = await _dbsetProductMatch.Where(x => x.OtherCode == productMatch.OtherCode).FirstOrDefaultAsync();
-            model.Code = productMatch.Code;
+            var model = await _dbsetProductMatch.Where(x => x.Code == productMatch.Code).FirstOrDefaultAsync();
+            model.OtherCode = productMatch.OtherCode;
             _dbsetProductMatch.Update(model);
             await _unitOfWork.CommitAsync();
         }

@@ -34,13 +34,14 @@
             { data: 'date_', },
             { data: 'currTransaction' },
             { data: 'amount' },
+            { data: 'integration' },
             {
-                data: 'integration',
+                data: 'transferStatus',
                 "render": function (data, type, full, meta) {
-                    if (full.integration == "") {
+                    if (!full.transferStatus) {
                         return '<i style="font-size:30px;"class="zmdi zmdi-thumb-down col-red"></i>';
                     }
-                    return full.integration;
+                    return '<i style="font-size:30px;"class="zmdi zmdi-thumb-up col-green"></i>';
                 }
             },
             {
@@ -142,13 +143,14 @@ function getMasterProducts(otherCode) {
             dataType: "json"
         },
         "columnDefs": [
-            { "className": "dt-center", "targets": [1] }
+            { "className": "dt-center", "targets": "_all" }
         ],
         columns: [
             {
-                data: 'code',
-                data: 'otherCode',
-                orderable: false,
+                data: 'otherCode'
+            },
+            {
+                data: 'code'
             },
             {
                 data: 'process',
@@ -162,7 +164,6 @@ function getMasterProducts(otherCode) {
             "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Turkish.json"
         },
         "paging": true,
-        "ordering": false,
         "info": false
     });
 }
@@ -171,39 +172,13 @@ $("body").on('click', '#orderTable tbody tr', function () {
     $(this).toggleClass("selected");
 });
 
-let orderData = {
-    number: "",
-    date_: "",
-    auxilCode: "",
-    email: "",
-    phoneNumber: "",
-    customerName: "",
-    customerSurName: "",
-    rcXrate: 0,
-    currTransaction: "",
-    tcXrate: 0,
-    transactions: []
-};
-
-let orderTransactionData = {
-    masterCode: "",
-    quantity: 0,
-    price: 0,
-    transDescripntion: "",
-    unitCode: "",
-    unitConv1: 0,
-    unitConv2: 0,
-    currTrans: "",
-    tcXrate: 0,
-    vatRate: 0
-};
-
 function startThisTransfer(id) {
     var allData = $('#orderTable').DataTable().rows().data().toArray();
-    var postData = [];
+    let postData = [];
     var selectedData = allData.filter(x => x.transferStatus == false && x.id == id);
 
     if (selectedData.length != 0) {
+        let orderData = {};
         orderData.number = selectedData[0].number;
         orderData.date_ = selectedData[0].date_;
         orderData.auxilCode = selectedData[0].auxilCode;
@@ -214,8 +189,10 @@ function startThisTransfer(id) {
         orderData.rcXrate = selectedData[0].rcXrate;
         orderData.currTransaction = selectedData[0].currTransaction;
         orderData.tcXrate = selectedData[0].tcXrate;
+        orderData.transactions = [];
 
         for (var i = 0; i < selectedData[0].transactions.length; i++) {
+            let orderTransactionData = {};
             orderTransactionData.masterCode = selectedData[0].transactions[i].masterCode;
             orderTransactionData.quantity = selectedData[0].transactions[i].quantity;
             orderTransactionData.price = selectedData[0].transactions[i].price;
@@ -232,6 +209,7 @@ function startThisTransfer(id) {
         postData.push(orderData);
         var json = JSON.stringify(postData);
 
+        $(".page-loader-wrapper").show();
         $.ajax({
             url: baseApiUrl + '/order/orderImport',
             type: 'POST',
@@ -239,12 +217,13 @@ function startThisTransfer(id) {
             dataType: "json",
             data: json,
             success: function (data) {
-                alert(data.data[0].returnNumber);
-                console.log(data.data[0].returnError);
+                $(".page-loader-wrapper").hide();
+                swal.fire('Tebrikler!', 'Sipariş Aktarıldı.', 'success');
                 $('#orderTable').DataTable().ajax.reload();
             },
             error: function () {
-
+                $(".page-loader-wrapper").hide();
+                swal.fire('Hata!', 'Bir Hata Oluştu.', 'error');
             }
         });
     }
@@ -261,6 +240,7 @@ function productMatch(masterCode, otherCode) {
 
     var json = JSON.stringify(productMathingData);
 
+    $(".page-loader-wrapper").show();
     $.ajax({
         url: baseApiUrl + '/product/match',
         type: 'POST',
@@ -268,11 +248,13 @@ function productMatch(masterCode, otherCode) {
         dataType: "json",
         data: json,
         success: function (data) {
+            $(".page-loader-wrapper").hide();
             $('#orderDetailTable').DataTable().ajax.reload();
-            swal.fire('Tebrikler!','Ürünler Eşleştirildi.','success')
+            $('#masterProductListModal').modal('hide');
+            swal.fire('Tebrikler!', 'Ürünler Eşleştirildi.', 'success');
         },
         error: function () {
-
+            $(".page-loader-wrapper").hide();
         }
     });
 

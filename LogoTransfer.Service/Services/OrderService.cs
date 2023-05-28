@@ -47,8 +47,8 @@ namespace LogoTransfer.Service.Services
             {
                 o.Transactions.ForEach(t =>
                 {
-                    t.MasterCode = _cacheData.ProductMatches.Where(x => x.OtherCode == t.OtherCode).FirstOrDefault().Code;
-                    t.IsProductMatch = _cacheData.ProductMatches.Where(x => x.OtherCode == t.OtherCode).FirstOrDefault().Code != "" ? true : false;
+                    t.MasterCode = _cacheData.ProductMatches.Where(x => x.OtherCode == t.OtherCode).Select(x => x.Code).DefaultIfEmpty("").First();
+                    t.IsProductMatch = _cacheData.ProductMatches.Where(x => x.OtherCode == t.OtherCode).Select(x => x.Code).DefaultIfEmpty("").First() != "" ? true : false;
                 });
             });
             return CustomResponseDto<List<OrderDto>>.Success(HttpStatusCode.OK, orderDtos);
@@ -64,8 +64,8 @@ namespace LogoTransfer.Service.Services
             }
             transactionDtos.ForEach(t =>
             {
-                t.MasterCode = _cacheData.ProductMatches.Where(x => x.OtherCode == t.OtherCode).FirstOrDefault().Code;
-                t.IsProductMatch = _cacheData.ProductMatches.Where(x => x.OtherCode == t.OtherCode).FirstOrDefault().Code != "" ? true : false;
+                t.MasterCode = _cacheData.ProductMatches.Where(x => x.OtherCode == t.OtherCode).Select(x => x.Code).DefaultIfEmpty("").First();
+                t.IsProductMatch = _cacheData.ProductMatches.Where(x => x.OtherCode == t.OtherCode).Select(x => x.Code).DefaultIfEmpty("").First() != "" ? true : false;
             });
             return CustomResponseDto<List<OrderTransactionDto>>.Success(HttpStatusCode.OK, transactionDtos);
         }

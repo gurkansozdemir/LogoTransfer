@@ -44,10 +44,10 @@ namespace LogoTransfer.API.Controllers
         public async Task<IActionResult> GetProductMatchesFromCache()
         {
             _logger.LogInformation("{time}: {action} run", DateTime.Now, nameof(GetProductMatchesFromCache));
-            await _productService.GetProductMatchesFromCacheAsync();
+            var reulst = await _productService.GetProductMatchesFromCacheAsync();
 
             _logger.LogInformation("{time}: {action} end", DateTime.Now, nameof(GetProductMatchesFromCache));
-            return CreateActionResult(CustomResponseDto<NoContentDto>.Success(HttpStatusCode.NoContent));
+            return CreateActionResult(reulst);
         }
 
 
