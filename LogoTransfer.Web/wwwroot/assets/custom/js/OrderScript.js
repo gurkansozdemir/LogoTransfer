@@ -67,7 +67,7 @@
             'copy', 'csv', 'excel', 'pdf', 'print'
         ]
     });
-};
+}
 
 function openOrderDetailModal(id) {
     getOrderDetails(id);
@@ -116,7 +116,7 @@ function getOrderDetails(id) {
                 data: 'process',
                 orderable: false,
                 "render": function (data, type, full, meta) {
-                    return `<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#masterProductListModal">Eşleştir</button>`;
+                    return `<button type="button" class="btn btn-primary" onclick="openMasterProductListModal('` + full.otherCode + `')">Eşleştir</button>`;
                 }
             }
         ],
@@ -124,38 +124,48 @@ function getOrderDetails(id) {
             "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Turkish.json"
         }
     });
-};
+}
 
-function getMasterProducts() {
+function openMasterProductListModal(otherCode) {
+    getMasterProducts(otherCode);
+    $('#masterProductListModal').modal('show');
+}
+
+function getMasterProducts(otherCode) {
+    productFill = true;
     var table = $('#masterProductTable');
+    table.DataTable().destroy();
     table.DataTable({
         ajax: {
-            url: baseApiUrl + '/product/getExternalProducts',
+            url: 'getMasterProducts',
             type: 'GET',
             contentType: 'application/json; charset=utf-8',
             dataType: "json"
         },
+        "columnDefs": [
+            { "className": "dt-center", "targets": [1] }
+        ],
         columns: [
             {
-                data: 'code'
+                data: 'code',
+                orderable: false,
             },
             {
                 data: 'process',
                 orderable: false,
                 "render": function (data, type, full, meta) {
-                    return `<a class="btn btn-secondary">Seç</a>`;
+                    return `<a class="btn btn-success" onclick="productMatch('` + full.code + `','` + otherCode + `')">Seç</a>`;
                 }
             }
         ],
         "language": {
             "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Turkish.json"
         },
-        dom: 'Bfrtip',
-        buttons: [
-            'copy', 'csv', 'excel', 'pdf', 'print'
-        ]
+        "paging": true,
+        "ordering": false,
+        "info": false
     });
-};
+}
 
 $("body").on('click', '#orderTable tbody tr', function () {
     $(this).toggleClass("selected");
@@ -185,46 +195,8 @@ let orderTransactionData = {
     unitConv2: 0,
     currTrans: "",
     tcXrate: 0,
-    vatRate: 0,
+    vatRate: 0
 };
-
-function startAllTransfer() {
-    var allData = $('#orderTable').DataTable().rows().data().toArray();
-    allData = allData.filter(x => x.transferStatus == false);
-    var postData = [];
-    for (var i = 0; i < allData.length; i++) {
-        data.number = allData[i].number;
-        data.date_ = allData[i].date_;
-        data.auxilCode = allData[i].auxilCode;
-        data.email = allData[i].email;
-        data.phoneNumber = allData[i].phoneNumber;
-        data.customerName = allData[i].customerName;
-        data.customerSurName = allData[i].customerSurName;
-        data.rcXrate = allData[i].rcXrate;
-        data.currTransaction = allData[i].currTransaction;
-        data.tcXrate = allData[i].tcXrate;
-        data.transactions = allData[i].transactions;
-
-        postData.push(data);
-    }
-    var json = JSON.stringify(postData);
-
-    $.ajax({
-        url: baseApiUrl + '/order/orderImport',
-        type: 'POST',
-        contentType: 'application/json; charset=utf-8',
-        dataType: "json",
-        data: json,
-        success: function (data) {
-            alert(data.data[0].returnNumber);
-            console.log(data.data.returnError);
-            $('#orderTable').DataTable().ajax.reload();
-        },
-        error: function () {
-
-        }
-    });
-}
 
 function startThisTransfer(id) {
     var allData = $('#orderTable').DataTable().rows().data().toArray();
@@ -245,7 +217,7 @@ function startThisTransfer(id) {
 
         for (var i = 0; i < selectedData[0].transactions.length; i++) {
             orderTransactionData.masterCode = selectedData[0].transactions[i].masterCode;
-            orderTransactionData.quantity = selectedData[0].transactions[i].masterCode;
+            orderTransactionData.quantity = selectedData[0].transactions[i].quantity;
             orderTransactionData.price = selectedData[0].transactions[i].price;
             orderTransactionData.transDescripntion = selectedData[0].transactions[i].transDescription;
             orderTransactionData.unitCode = selectedData[0].transactions[i].unitCode;
@@ -281,6 +253,31 @@ function startThisTransfer(id) {
     }
 }
 
+function productMatch(masterCode, otherCode) {
+    let productMathingData = {
+        code: masterCode,
+        otherProductCode: otherCode
+    };
+
+    var json = JSON.stringify(productMathingData);
+
+    $.ajax({
+        url: baseApiUrl + '/product/match',
+        type: 'POST',
+        contentType: 'application/json; charset=utf-8',
+        dataType: "json",
+        data: json,
+        success: function (data) {
+            $('#orderDetailTable').DataTable().ajax.reload();
+            swal.fire('Tebrikler!','Ürünler Eşleştirildi.','success')
+        },
+        error: function () {
+
+        }
+    });
+
+}
+
 //function startSelectedTransfer() {
 //    postData = $('#orderTable').DataTable().rows('.selected').data().toArray();
 //    var myJsonString = JSON.stringify(postData);
@@ -292,6 +289,44 @@ function startThisTransfer(id) {
 //        data: myJsonString,
 //        success: function () {
 
+//        },
+//        error: function () {
+
+//        }
+//    });
+//}
+
+//function startAllTransfer() {
+//    var allData = $('#orderTable').DataTable().rows().data().toArray();
+//    allData = allData.filter(x => x.transferStatus == false);
+//    var postData = [];
+//    for (var i = 0; i < allData.length; i++) {
+//        data.number = allData[i].number;
+//        data.date_ = allData[i].date_;
+//        data.auxilCode = allData[i].auxilCode;
+//        data.email = allData[i].email;
+//        data.phoneNumber = allData[i].phoneNumber;
+//        data.customerName = allData[i].customerName;
+//        data.customerSurName = allData[i].customerSurName;
+//        data.rcXrate = allData[i].rcXrate;
+//        data.currTransaction = allData[i].currTransaction;
+//        data.tcXrate = allData[i].tcXrate;
+//        data.transactions = allData[i].transactions;
+
+//        postData.push(data);
+//    }
+//    var json = JSON.stringify(postData);
+
+//    $.ajax({
+//        url: baseApiUrl + '/order/orderImport',
+//        type: 'POST',
+//        contentType: 'application/json; charset=utf-8',
+//        dataType: "json",
+//        data: json,
+//        success: function (data) {
+//            alert(data.data[0].returnNumber);
+//            console.log(data.data.returnError);
+//            $('#orderTable').DataTable().ajax.reload();
 //        },
 //        error: function () {
 

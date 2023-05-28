@@ -7,5 +7,6 @@ namespace LogoTransfer.Core.Repositories
         public Task<List<OrderTransaction>> GetByOrderIdAsync(Guid id);
         public Task<List<ProductMatching>> GetProductMatchAsync();
         public Task SyncMasterProductAsync(List<ProductMatching> productMatchings);
+        public Task MatchAsync(ProductMatching productMatch);
     }
 }

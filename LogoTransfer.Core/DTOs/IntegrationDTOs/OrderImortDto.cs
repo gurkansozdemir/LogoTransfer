@@ -1,6 +1,4 @@
-﻿using LogoTransfer.Core.DTOs.OrderDTOs;
-
-namespace LogoTransfer.Core.DTOs.IntegrationDTOs
+﻿namespace LogoTransfer.Core.DTOs.IntegrationDTOs
 {
     public class OrderImportDto
     {

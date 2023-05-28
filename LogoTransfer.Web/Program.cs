@@ -56,6 +56,7 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
-await app.Services.GetRequiredService<CacheData>().MenuItemsSaveCash();
+await app.Services.GetRequiredService<CacheData>().MenuItemsSaveCache();
+await app.Services.GetRequiredService<CacheData>().MasterProductSaveCache();
 
 app.Run();

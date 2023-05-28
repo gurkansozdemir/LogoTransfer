@@ -37,5 +37,11 @@ namespace LogoTransfer.Service.Services
             var productMatch = _mapper.Map<List<ProductMatching>>(result.Data);
             await _productRepository.SyncMasterProductAsync(productMatch);
         }
+
+        public async Task MatchAsync(ProductMatchDto productMatchDto)
+        {
+            var productMatch = _mapper.Map<ProductMatching>(productMatchDto);
+            await _productRepository.MatchAsync(productMatch);
+        }
     }
 }

@@ -1,4 +1,5 @@
-﻿using LogoTransfer.Web.Filters;
+﻿using LogoTransfer.Web.Caching;
+using LogoTransfer.Web.Filters;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LogoTransfer.Web.Controllers
@@ -10,6 +11,13 @@ namespace LogoTransfer.Web.Controllers
         public IActionResult Index()
         {
             return View();
+        }
+
+        [HttpGet]
+        public ActionResult GetMasterProducts()
+        {
+            var response = new { Data = CacheData.GetMasterProducts().Result };
+            return Json(response);
         }
     }
 }

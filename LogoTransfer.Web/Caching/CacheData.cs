@@ -1,4 +1,5 @@
 ﻿using LogoTransfer.Web.Models;
+using LogoTransfer.Web.Models.OrderModels;
 using LogoTransfer.Web.Models.RoleModels;
 
 namespace LogoTransfer.Web.Caching
@@ -7,6 +8,7 @@ namespace LogoTransfer.Web.Caching
     {
         public static List<MenuItemModel> SupervisorMenuItems;
         public static List<MenuItemModel> StandartUserMenuItems;
+        public static List<MasterProductModel> MasterProducts;
         private readonly HttpClient _httpClient;
 
         public CacheData(IHttpClientFactory httpClientFactory)
@@ -14,7 +16,7 @@ namespace LogoTransfer.Web.Caching
             _httpClient = httpClientFactory.CreateClient("BaseAPI");
         }
 
-        public async Task MenuItemsSaveCash()
+        public async Task MenuItemsSaveCache()
         {
             if (SupervisorMenuItems == null)
             {
@@ -39,6 +41,20 @@ namespace LogoTransfer.Web.Caching
                 default:
                     return new List<MenuItemModel>();
             }
+        }
+
+        public async Task MasterProductSaveCache()
+        {
+            if (MasterProducts == null)
+            {
+                var response = await _httpClient.GetFromJsonAsync<ResponseModel<List<MasterProductModel>>>($"product/getExternalProducts");
+                MasterProducts = response.Data;
+            }
+        }
+
+        public static async Task<List<MasterProductModel>> GetMasterProducts()
+        {
+            return MasterProducts;
         }
     }
 }

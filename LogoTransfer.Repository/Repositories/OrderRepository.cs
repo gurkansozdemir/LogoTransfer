@@ -1,5 +1,4 @@
-﻿using LogoTransfer.Core.DTOs.IntegrationDTOs;
-using LogoTransfer.Core.Entities;
+﻿using LogoTransfer.Core.Entities;
 using LogoTransfer.Core.Repositories;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,13 +10,13 @@ namespace LogoTransfer.Repository.Repositories
         private readonly DbSet<OrderTransaction> _dbSetTransaction;
         public OrderRepository(AppDbContext context) : base(context)
         {
-            _dbSet = context.Set<Order>();  
+            _dbSet = context.Set<Order>();
             _dbSetTransaction = context.Set<OrderTransaction>();
         }
 
         public async Task<List<Order>> GetAllWithTransactions()
         {
-            return await _dbSet.Include(x=>x.Transactions).ToListAsync();
+            return await _dbSet.Include(x => x.Transactions).ToListAsync();
         }
 
         public async Task<List<OrderTransaction>> GetTransactionsByOrderId(Guid orderId)

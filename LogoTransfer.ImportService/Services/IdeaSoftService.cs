@@ -1,11 +1,8 @@
 ﻿using LogoTransfer.Core.Entities;
 using LogoTransfer.Core.Services;
 using LogoTransfer.Service.Caching;
-using System;
-using System.Globalization;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
-using System.Timers;
 
 namespace LogoTransfer.ImportService.Services
 {
@@ -84,7 +81,7 @@ namespace LogoTransfer.ImportService.Services
                 if (baseOrders.Count != 0)
                 {
                     await _orderService.AddRangeAsync(baseOrders);
-                    Console.WriteLine("Siparişler Aktarıldı");    
+                    Console.WriteLine("Siparişler Aktarıldı");
                 }
                 Console.WriteLine("Bu Tarihten İtibaren Oluşturulmuş Sipariş Bulunamadı:" + searchDate);
             }

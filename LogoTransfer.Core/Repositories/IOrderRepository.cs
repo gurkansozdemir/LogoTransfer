@@ -1,5 +1,4 @@
-﻿using LogoTransfer.Core.DTOs.IntegrationDTOs;
-using LogoTransfer.Core.Entities;
+﻿using LogoTransfer.Core.Entities;
 
 namespace LogoTransfer.Core.Repositories
 {

@@ -19,6 +19,7 @@ namespace LogoTransfer.Service.Mapping
             CreateMap<MenuItem, MenuItemDto>();
             CreateMap<Order, OrderDto>().ReverseMap();
             CreateMap<ExternalProductDto, ProductMatching>();
+            CreateMap<ProductMatchDto, ProductMatching>();
             CreateMap<OrderTransaction, OrderTransactionDto>().ReverseMap();
         }
     }

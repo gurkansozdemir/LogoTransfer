@@ -2,10 +2,7 @@
 using LogoTransfer.Core.DTOs.ProductDTOs;
 using LogoTransfer.Core.DTOs.UserDTOs;
 using LogoTransfer.Core.Entities;
-using Microsoft.Extensions.Logging;
 using System.Net.Http.Json;
-using System.Net.WebSockets;
-using System.Text.Json;
 
 namespace LogoTransfer.Service.Caching
 {
@@ -50,8 +47,8 @@ namespace LogoTransfer.Service.Caching
             }
             catch (Exception)
             {
-                
-            }           
+
+            }
         }
     }
 }
