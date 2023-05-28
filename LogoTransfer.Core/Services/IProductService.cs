@@ -6,8 +6,9 @@ namespace LogoTransfer.Core.Services
 {
     public interface IProductService : IService<OrderTransaction>
     {
-        public CustomResponseDto<List<ExternalProductDto>> GetExternalProduct();
         public Task SyncMasterProductAsync();
         public Task MatchAsync(ProductMatchDto productMatch);
+        public Task<CustomResponseDto<List<ProductMatchDto>>> GetProductMatchesFromCacheAsync();
+        public Task ProductMatchesSaveCacheAsync();
     }
 }

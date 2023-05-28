@@ -25,15 +25,9 @@ namespace LogoTransfer.Service.Services
             _cacheData = cacheData;
         }
 
-        public CustomResponseDto<List<ExternalProductDto>> GetExternalProduct()
-        {
-            var data = _cacheData.ExternalProductDtos;
-            return CustomResponseDto<List<ExternalProductDto>>.Success(HttpStatusCode.OK, data);
-        }
-
         public async Task SyncMasterProductAsync()
         {
-            var result = await _httpClient.GetFromJsonAsync<CustomResponseDto<List<ExternalProductDto>>>("product");
+            var result = await _httpClient.GetFromJsonAsync<CustomResponseDto<List<ProductMatchDto>>>("product");
             var productMatch = _mapper.Map<List<ProductMatching>>(result.Data);
             await _productRepository.SyncMasterProductAsync(productMatch);
         }
@@ -42,6 +36,26 @@ namespace LogoTransfer.Service.Services
         {
             var productMatch = _mapper.Map<ProductMatching>(productMatchDto);
             await _productRepository.MatchAsync(productMatch);
+            await ProductMatchesSaveCacheAsync();
+        }
+
+        public async Task ProductMatchesSaveCacheAsync()
+        {
+            var productMatches = await _productRepository.GetProductMatchesAsync();
+            var productMatchDtos = _mapper.Map<List<ProductMatchDto>>(productMatches);
+            _cacheData.ProductMatches = productMatchDtos;
+        }
+
+        public async Task<CustomResponseDto<List<ProductMatchDto>>> GetProductMatchesFromCacheAsync()
+        {
+            if (_cacheData.ProductMatches != null)
+            {
+                return CustomResponseDto<List<ProductMatchDto>>.Success(HttpStatusCode.OK, _cacheData.ProductMatches);
+            }
+            var productMatches = await _productRepository.GetProductMatchesAsync();
+            var productMatchDtos = _mapper.Map<List<ProductMatchDto>>(productMatches);
+            _cacheData.ProductMatches = productMatchDtos;
+            return CustomResponseDto<List<ProductMatchDto>>.Success(HttpStatusCode.OK, productMatchDtos);
         }
     }
 }

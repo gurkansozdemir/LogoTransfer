@@ -29,7 +29,9 @@ namespace LogoTransfer.Repository.Repositories
 
         public async Task MatchAsync(ProductMatching productMatch)
         {
-            _dbsetProductMatch.Update(productMatch);
+            var model = await _dbsetProductMatch.Where(x => x.OtherCode == productMatch.OtherCode).FirstOrDefaultAsync();
+            model.Code = productMatch.Code;
+            _dbsetProductMatch.Update(model);
             await _unitOfWork.CommitAsync();
         }
 
@@ -37,6 +39,11 @@ namespace LogoTransfer.Repository.Repositories
         {
             await _dbsetProductMatch.AddRangeAsync(productMatchings);
             await _unitOfWork.CommitAsync();
+        }
+
+        public async Task<List<ProductMatching>> GetProductMatchesAsync()
+        {
+            return await _dbsetProductMatch.ToListAsync();
         }
     }
 }

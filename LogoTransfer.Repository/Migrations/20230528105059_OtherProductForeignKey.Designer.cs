@@ -4,6 +4,7 @@ using LogoTransfer.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LogoTransfer.Repository.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230528105059_OtherProductForeignKey")]
+    partial class OtherProductForeignKey
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -185,6 +188,9 @@ namespace LogoTransfer.Repository.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsProductMatch")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -198,6 +204,9 @@ namespace LogoTransfer.Repository.Migrations
 
                     b.Property<double>("Price")
                         .HasColumnType("float");
+
+                    b.Property<Guid?>("ProductMatchingId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<double>("Quantity")
                         .HasColumnType("float");
@@ -226,6 +235,8 @@ namespace LogoTransfer.Repository.Migrations
 
                     b.HasIndex("OrderId");
 
+                    b.HasIndex("ProductMatchingId");
+
                     b.ToTable("OrderTransactions");
                 });
 
@@ -236,6 +247,7 @@ namespace LogoTransfer.Repository.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Code")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedOn")
@@ -244,7 +256,7 @@ namespace LogoTransfer.Repository.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<string>("OtherCode")
+                    b.Property<string>("OtherProductCode")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("UpdatedOn")
@@ -286,7 +298,7 @@ namespace LogoTransfer.Repository.Migrations
                         new
                         {
                             Id = new Guid("45456c11-f1f1-447b-a55d-c8f4110da3fe"),
-                            CreatedOn = new DateTime(2023, 5, 29, 0, 18, 39, 603, DateTimeKind.Local).AddTicks(9317),
+                            CreatedOn = new DateTime(2023, 5, 28, 13, 50, 59, 785, DateTimeKind.Local).AddTicks(2465),
                             Description = "Full Authorize",
                             IsDeleted = false,
                             Name = "Supervisor"
@@ -294,7 +306,7 @@ namespace LogoTransfer.Repository.Migrations
                         new
                         {
                             Id = new Guid("7e212bbe-3059-464f-be67-ec8064063f6b"),
-                            CreatedOn = new DateTime(2023, 5, 29, 0, 18, 39, 603, DateTimeKind.Local).AddTicks(9321),
+                            CreatedOn = new DateTime(2023, 5, 28, 13, 50, 59, 785, DateTimeKind.Local).AddTicks(2469),
                             Description = "Default User",
                             IsDeleted = false,
                             Name = "StandartUser"
@@ -379,7 +391,7 @@ namespace LogoTransfer.Repository.Migrations
                         new
                         {
                             Id = new Guid("b2f9cba8-d1ab-477d-91cf-caf4ba435b83"),
-                            CreatedOn = new DateTime(2023, 5, 29, 0, 18, 39, 603, DateTimeKind.Local).AddTicks(9572),
+                            CreatedOn = new DateTime(2023, 5, 28, 13, 50, 59, 785, DateTimeKind.Local).AddTicks(2733),
                             EMail = "admin@logo.com.tr",
                             FirstName = "Super",
                             IsDeleted = false,
@@ -433,7 +445,13 @@ namespace LogoTransfer.Repository.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("LogoTransfer.Core.Entities.ProductMatching", "ProductMatching")
+                        .WithMany()
+                        .HasForeignKey("ProductMatchingId");
+
                     b.Navigation("Order");
+
+                    b.Navigation("ProductMatching");
                 });
 
             modelBuilder.Entity("LogoTransfer.Core.Entities.User", b =>

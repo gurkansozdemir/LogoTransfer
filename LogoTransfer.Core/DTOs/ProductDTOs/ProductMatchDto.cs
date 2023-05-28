@@ -2,7 +2,7 @@
 {
     public class ProductMatchDto
     {
-        public string Code { get; set; }
-        public string? OtherProductCode { get; set; }
+        public string? Code { get; set; }
+        public string? OtherCode { get; set; }
     }
 }

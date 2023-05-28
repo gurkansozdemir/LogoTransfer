@@ -107,9 +107,9 @@ function getOrderDetails(id) {
                 data: 'mathing',
                 "render": function (data, type, full, meta) {
                     if (full.isProductMatch) {
-                        return '<span class="badge badge-success">Eşleşdi</span>';
+                        return '<i style="font-size:30px;"class="zmdi zmdi-thumb-up col-green"></i>';
                     }
-                    return '<span class="badge badge-danger">Eşleşmedi</span>';
+                    return '<i style="font-size:30px;"class="zmdi zmdi-thumb-down col-red"></i>';
                 }
             },
             {
@@ -132,7 +132,6 @@ function openMasterProductListModal(otherCode) {
 }
 
 function getMasterProducts(otherCode) {
-    productFill = true;
     var table = $('#masterProductTable');
     table.DataTable().destroy();
     table.DataTable({
@@ -148,6 +147,7 @@ function getMasterProducts(otherCode) {
         columns: [
             {
                 data: 'code',
+                data: 'otherCode',
                 orderable: false,
             },
             {
@@ -256,7 +256,7 @@ function startThisTransfer(id) {
 function productMatch(masterCode, otherCode) {
     let productMathingData = {
         code: masterCode,
-        otherProductCode: otherCode
+        otherCode: otherCode
     };
 
     var json = JSON.stringify(productMathingData);

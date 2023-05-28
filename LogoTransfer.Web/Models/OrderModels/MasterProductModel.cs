@@ -3,5 +3,6 @@
     public class MasterProductModel
     {
         public string Code { get; set; }
+        public string OtherCode { get; set; }
     }
 }

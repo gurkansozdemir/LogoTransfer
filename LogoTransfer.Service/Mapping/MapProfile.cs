@@ -18,8 +18,7 @@ namespace LogoTransfer.Service.Mapping
             CreateMap<Role, RoleDto>().ReverseMap();
             CreateMap<MenuItem, MenuItemDto>();
             CreateMap<Order, OrderDto>().ReverseMap();
-            CreateMap<ExternalProductDto, ProductMatching>();
-            CreateMap<ProductMatchDto, ProductMatching>();
+            CreateMap<ProductMatchDto, ProductMatching>().ReverseMap();
             CreateMap<OrderTransaction, OrderTransactionDto>().ReverseMap();
         }
     }

@@ -71,8 +71,6 @@ builder.Services.AddHttpClient("LOGOAPI", x =>
 
 var app = builder.Build();
 
-await app.Services.GetService<CacheData>().StartAsync();
-
 var loggerFactory = app.Services.GetService<ILoggerFactory>();
 loggerFactory.AddFile(builder.Configuration["Logging:LogFilePath"].ToString());
 

@@ -2,7 +2,7 @@
 {
     public class ProductMatching : BaseEntity
     {
-        public string Code { get; set; }
-        public string? OtherProductCode { get; set; }
+        public string? Code { get; set; }
+        public string? OtherCode { get; set; }
     }
 }

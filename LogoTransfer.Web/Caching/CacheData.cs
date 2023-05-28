@@ -16,6 +16,12 @@ namespace LogoTransfer.Web.Caching
             _httpClient = httpClientFactory.CreateClient("BaseAPI");
         }
 
+        public async Task StartAsync()
+        {
+            await MenuItemsSaveCache();
+            await MasterProductSaveCache();
+        }
+
         public async Task MenuItemsSaveCache()
         {
             if (SupervisorMenuItems == null)
@@ -47,12 +53,12 @@ namespace LogoTransfer.Web.Caching
         {
             if (MasterProducts == null)
             {
-                var response = await _httpClient.GetFromJsonAsync<ResponseModel<List<MasterProductModel>>>($"product/getExternalProducts");
+                var response = await _httpClient.GetFromJsonAsync<ResponseModel<List<MasterProductModel>>>($"product/getProductMatchesFromCache");
                 MasterProducts = response.Data;
             }
         }
 
-        public static async Task<List<MasterProductModel>> GetMasterProducts()
+        public static List<MasterProductModel> GetMasterProducts()
         {
             return MasterProducts;
         }

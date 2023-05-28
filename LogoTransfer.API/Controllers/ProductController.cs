@@ -21,28 +21,12 @@ namespace LogoTransfer.API.Controllers
         }
 
         [HttpGet("[action]")]
-        public async Task<IActionResult> GetExternalProducts()
-        {
-            _logger.LogInformation("{time}: {action} run", DateTime.Now, nameof(GetExternalProducts));
-
-            var response = _productService.GetExternalProduct();
-
-            _logger.LogInformation("{time}: {action} end with response data count: {responseDataCount}",
-                DateTime.Now, nameof(GetExternalProducts),
-                response.Data.Count);
-
-            return CreateActionResult(response);
-        }
-
-        [HttpGet("[action]")]
         public async Task<IActionResult> SyncMasterProduct()
         {
             _logger.LogInformation("{time}: {action} run", DateTime.Now, nameof(SyncMasterProduct));
-
             await _productService.SyncMasterProductAsync();
 
             _logger.LogInformation("{time}: {action} end", DateTime.Now, nameof(SyncMasterProduct));
-
             return CreateActionResult(CustomResponseDto<NoContentDto>.Success(HttpStatusCode.NoContent));
         }
 
@@ -50,12 +34,22 @@ namespace LogoTransfer.API.Controllers
         public async Task<IActionResult> Match(ProductMatchDto productMatch)
         {
             _logger.LogInformation("{time}: {action} run", DateTime.Now, nameof(Match));
-
             await _productService.MatchAsync(productMatch);
 
             _logger.LogInformation("{time}: {action} end", DateTime.Now, nameof(Match));
-
             return CreateActionResult(CustomResponseDto<NoContentDto>.Success(HttpStatusCode.NoContent));
         }
+
+        [HttpGet("[action]")]
+        public async Task<IActionResult> GetProductMatchesFromCache()
+        {
+            _logger.LogInformation("{time}: {action} run", DateTime.Now, nameof(GetProductMatchesFromCache));
+            await _productService.GetProductMatchesFromCacheAsync();
+
+            _logger.LogInformation("{time}: {action} end", DateTime.Now, nameof(GetProductMatchesFromCache));
+            return CreateActionResult(CustomResponseDto<NoContentDto>.Success(HttpStatusCode.NoContent));
+        }
+
+
     }
 }

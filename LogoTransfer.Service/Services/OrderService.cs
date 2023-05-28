@@ -23,7 +23,8 @@ namespace LogoTransfer.Service.Services
         private readonly CacheData _cacheData;
         private readonly ILogger<OrderService> _logger;
         private readonly IUnitOfWork _unitOfWork;
-        public OrderService(IGenericRepository<Order> repository, IUnitOfWork unitOfWork, IHttpClientFactory httpClient, IOrderRepository orderRepository, IMapper mapper, CacheData cacheData, ILogger<OrderService> logger) : base(repository, unitOfWork)
+        private readonly IProductService _productService;
+        public OrderService(IGenericRepository<Order> repository, IUnitOfWork unitOfWork, IHttpClientFactory httpClient, IOrderRepository orderRepository, IMapper mapper, CacheData cacheData, ILogger<OrderService> logger, IProductService productService) : base(repository, unitOfWork)
         {
             _httpClient = httpClient.CreateClient("LOGOAPI");
             _orderRepository = orderRepository;
@@ -31,12 +32,25 @@ namespace LogoTransfer.Service.Services
             _cacheData = cacheData;
             _logger = logger;
             _unitOfWork = unitOfWork;
+            _productService = productService;
         }
 
         public async Task<CustomResponseDto<List<OrderDto>>> GetAllWithTransactions()
         {
             var orders = await _orderRepository.GetAllWithTransactions();
             var orderDtos = _mapper.Map<List<OrderDto>>(orders);
+            if (_cacheData.ProductMatches == null)
+            {
+                await _productService.ProductMatchesSaveCacheAsync();
+            }
+            orderDtos.ForEach(o =>
+            {
+                o.Transactions.ForEach(t =>
+                {
+                    t.MasterCode = _cacheData.ProductMatches.Where(x => x.OtherCode == t.OtherCode).FirstOrDefault().Code;
+                    t.IsProductMatch = _cacheData.ProductMatches.Where(x => x.OtherCode == t.OtherCode).FirstOrDefault().Code != "" ? true : false;
+                });
+            });
             return CustomResponseDto<List<OrderDto>>.Success(HttpStatusCode.OK, orderDtos);
         }
 
@@ -44,7 +58,15 @@ namespace LogoTransfer.Service.Services
         {
             var transactions = await _orderRepository.GetTransactionsByOrderId(orderId);
             var transactionDtos = _mapper.Map<List<OrderTransactionDto>>(transactions);
-            //transactionDtos.ForEach(x => x.IsProductMatch = _cacheData.ProductMatches.Exists(pm => pm.OtherProductCode == x.OtherCode && !pm.IsDeleted));
+            if (_cacheData.ProductMatches == null)
+            {
+                await _productService.ProductMatchesSaveCacheAsync();
+            }
+            transactionDtos.ForEach(t =>
+            {
+                t.MasterCode = _cacheData.ProductMatches.Where(x => x.OtherCode == t.OtherCode).FirstOrDefault().Code;
+                t.IsProductMatch = _cacheData.ProductMatches.Where(x => x.OtherCode == t.OtherCode).FirstOrDefault().Code != "" ? true : false;
+            });
             return CustomResponseDto<List<OrderTransactionDto>>.Success(HttpStatusCode.OK, transactionDtos);
         }
 

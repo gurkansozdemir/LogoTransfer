@@ -7,7 +7,6 @@ namespace LogoTransfer.Core.Entities
         public Guid Id { get; set; }
         public string Name { get; set; }
         public string OtherCode { get; set; }
-        public string MasterCode { get; set; }
         public double Quantity { get; set; }
         public double Price { get; set; }
         public string TransDescription { get; set; }
@@ -21,6 +20,5 @@ namespace LogoTransfer.Core.Entities
         [ForeignKey("OrderId")]
         public Guid OrderId { get; set; }
         public virtual Order Order { get; set; }
-        public bool IsProductMatch { get; set; }
     }
 }

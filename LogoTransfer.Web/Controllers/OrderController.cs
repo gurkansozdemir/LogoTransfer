@@ -16,7 +16,7 @@ namespace LogoTransfer.Web.Controllers
         [HttpGet]
         public ActionResult GetMasterProducts()
         {
-            var response = new { Data = CacheData.GetMasterProducts().Result };
+            var response = new { Data = CacheData.GetMasterProducts() };
             return Json(response);
         }
     }
