@@ -63,16 +63,14 @@
         "language": {
             "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Turkish.json"
         },
-        dom: 'Bfrtip',
-        buttons: [
-            'copy', 'csv', 'excel', 'pdf', 'print'
-        ]
+        "lengthChange": false,
+        pageLength: 30
     });
 }
 
 function openOrderDetailModal(id) {
-    getOrderDetails(id);
     $('#orderDetailModal').modal('show');
+    getOrderDetails(id);   
 }
 
 function getOrderDetails(id) {
@@ -123,16 +121,22 @@ function getOrderDetails(id) {
         ],
         "language": {
             "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Turkish.json"
-        }
+        },
+        processing: true
     });
 }
-
+var isRun = false;
 function openMasterProductListModal(otherCode) {
-    getMasterProducts(otherCode);
     $('#masterProductListModal').modal('show');
+    if (!isRun) {
+        getMasterProducts();
+    }
+    // getMasterProducts(otherCode);
+    $('#masterProductListModal #otherCode').val(otherCode);    
 }
 
-function getMasterProducts(otherCode) {
+function getMasterProducts() {
+    isRun = true;
     var table = $('#masterProductTable');
     table.DataTable().destroy();
     table.DataTable({
@@ -156,7 +160,7 @@ function getMasterProducts(otherCode) {
                 data: 'process',
                 orderable: false,
                 "render": function (data, type, full, meta) {
-                    return `<a class="btn btn-success" onclick="productMatch('` + full.code + `','` + otherCode + `')">Seç</a>`;
+                    return `<a class="btn btn-success" onclick="productMatch('` + full.code + `','` + $('#masterProductListModal #otherCode').val() + `')">Seç</a>`;
                 }
             }
         ],
@@ -164,7 +168,8 @@ function getMasterProducts(otherCode) {
             "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Turkish.json"
         },
         "paging": true,
-        "info": false
+        "info": false,
+        processing: true
     });
 }
 
@@ -218,8 +223,13 @@ function startThisTransfer(id) {
             data: json,
             success: function (data) {
                 $(".page-loader-wrapper").hide();
-                swal.fire('Tebrikler!', 'Sipariş Aktarıldı.', 'success');
-                $('#orderTable').DataTable().ajax.reload();
+                if (data.data[0].ReturnError == "") {
+                    swal.fire('Tebrikler!', 'Sipariş Aktarıldı.', 'success');
+                    $('#orderTable').DataTable().ajax.reload();
+                }
+                else {
+                    swal.fire('Hata!', data.data[0].returnError, 'error');
+                }
             },
             error: function () {
                 $(".page-loader-wrapper").hide();

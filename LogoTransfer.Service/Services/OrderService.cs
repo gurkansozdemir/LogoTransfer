@@ -81,21 +81,25 @@ namespace LogoTransfer.Service.Services
             var result = await response.Content.ReadFromJsonAsync<CustomResponseDto<List<OrderImportResponseDto>>>();
             _logger.LogInformation("{time}: {action} end with response data: {responseData}", DateTime.Now, nameof(OrderImportAsync), JsonSerializer.Serialize(result));
 
-            await SetIntegratedNo(result.Data);
+            foreach (var item in result.Data)
+            {
+                if (String.IsNullOrEmpty(item.ReturnError))
+                {
+                    await SetIntegratedNo(item);
+                }
+            }
+
             return result.Data;
         }
 
-        public async Task SetIntegratedNo(List<OrderImportResponseDto> importedOrder)
+        public async Task SetIntegratedNo(OrderImportResponseDto importedOrder)
         {
             var orders = _orderRepository.GetAll();
-            foreach (var item in importedOrder)
-            {
-                var order = await orders.Where(x => x.Number == item.Number).SingleAsync();
-                order.Integration = item.ReturnNumber;
-                order.TransferStatus = true;
-                _orderRepository.Update(order);
-                await _unitOfWork.CommitAsync();
-            }
+            var order = await orders.Where(x => x.Number == importedOrder.Number).SingleAsync();
+            order.Integration = importedOrder.ReturnNumber;
+            order.TransferStatus = true;
+            _orderRepository.Update(order);
+            await _unitOfWork.CommitAsync();
         }
     }
 }

@@ -3,6 +3,8 @@ using LogoTransfer.Core.Services;
 using LogoTransfer.Service.Caching;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace LogoTransfer.ImportService.Services
 {
@@ -34,6 +36,7 @@ namespace LogoTransfer.ImportService.Services
             foreach (Core.DTOs.IdeaSoft.Order order in orders)
             {
                 int i = 1;
+                var tmp = JsonSerializer.Deserialize<Dictionary<string, double[]>>(order.CurrencyRates);
                 Order baseOrder = new Order()
                 {
                     Amount = order.Amount,
@@ -50,8 +53,8 @@ namespace LogoTransfer.ImportService.Services
                     Date_ = order.CreatedAt,
                     Email = order.CustomerEmail,
                     PhoneNumber = order.CustomerPhone,
-                    RcXrate = 18.86, // currencyRates içeriisndeki USD değeri
-                    TcXrate = 1 // currency TL ise 1 yoksa currencyRates içerisinde yazan değer
+                    RcXrate = tmp["USD"] != null ? tmp["USD"][0] : 1,
+                    TcXrate = tmp[order.Currency][0]
                 };
 
                 foreach (var item in order.OrderItems)
@@ -68,7 +71,7 @@ namespace LogoTransfer.ImportService.Services
                         UnitConv1 = 1,
                         UnitConv2 = item.PriceRatio,
                         CurrTrans = item.ProductCurrency,
-                        TcXrate = 1, // currency TL ise 1 yoksa currencyRates içerisinde yazan değer
+                        TcXrate = tmp[item.ProductCurrency][0],
                         VatRate = item.ProductTax
                     });
                 }

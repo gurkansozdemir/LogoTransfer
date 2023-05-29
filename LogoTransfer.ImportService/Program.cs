@@ -18,11 +18,17 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddScoped<IdeaSoftService>();
 builder.Services.AddScoped(typeof(IOrderService), typeof(OrderService));
 builder.Services.AddScoped(typeof(IOrderRepository), typeof(OrderRepository));
+builder.Services.AddScoped(typeof(IProductRepository), typeof(ProductRepository));
+builder.Services.AddScoped(typeof(IProductService), typeof(ProductService));
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddAutoMapper(typeof(MapProfile));
 builder.Services.AddSingleton<CacheDataImportService>();
 builder.Services.AddSingleton<CacheData>();
+
+
+
+
 builder.Services.AddHttpClient("IdeaSoftAPI", x =>
 {
     x.BaseAddress = new Uri("https://formaram.myideasoft.com/");
