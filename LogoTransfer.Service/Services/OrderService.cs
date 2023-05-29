@@ -72,7 +72,8 @@ namespace LogoTransfer.Service.Services
 
         public async Task<List<OrderImportResponseDto>> OrderImportAsync(List<OrderImportDto> orderImports)
         {
-            var response = await _httpClient.PostAsJsonAsync("order", orderImports);
+            var list = orderImports.Where(x => x.Transactions.Any(t => t.MasterCode != "")).ToList();
+            var response = await _httpClient.PostAsJsonAsync("order", list);
             _logger.LogInformation("{time}: {action} end with httpclient response: {responseData}", DateTime.Now, nameof(OrderImportAsync), JsonSerializer.Serialize(response));
 
             if (!response.IsSuccessStatusCode)

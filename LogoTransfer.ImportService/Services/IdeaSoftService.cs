@@ -30,7 +30,7 @@ namespace LogoTransfer.ImportService.Services
         public async void SaveOrdersAsync(/*Object source, ElapsedEventArgs e*/)
         {
             string searchDate = DateTime.Now.ToString("yyyy-MM-dd");
-            var orders = await _httpClient.GetFromJsonAsync<List<Core.DTOs.IdeaSoft.Order>>($"api/orders?startDate={searchDate}");
+            var orders = await _httpClient.GetFromJsonAsync<List<Core.DTOs.IdeaSoft.Order>>($"api/orders");
             List<Order> baseOrders = new List<Order>();
 
             foreach (Core.DTOs.IdeaSoft.Order order in orders)

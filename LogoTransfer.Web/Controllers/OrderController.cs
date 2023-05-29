@@ -7,6 +7,13 @@ namespace LogoTransfer.Web.Controllers
     [SessionFilter]
     public class OrderController : Controller
     {
+        private readonly CacheData _cacheData;
+
+        public OrderController(CacheData cacheData)
+        {
+            _cacheData = cacheData;
+        }
+
         [HttpGet]
         public IActionResult Index()
         {
@@ -18,6 +25,12 @@ namespace LogoTransfer.Web.Controllers
         {
             var response = new { Data = CacheData.GetMasterProducts() };
             return Json(response);
+        }
+
+        [HttpGet]
+        public async void UpdateMasterProductsInCache()
+        {
+            await _cacheData.MasterProductSaveCache();
         }
     }
 }

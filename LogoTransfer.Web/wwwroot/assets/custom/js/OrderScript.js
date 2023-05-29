@@ -1,4 +1,5 @@
-﻿function getOrders() {
+﻿var isRun = false;
+function getOrders() {
     var table = $('#orderTable');
     table.DataTable().destroy();
     table.DataTable({
@@ -11,8 +12,15 @@
         select: {
             style: 'multi'
         },
-        "columnDefs": [
-            { "className": "dt-center", "targets": "_all" }
+        fixedColumns: true,
+        columnDefs: [
+            { "className": "dt-center", "targets": "_all" },
+            { "width": "20%", "targets": 1 },
+            { "width": "15%", "targets": 2 },
+            { "width": "15%", "targets": 3 },
+            { "width": "30%", "targets": 4 },
+            { "width": "15%", "targets": 5 },
+            { "width": "2%", "targets": [0, 6, 7, 8, 9, 10] }
         ],
         columns: [
             { data: 'storeName' },
@@ -31,7 +39,12 @@
                 data: 'phoneNumber',
                 orderable: false,
             },
-            { data: 'date_', },
+            {
+                data: 'date_',
+                "render": function (data, type, full, meta) {
+                    return full.date_.split('T')[0];
+                }
+            },
             { data: 'currTransaction' },
             { data: 'amount' },
             { data: 'integration' },
@@ -70,11 +83,11 @@
 
 function openOrderDetailModal(id) {
     $('#orderDetailModal').modal('show');
-    getOrderDetails(id);   
+    getOrderDetails(id);
 }
 
 function getOrderDetails(id) {
-    var table = $('#orderDetailTable');
+    var table = $('#orderDetailTable').removeAttr('width');
     table.DataTable().destroy();
     table.DataTable({
         ajax: {
@@ -83,18 +96,28 @@ function getOrderDetails(id) {
             contentType: 'application/json; charset=utf-8',
             dataType: "json"
         },
-        "columnDefs": [
-            { "className": "dt-center", "targets": "_all" }
+        fixedColumns: true,
+        columnDefs: [
+            { "className": "dt-center", "targets": "_all" },
+            { "width": "30%", "targets": 0 },
+            { "width": "15%", "targets": 1 },
+            { "width": "15%", "targets": 2 },
+            { "width": "5%", "targets": [3, 4, 5, 6, 7, 8, 9, 10] }
         ],
         columns: [
             { data: 'name' },
             { data: 'otherCode' },
             { data: 'masterCode' },
-            { data: 'transDescription' },
-            { data: 'quantity' },
+            {
+                data: 'quantity'
+            },
             { data: 'unitCode' },
-            { data: 'price' },
-            { data: 'vatRate' },
+            {
+                data: 'price'
+            },
+            {
+                data: 'vatRate'
+            },
             {
                 data: 'totalAmount',
                 "render": function (data, type, full, meta) {
@@ -115,6 +138,9 @@ function getOrderDetails(id) {
                 data: 'process',
                 orderable: false,
                 "render": function (data, type, full, meta) {
+                    if (full.isProductMatch) {
+                        return `<button type="button" class="btn btn-primary disabled">Eşleştir</button>`;
+                    } 
                     return `<button type="button" class="btn btn-primary" onclick="openMasterProductListModal('` + full.otherCode + `')">Eşleştir</button>`;
                 }
             }
@@ -125,17 +151,20 @@ function getOrderDetails(id) {
         processing: true
     });
 }
-var isRun = false;
-function openMasterProductListModal(otherCode) {
-    $('#masterProductListModal').modal('show');
+
+async function openMasterProductListModal(otherCode) {
+    $('#masterProductListModal #otherCode').val(otherCode);
     if (!isRun) {
-        getMasterProducts();
-    }
-    // getMasterProducts(otherCode);
-    $('#masterProductListModal #otherCode').val(otherCode);    
+        $(".page-loader-wrapper").show();
+        await getMasterProducts();
+        setTimeout(function () {
+            $(".page-loader-wrapper").hide();
+        }, 1000);
+    } 
+    $('#masterProductListModal').modal('show');
 }
 
-function getMasterProducts() {
+async function getMasterProducts() {
     isRun = true;
     var table = $('#masterProductTable');
     table.DataTable().destroy();
@@ -171,6 +200,7 @@ function getMasterProducts() {
         "info": false,
         processing: true
     });
+    return;
 }
 
 $("body").on('click', '#orderTable tbody tr', function () {
@@ -181,64 +211,71 @@ function startThisTransfer(id) {
     var allData = $('#orderTable').DataTable().rows().data().toArray();
     let postData = [];
     var selectedData = allData.filter(x => x.transferStatus == false && x.id == id);
+    var checkedData = selectedData.filter(x => x.transactions.some(y => y.masterCode != ""));
 
     if (selectedData.length != 0) {
-        let orderData = {};
-        orderData.number = selectedData[0].number;
-        orderData.date_ = selectedData[0].date_;
-        orderData.auxilCode = selectedData[0].auxilCode;
-        orderData.email = selectedData[0].email;
-        orderData.phoneNumber = selectedData[0].phoneNumber;
-        orderData.customerName = selectedData[0].customerName;
-        orderData.customerSurName = selectedData[0].customerSurName;
-        orderData.rcXrate = selectedData[0].rcXrate;
-        orderData.currTransaction = selectedData[0].currTransaction;
-        orderData.tcXrate = selectedData[0].tcXrate;
-        orderData.transactions = [];
 
-        for (var i = 0; i < selectedData[0].transactions.length; i++) {
-            let orderTransactionData = {};
-            orderTransactionData.masterCode = selectedData[0].transactions[i].masterCode;
-            orderTransactionData.quantity = selectedData[0].transactions[i].quantity;
-            orderTransactionData.price = selectedData[0].transactions[i].price;
-            orderTransactionData.transDescripntion = selectedData[0].transactions[i].transDescription;
-            orderTransactionData.unitCode = selectedData[0].transactions[i].unitCode;
-            orderTransactionData.unitConv1 = selectedData[0].transactions[i].unitConv1;
-            orderTransactionData.unitConv2 = selectedData[0].transactions[i].unitConv2;
-            orderTransactionData.currTrans = selectedData[0].transactions[i].currTrans;
-            orderTransactionData.tcXrate = selectedData[0].transactions[i].tcXrate;
-            orderTransactionData.vatRate = selectedData[0].transactions[i].vatRate;
-            orderData.transactions.push(orderTransactionData);
-        }
+        if (checkedData.length != 0) {
+            let orderData = {};
+            orderData.number = checkedData[0].number;
+            orderData.date_ = checkedData[0].date_;
+            orderData.auxilCode = checkedData[0].auxilCode;
+            orderData.email = checkedData[0].email;
+            orderData.phoneNumber = checkedData[0].phoneNumber;
+            orderData.customerName = checkedData[0].customerName;
+            orderData.customerSurName = checkedData[0].customerSurName;
+            orderData.rcXrate = checkedData[0].rcXrate;
+            orderData.currTransaction = checkedData[0].currTransaction;
+            orderData.tcXrate = checkedData[0].tcXrate;
+            orderData.transactions = [];
 
-        postData.push(orderData);
-        var json = JSON.stringify(postData);
-
-        $(".page-loader-wrapper").show();
-        $.ajax({
-            url: baseApiUrl + '/order/orderImport',
-            type: 'POST',
-            contentType: 'application/json; charset=utf-8',
-            dataType: "json",
-            data: json,
-            success: function (data) {
-                $(".page-loader-wrapper").hide();
-                if (data.data[0].ReturnError == "") {
-                    swal.fire('Tebrikler!', 'Sipariş Aktarıldı.', 'success');
-                    $('#orderTable').DataTable().ajax.reload();
-                }
-                else {
-                    swal.fire('Hata!', data.data[0].returnError, 'error');
-                }
-            },
-            error: function () {
-                $(".page-loader-wrapper").hide();
-                swal.fire('Hata!', 'Bir Hata Oluştu.', 'error');
+            for (var i = 0; i < checkedData[0].transactions.length; i++) {
+                let orderTransactionData = {};
+                orderTransactionData.masterCode = checkedData[0].transactions[i].masterCode;
+                orderTransactionData.quantity = checkedData[0].transactions[i].quantity;
+                orderTransactionData.price = checkedData[0].transactions[i].price;
+                orderTransactionData.transDescripntion = checkedData[0].transactions[i].transDescription;
+                orderTransactionData.unitCode = checkedData[0].transactions[i].unitCode;
+                orderTransactionData.unitConv1 = checkedData[0].transactions[i].unitConv1;
+                orderTransactionData.unitConv2 = checkedData[0].transactions[i].unitConv2;
+                orderTransactionData.currTrans = checkedData[0].transactions[i].currTrans;
+                orderTransactionData.tcXrate = checkedData[0].transactions[i].tcXrate;
+                orderTransactionData.vatRate = checkedData[0].transactions[i].vatRate;
+                orderData.transactions.push(orderTransactionData);
             }
-        });
+
+            postData.push(orderData);
+            var json = JSON.stringify(postData);
+
+            $(".page-loader-wrapper").show();
+            $.ajax({
+                url: baseApiUrl + '/order/orderImport',
+                type: 'POST',
+                contentType: 'application/json; charset=utf-8',
+                dataType: "json",
+                data: json,
+                success: function (data) {
+                    $(".page-loader-wrapper").hide();
+                    if (data.data[0].returnError == "") {
+                        swal.fire('Tebrikler!', 'Sipariş Aktarıldı.', 'success');
+                        $('#orderTable').DataTable().ajax.reload();
+                    }
+                    else {
+                        swal.fire('Hata!', data.data[0].returnError, 'error');
+                    }
+                },
+                error: function () {
+                    $(".page-loader-wrapper").hide();
+                    swal.fire('Hata!', 'Bir Hata Oluştu.', 'error');
+                }
+            });
+        }
+        else {
+            swal.fire('Hata!', 'Siparişe ait eşleşmeyen ürün kodları var.', 'error');
+        }
     }
     else {
-        alert("Sipariş zaten aktarılmış.");
+        swal.fire('Uyarı!', 'Sipariş zaten aktarılmış.', 'info');
     }
 }
 
@@ -262,6 +299,7 @@ function productMatch(masterCode, otherCode) {
             $('#orderDetailTable').DataTable().ajax.reload();
             $('#masterProductListModal').modal('hide');
             swal.fire('Tebrikler!', 'Ürünler Eşleştirildi.', 'success');
+            location.href = '/UpdateMasterProductsInCache';
         },
         error: function () {
             $(".page-loader-wrapper").hide();
