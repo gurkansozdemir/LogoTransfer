@@ -49,5 +49,12 @@ namespace LogoTransfer.Service.Services
             var menuItemDtos = _mapper.Map<List<MenuItemDto>>(menuItems.MenuItems);
             return CustomResponseDto<List<MenuItemDto>>.Success(HttpStatusCode.OK, menuItemDtos.OrderBy(x => x.RowNumber).ToList());
         }
+
+        public async Task<CustomResponseDto<List<UserDto>>> AllWithRoleAsync()
+        {
+            var users = await _userRepository.AllWithRoleAsync();
+            var userDtos = _mapper.Map<List<UserDto>>(users);
+            return CustomResponseDto<List<UserDto>>.Success(HttpStatusCode.OK, userDtos);
+        }
     }
 }

@@ -4,7 +4,8 @@ namespace LogoTransfer.Core.Repositories
 {
     public interface IUserRepository : IGenericRepository<User>
     {
-        Task<User> GetByUserNameAndPasswordAsync(User user);
-        Task<Role> GetMenuItemsAsync(Guid roleId);
+        public Task<User> GetByUserNameAndPasswordAsync(User user);
+        public Task<Role> GetMenuItemsAsync(Guid roleId);
+        public Task<List<User>> AllWithRoleAsync();
     }
 }

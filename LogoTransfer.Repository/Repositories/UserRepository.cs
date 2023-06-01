@@ -1,4 +1,5 @@
-﻿using LogoTransfer.Core.Entities;
+﻿using LogoTransfer.Core.DTOs.UserDTOs;
+using LogoTransfer.Core.Entities;
 using LogoTransfer.Core.Repositories;
 using Microsoft.EntityFrameworkCore;
 
@@ -26,5 +27,10 @@ namespace LogoTransfer.Repository.Repositories
         {
             return await _roledbset.Include(x => x.MenuItems).Where(x => x.Id == roleId).SingleOrDefaultAsync();
         }
+
+        public async Task<List<User>> AllWithRoleAsync()
+        {
+            return await _dbset.Include(x => x.Role).ToListAsync();
+        }    
     }
 }

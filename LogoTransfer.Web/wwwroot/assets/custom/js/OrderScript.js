@@ -305,7 +305,6 @@ function productMatch(masterCode, otherCode) {
             $(".page-loader-wrapper").hide();
         }
     });
-
 }
 
 //function startSelectedTransfer() {

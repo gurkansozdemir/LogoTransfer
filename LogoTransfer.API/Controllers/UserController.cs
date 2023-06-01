@@ -29,6 +29,12 @@ namespace LogoTransfer.API.Controllers
             return CreateActionResult(CustomResponseDto<List<UserDto>>.Success(HttpStatusCode.OK, userDtos));
         }
 
+        [HttpGet("[action]")]
+        public async Task<IActionResult> AllWithRole()
+        {
+            return CreateActionResult(await _userService.AllWithRoleAsync());
+        }
+
         [HttpPost("[action]")]
         public async Task<IActionResult> LogIn(SignInDto signInDto)
         {
@@ -51,7 +57,7 @@ namespace LogoTransfer.API.Controllers
             return CreateActionResult(CustomResponseDto<NoContentDto>.Success(HttpStatusCode.OK));
         }
 
-        [HttpPost("[action]")]
+        [HttpPost]
         public async Task<IActionResult> AddUser(InsertUserDto user)
         {
             User newUser = _mapper.Map<User>(user);

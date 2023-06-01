@@ -7,7 +7,8 @@ namespace LogoTransfer.Core.Services
 {
     public interface IUserService : IService<User>
     {
-        Task<CustomResponseDto<UserDto>> GetByUserNameAndPasswordAsync(SignInDto user);
-        Task<CustomResponseDto<List<MenuItemDto>>> GetMenuItemsAsync(Guid roleId);
+        public Task<CustomResponseDto<UserDto>> GetByUserNameAndPasswordAsync(SignInDto user);
+        public Task<CustomResponseDto<List<MenuItemDto>>> GetMenuItemsAsync(Guid roleId);
+        public Task<CustomResponseDto<List<UserDto>>> AllWithRoleAsync();
     }
 }
