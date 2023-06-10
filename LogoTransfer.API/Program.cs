@@ -69,7 +69,14 @@ builder.Services.AddHttpClient("LOGOAPI", x =>
     x.BaseAddress = new Uri(builder.Configuration.GetValue<string>("APIList:Logo"));
 });
 
+
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var dataContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    dataContext.Database.Migrate();
+}
 
 var loggerFactory = app.Services.GetService<ILoggerFactory>();
 loggerFactory.AddFile(builder.Configuration["Logging:LogFilePath"].ToString());
