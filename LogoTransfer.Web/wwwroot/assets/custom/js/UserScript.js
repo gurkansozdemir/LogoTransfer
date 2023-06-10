@@ -42,7 +42,7 @@
                               </a>
                               <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                                 <a class="dropdown-item" href="javascript:void()" onclick="deleteUser('` + full.id + `')">Sil</a>
-                                <a class="dropdown-item" href="javascript:void()" onclick="updateUser('` + full.id + `')">Güncelle</a>  
+                                <a class="dropdown-item" href="javascript:void()" onclick="updateUserGet('` + full.id + `')">Güncelle</a>  
                               </div>
                             </div>`;
                 }
@@ -70,7 +70,8 @@ function deleteUser(id) {
         }
     });
 }
-function updateUser(id) {
+
+function updateUserGet(id) {
     $.ajax({
         url: baseApiUrl + '/user/' + id,
         type: 'GET',
@@ -115,10 +116,9 @@ $("#createUserForm").on("submit", function (event) {
     });
 });
 
-$("updateUserForm").on("submit", function (event) {
-    event.preventDefault();
+function updateUserPost() {
     $(".page-loader-wrapper").show();
-    var data = convertFormToJSON($(this));
+    var data = convertFormToJSON($('#updateUserFormModal #updateUserForm'));
     var json = JSON.stringify(data);
 
     $.ajax({
@@ -137,7 +137,7 @@ $("updateUserForm").on("submit", function (event) {
             $(".page-loader-wrapper").hide();
         }
     });
-});
+}
 function convertFormToJSON(form) {
     const array = $(form).serializeArray();
     const json = {};

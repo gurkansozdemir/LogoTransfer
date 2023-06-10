@@ -65,6 +65,21 @@ namespace LogoTransfer.API.Controllers
             return CreateActionResult(CustomResponseDto<UserDto>.Success(HttpStatusCode.OK));
         }
 
+        [HttpPut]
+        public async Task<IActionResult> UpdateUser(InsertUserDto userDto)
+        {
+            //var updatedUser = await _userService.GetByIdAsync(user.Id);
+            //updatedUser.FirstName= user.FirstName;
+            //updatedUser.LastName= user.LastName;
+            //updatedUser.EMail = user.EMail;
+            //updatedUser.Password = user.Password;
+            //updatedUser.UpdatedOn = DateTime.Now;
+            //updatedUser.RoleId = user.RoleId;
+            var user = _mapper.Map<User>(userDto);
+            await _userService.UpdateAsync(user);
+            return CreateActionResult(CustomResponseDto<NoContentDto>.Success(HttpStatusCode.OK));
+        }
+
         [HttpGet("[action]/{id}")]
         public async Task<IActionResult> GetMenuItemsByRoleId(Guid id)
         {
