@@ -22,10 +22,14 @@
                 orderable: false
             },
             {
+                data: 'password',
+                orderable: false
+            },
+            {
                 data: 'role',
                 orderable: false,
                 "render": function (data, type, full, meta) {
-                    return full.role.name;
+                    return full.role.description;
                 }
             },
             {
@@ -38,8 +42,7 @@
                               </a>
                               <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                                 <a class="dropdown-item" href="javascript:void()" onclick="deleteUser('` + full.id + `')">Sil</a>
-                                <a class="dropdown-item" href="javascript:void()" onclick="deleteUser('` + full.id + `')">Güncelle</a>    
-                                <a class="dropdown-item" href="javascript:void()" onclick="deleteUser('` + full.id + `')">Şifre Sıfırla</a>    
+                                <a class="dropdown-item" href="javascript:void()" onclick="updateUser('` + full.id + `')">Güncelle</a>  
                               </div>
                             </div>`;
                 }
@@ -67,13 +70,33 @@ function deleteUser(id) {
         }
     });
 }
+function updateUser(id) {
+    $.ajax({
+        url: baseApiUrl + '/user/' + id,
+        type: 'GET',
+        contentType: 'application/json; charset=utf-8',
+        success: function (data) {
+            $('#updateUserFormModal #updateUserForm #id').val(data.data.id);
+            $('#updateUserFormModal #updateUserForm #firstName').val(data.data.firstName);
+            $('#updateUserFormModal #updateUserForm #lastName').val(data.data.lastName);
+            $('#updateUserFormModal #updateUserForm #userName').val(data.data.userName);
+            $('#updateUserFormModal #updateUserForm #eMail').val(data.data.eMail);
+            $('#updateUserFormModal #updateUserForm #password').val(data.data.password);
+            document.getElementById('roleId').value = data.data.roleId;
+            $('#updateUserFormModal').modal('show');
+        },
+        error: function () {
+
+        }
+    });
+}
 
 $("#createUserForm").on("submit", function (event) {
     event.preventDefault();
     $(".page-loader-wrapper").show();
     var data = convertFormToJSON($(this));
     var json = JSON.stringify(data);
-    
+
     $.ajax({
         url: baseApiUrl + '/user',
         type: 'POST',
@@ -92,6 +115,29 @@ $("#createUserForm").on("submit", function (event) {
     });
 });
 
+$("updateUserForm").on("submit", function (event) {
+    event.preventDefault();
+    $(".page-loader-wrapper").show();
+    var data = convertFormToJSON($(this));
+    var json = JSON.stringify(data);
+
+    $.ajax({
+        url: baseApiUrl + '/user',
+        type: 'PUT',
+        contentType: 'application/json; charset=utf-8',
+        dataType: "json",
+        data: json,
+        success: function (data) {
+            $(".page-loader-wrapper").hide();
+            $('#userTable').DataTable().ajax.reload();
+            $('#updateUserFormModal').modal('hide');
+            swal.fire('Tebrikler!', 'Kullanıcı Güncellendi.', 'success');
+        },
+        error: function () {
+            $(".page-loader-wrapper").hide();
+        }
+    });
+});
 function convertFormToJSON(form) {
     const array = $(form).serializeArray();
     const json = {};

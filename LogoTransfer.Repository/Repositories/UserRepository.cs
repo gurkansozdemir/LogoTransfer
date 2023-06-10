@@ -31,6 +31,6 @@ namespace LogoTransfer.Repository.Repositories
         public async Task<List<User>> AllWithRoleAsync()
         {
             return await _dbset.Include(x => x.Role).ToListAsync();
-        }    
+        }
     }
 }

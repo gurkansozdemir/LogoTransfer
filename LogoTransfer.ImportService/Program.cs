@@ -27,8 +27,6 @@ builder.Services.AddSingleton<CacheDataImportService>();
 builder.Services.AddSingleton<CacheData>();
 
 
-
-
 builder.Services.AddHttpClient("IdeaSoftAPI", x =>
 {
     x.BaseAddress = new Uri("https://formaram.myideasoft.com/");

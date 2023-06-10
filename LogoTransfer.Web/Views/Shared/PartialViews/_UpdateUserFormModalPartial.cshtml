@@ -1,0 +1,44 @@
+﻿<div class="modal fade" id="updateUserFormModal" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="title">Yeni Kullanıcı</h4>
+            </div>
+            <form id="updateUserForm">
+                <div class="modal-body">
+                    <div class="body">
+                        <div class="form-group form-float">
+                            <input type="hidden" class="form-control" placeholder="Ad" name="id" id="id" required="" aria-required="true">
+                        </div>
+                        <div class="form-group form-float">
+                            <input type="text" class="form-control" placeholder="Ad" name="firstName" id="firstName" required="" aria-required="true">
+                        </div>
+                        <div class="form-group form-float">
+                            <input type="text" class="form-control" placeholder="Soyad" name="lastName" id="lastName" required="" aria-required="true">
+                        </div>
+                        <div class="form-group form-float">
+                            <input type="text" class="form-control" placeholder="Kullanıcı Adı" name="userName" id="userName" required="" aria-required="true">
+                        </div>
+                        <div class="form-group form-float">
+                            <input type="email" class="form-control" placeholder="e-Posta" name="eMail" id="eMail" required="" aria-required="true">
+                        </div>
+                        <div class="form-group form-float">
+                            <input type="password" class="form-control" placeholder="Parola" name="password" id="password" required="" aria-required="true">
+                        </div>
+                        <div class="form-group form-float">
+                            <select class="form-control show-tick" name="roleId" id="roleId" required="">
+                                <option selected disabled value="">Seçiniz...</option>
+                                <option value="7e212bbe-3059-464f-be67-ec8064063f6b">Standart Kullanıcı</option>
+                                <option value="45456c11-f1f1-447b-a55d-c8f4110da3fe">Yönetici</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-default btn-round waves-effect">GÜNCELLE</button>
+                    <button type="button" class="btn btn-danger waves-effect" data-dismiss="modal">KAPAT</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

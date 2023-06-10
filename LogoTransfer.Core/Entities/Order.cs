@@ -10,6 +10,7 @@ namespace LogoTransfer.Core.Entities
         [ForeignKey("StoreId")]
         public Guid StoreId { get; set; }
         public string StoreName { get; set; }
+        public string? Status { get; set; }
         [Required]
         public string Number { get; set; }
         public DateTime Date_ { get; set; }

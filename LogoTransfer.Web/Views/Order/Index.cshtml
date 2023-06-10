@@ -38,6 +38,7 @@
                                         <th>Tarih</th>
                                         <th>Döviz Tipi</th>
                                         <th>Tutar</th>
+                                        <th>Sipariş Durumu</th>
                                         <th>Entegrasyon No</th>
                                         <th>Aktarım Durumu</th>
                                         <th></th>
@@ -51,3 +52,5 @@
         </div>
     </div>
 </div>
+
+@await Html.PartialAsync("../Shared/PartialViews/_OrderDetailPartial.cshtml")

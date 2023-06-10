@@ -11,8 +11,7 @@ function getOrders() {
         },
         select: {
             style: 'multi'
-        },
-        fixedColumns: true,
+        },        
         columnDefs: [
             { "className": "dt-center", "targets": "_all" },
             { "width": "20%", "targets": 1 },
@@ -47,6 +46,7 @@ function getOrders() {
             },
             { data: 'currTransaction' },
             { data: 'amount' },
+            { data: 'status' },
             { data: 'integration' },
             {
                 data: 'transferStatus',
@@ -96,7 +96,6 @@ function getOrderDetails(id) {
             contentType: 'application/json; charset=utf-8',
             dataType: "json"
         },
-        fixedColumns: true,
         columnDefs: [
             { "className": "dt-center", "targets": "_all" },
             { "width": "30%", "targets": 0 },
@@ -205,13 +204,13 @@ async function getMasterProducts() {
 
 $("body").on('click', '#orderTable tbody tr', function () {
     $(this).toggleClass("selected");
-});
+})
 
 function startThisTransfer(id) {
     var allData = $('#orderTable').DataTable().rows().data().toArray();
     let postData = [];
     var selectedData = allData.filter(x => x.transferStatus == false && x.id == id);
-    var checkedData = selectedData.filter(x => x.transactions.some(y => y.masterCode != ""));
+    var checkedData = selectedData.filter(x => x.transactions.every(y => y.masterCode != ""));
 
     if (selectedData.length != 0) {
 
@@ -306,59 +305,3 @@ function productMatch(masterCode, otherCode) {
         }
     });
 }
-
-//function startSelectedTransfer() {
-//    postData = $('#orderTable').DataTable().rows('.selected').data().toArray();
-//    var myJsonString = JSON.stringify(postData);
-//    $.ajax({
-//        url: baseApiUrl + '/order/orderImport',
-//        type: 'POST',
-//        contentType: 'application/json; charset=utf-8',
-//        dataType: "json",
-//        data: myJsonString,
-//        success: function () {
-
-//        },
-//        error: function () {
-
-//        }
-//    });
-//}
-
-//function startAllTransfer() {
-//    var allData = $('#orderTable').DataTable().rows().data().toArray();
-//    allData = allData.filter(x => x.transferStatus == false);
-//    var postData = [];
-//    for (var i = 0; i < allData.length; i++) {
-//        data.number = allData[i].number;
-//        data.date_ = allData[i].date_;
-//        data.auxilCode = allData[i].auxilCode;
-//        data.email = allData[i].email;
-//        data.phoneNumber = allData[i].phoneNumber;
-//        data.customerName = allData[i].customerName;
-//        data.customerSurName = allData[i].customerSurName;
-//        data.rcXrate = allData[i].rcXrate;
-//        data.currTransaction = allData[i].currTransaction;
-//        data.tcXrate = allData[i].tcXrate;
-//        data.transactions = allData[i].transactions;
-
-//        postData.push(data);
-//    }
-//    var json = JSON.stringify(postData);
-
-//    $.ajax({
-//        url: baseApiUrl + '/order/orderImport',
-//        type: 'POST',
-//        contentType: 'application/json; charset=utf-8',
-//        dataType: "json",
-//        data: json,
-//        success: function (data) {
-//            alert(data.data[0].returnNumber);
-//            console.log(data.data.returnError);
-//            $('#orderTable').DataTable().ajax.reload();
-//        },
-//        error: function () {
-
-//        }
-//    });
-//}

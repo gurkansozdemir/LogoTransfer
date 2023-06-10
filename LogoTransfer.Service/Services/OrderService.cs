@@ -54,6 +54,12 @@ namespace LogoTransfer.Service.Services
             return CustomResponseDto<List<OrderDto>>.Success(HttpStatusCode.OK, orderDtos);
         }
 
+        public async Task<string> GetLastPullTimeAsync()
+        {
+            var result = await _orderRepository.GetLastPullTimeAsync();
+            return result.ToString("yyyy-MM-dd hh:mm:ss");
+        }
+
         public async Task<CustomResponseDto<List<OrderTransactionDto>>> GetTransactionsByOrderId(Guid orderId)
         {
             var transactions = await _orderRepository.GetTransactionsByOrderId(orderId);
@@ -91,6 +97,11 @@ namespace LogoTransfer.Service.Services
             }
 
             return result.Data;
+        }
+
+        public async Task OrderLog(OrderLog log)
+        {
+            await _orderRepository.OrderLog(log);
         }
 
         public async Task SetIntegratedNo(OrderImportResponseDto importedOrder)

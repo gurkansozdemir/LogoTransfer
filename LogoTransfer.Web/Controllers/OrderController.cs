@@ -1,9 +1,11 @@
 ﻿using LogoTransfer.Web.Caching;
 using LogoTransfer.Web.Filters;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LogoTransfer.Web.Controllers
 {
+    [Authorize]
     [SessionFilter]
     public class OrderController : Controller
     {

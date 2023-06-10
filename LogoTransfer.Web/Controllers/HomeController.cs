@@ -6,7 +6,7 @@ using System.Text.Json;
 
 namespace LogoTransfer.Web.Controllers
 {
-    [Authorize(Roles = "Supervisor")]
+    [Authorize]
     [SessionFilter]
     public class HomeController : Controller
     {

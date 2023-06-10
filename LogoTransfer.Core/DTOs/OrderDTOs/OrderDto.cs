@@ -7,6 +7,7 @@
         public string StoreName { get; set; }
         public string OrderNo { get; set; }
         public string Number { get; set; }
+        public string? Status { get; set; }
         public DateTime Date_ { get; set; }
         public string AuxilCode { get; set; }
         public string Email { get; set; }
