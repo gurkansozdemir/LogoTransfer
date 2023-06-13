@@ -298,7 +298,7 @@ function productMatch(masterCode, otherCode) {
             $('#orderDetailTable').DataTable().ajax.reload();
             $('#masterProductListModal').modal('hide');
             swal.fire('Tebrikler!', 'Ürünler Eşleştirildi.', 'success');
-            location.href = '/UpdateMasterProductsInCache';
+            location.href = location.url.origin + '/Order/UpdateMasterProductsInCache';
         },
         error: function () {
             $(".page-loader-wrapper").hide();

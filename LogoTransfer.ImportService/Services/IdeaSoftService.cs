@@ -27,9 +27,7 @@ namespace LogoTransfer.ImportService.Services
             //_timer.AutoReset = true;
             //_timer.Enabled = true;
             //_timer.Elapsed += SaveOrdersAsync;
-            using StreamReader reader = new(Environment.CurrentDirectory + "\\appsettings.json");
-            var json = reader.ReadToEnd();
-            _orderStatus = JsonSerializer.Deserialize<Dictionary<string, string>>(json);
+            _orderStatus = JsonSerializer.Deserialize<Dictionary<string, string>>("{\"waiting_for_approval\": \"Onay Bekliyor\",\"approved\": \"Onaylandı\",\"fulfilled\": \"Kargoya Verildi\",\"cancelled\": \"İptal Edildi\",\"delivered\": \"Teslim Edildi\",\"on_accumulation\": \"Tedarik Sürecinde\",\"waiting_for_payment\": \"Ödeme Bekleniyor\",\"being_prepared\": \"Hazırlanıyor\",\"refunded\": \"İade Edildi\",\"personal_status_1\": \"Kişisel Sipariş Durumu 1\",\"personal_status_2\": \"Kişisel Sipariş Durumu 2\",\"personal_status_3\": \"Kişisel Sipariş Durumu 3\",\"deleted\": \"Silindi\"}");
         }
         public async void SaveOrdersAsync(/*Object source, ElapsedEventArgs e*/)
         {
@@ -102,10 +100,12 @@ namespace LogoTransfer.ImportService.Services
                 {
                     Console.WriteLine("Bu Tarihten İtibaren Oluşturulmuş Sipariş Bulunamadı:" + lastTime);
                 }
+                Console.ReadKey();
             }
             catch (Exception ex)
             {
                 Console.WriteLine("Siparişler Aktarılırken Hata Oluştur: " + ex.Message);
+                Console.ReadKey();
                 await _orderService.OrderLog(new OrderLog()
                 {
                     ImportedOrderCount = baseOrders.Count,

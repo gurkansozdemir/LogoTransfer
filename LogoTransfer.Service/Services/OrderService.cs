@@ -57,7 +57,9 @@ namespace LogoTransfer.Service.Services
         public async Task<string> GetLastPullTimeAsync()
         {
             var result = await _orderRepository.GetLastPullTimeAsync();
-            return result.ToString("yyyy-MM-dd hh:mm:ss");
+            string resultStr = result.ToString("yyyy-MM-ddHH:mm:ss");
+            _logger.LogInformation("Data: {lastOrder} and convert string {string}", result, resultStr);
+            return resultStr;
         }
 
         public async Task<CustomResponseDto<List<OrderTransactionDto>>> GetTransactionsByOrderId(Guid orderId)

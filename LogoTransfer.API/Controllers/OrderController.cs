@@ -52,5 +52,12 @@ namespace LogoTransfer.API.Controllers
             _logger.LogInformation("{time}: {action} end with response data: {responseData}", DateTime.Now, nameof(OrderImport), JsonSerializer.Serialize(response));
             return CreateActionResult(CustomResponseDto<List<OrderImportResponseDto>>.Success(HttpStatusCode.OK, response));
         }
+
+        [HttpGet("[action]")]
+        public async Task<IActionResult> GetLastPullTime()
+        {
+            return new ObjectResult(await _orderService.GetLastPullTimeAsync());
+        }
+        
     }
 }

@@ -33,12 +33,12 @@ builder.Services.AddHttpClient("IdeaSoftAPI", x =>
 });
 builder.Services.AddHttpClient("LogoTransferAPI", x =>
 {
-    x.BaseAddress = new Uri("http://89.19.7.130:81/api/api/");
+    x.BaseAddress = new Uri("http://10.34.68.2:81/api/");
 });
 
 builder.Services.AddDbContext<AppDbContext>(x =>
 {
-    x.UseSqlServer("Server=94.73.144.17; Database=u8952596_LogoIN; User Id=u8952596_LogoUS; Password=v9P@z7b_W:=jG39U; TrustServerCertificate=True", options =>
+    x.UseSqlServer("Server=78.189.111.118; Database=formaramLogo; User Id=sa; Password=Forma@486%; TrustServerCertificate=True;", options =>
     {
         options.MigrationsAssembly(Assembly.GetAssembly(typeof(AppDbContext)).GetName().Name);
         options.EnableRetryOnFailure();
@@ -50,4 +50,4 @@ var app = builder.Build();
 await app.Services.GetService<CacheDataImportService>().StartAsync();
 app.Services.GetService<IdeaSoftService>().SaveOrdersAsync();
 
-app.Run();
+app.Run("http://10.34.68.2:82");
