@@ -34,9 +34,10 @@ namespace LogoTransfer.Service.Services
             string clientSecret = _configuration.GetSection("IdeaSoftClient:clientSecret").Value;
             string redirectUrl = _configuration.GetSection("IdeaSoftClient:redirectUrl").Value;
 
-            var response = await _httpClient.GetFromJsonAsync<TokenDto>(@$"oauth/v2/token?grant_type=authorization_code&client_id={clientId}&client_secret={clientSecret}&code={model.Code}&redirect_uri={redirectUrl}");
-            _cacheData.Token = response.Access_Token;
-            return CustomResponseDto<TokenDto>.Success(HttpStatusCode.OK, response);
+            var response = await _httpClient.GetFromJsonAsync<TokenDto>(@$"oauth/v2/token?grant_type=authorization_code&client_id={clientId}&client_secret={clientSecret}&code={model.Code}&redirect_uri={redirectUrl}");       
+            var refreshResponse = await _httpClient.GetFromJsonAsync<TokenDto>(@$"oauth/v2/token?grant_type=refresh_token&client_id={clientId}&client_secret={clientSecret}&refresh_token{response.Refresh_Token}");
+            _cacheData.Token = refreshResponse.Access_Token;
+            return CustomResponseDto<TokenDto>.Success(HttpStatusCode.OK, refreshResponse);
         }
 
         public async Task<CustomResponseDto<LogoUserDto>> GetLogoUserInfo()

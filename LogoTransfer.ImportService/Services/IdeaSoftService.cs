@@ -4,6 +4,7 @@ using LogoTransfer.Service.Caching;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text.Json;
+using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
 
 namespace LogoTransfer.ImportService.Services
@@ -37,8 +38,8 @@ namespace LogoTransfer.ImportService.Services
                 string lastTime = await _orderService.GetLastPullTimeAsync();
                 //string lastTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");    
                 var orders = await _httpClient.GetFromJsonAsync<List<Core.DTOs.IdeaSoft.Order>>($"api/orders?startDate=" + lastTime);
-                var ordersUpdated = await _httpClient.GetFromJsonAsync<List<Core.DTOs.IdeaSoft.Order>>($"api/orders?startUpdatedAt=" + lastTime);
-                orders.AddRange(ordersUpdated);
+                //var ordersUpdated = await _httpClient.GetFromJsonAsync<List<Core.DTOs.IdeaSoft.Order>>($"api/orders?startUpdatedAt=" + lastTime);
+                //orders.AddRange(ordersUpdated);
 
                 int i = 1;
                 foreach (Core.DTOs.IdeaSoft.Order order in orders)

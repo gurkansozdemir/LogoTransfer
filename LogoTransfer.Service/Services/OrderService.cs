@@ -57,7 +57,7 @@ namespace LogoTransfer.Service.Services
         public async Task<string> GetLastPullTimeAsync()
         {
             var result = await _orderRepository.GetLastPullTimeAsync();
-            string resultStr = result.ToString("yyyy-MM-dd HH:mm:ss tt");
+            string resultStr = result.ToString("yyyy-MM-dd HH:mm:ss");
             _logger.LogInformation("Data: {lastOrder} and convert string {string}", result, resultStr);
             return resultStr;
         }
@@ -118,17 +118,14 @@ namespace LogoTransfer.Service.Services
 
         public async Task AddOrUpdateAsync(List<Order> orders)
         {
-            orders.ForEach(async x =>
+            foreach (var order in orders)
             {
-                if (await _orderRepository.CheckOrderNumberAsync(x.Number))
+                if (!await _orderRepository.CheckOrderNumberAsync(order.Number))
                 {
-                    _orderRepository.Update(x);
+                    await _orderRepository.AddAsync(order);
                 }
-                else
-                {
-                    await _orderRepository.AddAsync(x);
-                }
-            });
+            }
+            await _unitOfWork.CommitAsync();
         }
     }
 }
