@@ -14,32 +14,23 @@ namespace LogoTransfer.ImportService.Services
         private readonly HttpClient _httpClient;
         private readonly IOrderService _orderService;
         private readonly CacheDataImportService _cacheData;
-        private static System.Timers.Timer _timer;
         private readonly Dictionary<string, string> _orderStatus;
 
         public IdeaSoftService(IOrderService orderService, IHttpClientFactory httpClient, CacheDataImportService cacheData)
         {
-
             _httpClient = httpClient.CreateClient("IdeaSoftAPI");
             _orderService = orderService;
             _cacheData = cacheData;
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _cacheData.Token);
-            //_timer = new System.Timers.Timer(1000);
-            //_timer.AutoReset = true;
-            //_timer.Enabled = true;
-            //_timer.Elapsed += SaveOrdersAsync;
             _orderStatus = JsonSerializer.Deserialize<Dictionary<string, string>>("{\"waiting_for_approval\": \"Onay Bekliyor\",\"approved\": \"Onaylandı\",\"fulfilled\": \"Kargoya Verildi\",\"cancelled\": \"İptal Edildi\",\"delivered\": \"Teslim Edildi\",\"on_accumulation\": \"Tedarik Sürecinde\",\"waiting_for_payment\": \"Ödeme Bekleniyor\",\"being_prepared\": \"Hazırlanıyor\",\"refunded\": \"İade Edildi\",\"personal_status_1\": \"Kişisel Sipariş Durumu 1\",\"personal_status_2\": \"Kişisel Sipariş Durumu 2\",\"personal_status_3\": \"Kişisel Sipariş Durumu 3\",\"deleted\": \"Silindi\"}");
         }
-        public async void SaveOrdersAsync(/*Object source, ElapsedEventArgs e*/)
+        public async void SaveOrdersAsync()
         {
             List<Order> baseOrders = new List<Order>();
             try
             {
-                string lastTime = await _orderService.GetLastPullTimeAsync();
-                //string lastTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");    
+                string lastTime = await _orderService.GetLastPullTimeAsync();  
                 var orders = await _httpClient.GetFromJsonAsync<List<Core.DTOs.IdeaSoft.Order>>($"api/orders?startDate=" + lastTime);
-                //var ordersUpdated = await _httpClient.GetFromJsonAsync<List<Core.DTOs.IdeaSoft.Order>>($"api/orders?startUpdatedAt=" + lastTime);
-                //orders.AddRange(ordersUpdated);
 
                 int i = 1;
                 foreach (Core.DTOs.IdeaSoft.Order order in orders)
