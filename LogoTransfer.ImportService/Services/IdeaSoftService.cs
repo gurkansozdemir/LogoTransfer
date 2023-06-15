@@ -35,8 +35,11 @@ namespace LogoTransfer.ImportService.Services
             try
             {
                 string lastTime = await _orderService.GetLastPullTimeAsync();
-                //lastTime = DateTime.MinValue.ToString("yyyy-MM-dd hh:mm:ss");    
+                //string lastTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");    
                 var orders = await _httpClient.GetFromJsonAsync<List<Core.DTOs.IdeaSoft.Order>>($"api/orders?startDate=" + lastTime);
+                var ordersUpdated = await _httpClient.GetFromJsonAsync<List<Core.DTOs.IdeaSoft.Order>>($"api/orders?startUpdatedAt=" + lastTime);
+                orders.AddRange(ordersUpdated);
+
                 int i = 1;
                 foreach (Core.DTOs.IdeaSoft.Order order in orders)
                 {
@@ -87,7 +90,7 @@ namespace LogoTransfer.ImportService.Services
 
                 if (baseOrders.Count != 0)
                 {
-                    await _orderService.AddRangeAsync(baseOrders);
+                    await _orderService.AddOrUpdateAsync(baseOrders);
                     Console.WriteLine("Siparişler Aktarıldı");
                     await _orderService.OrderLog(new OrderLog()
                     {

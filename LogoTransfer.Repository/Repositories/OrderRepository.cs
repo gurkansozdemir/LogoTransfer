@@ -36,5 +36,10 @@ namespace LogoTransfer.Repository.Repositories
             await _dbSetOrderLog.AddAsync(log);
             await _context.SaveChangesAsync();
         }
+
+        public async Task<bool> CheckOrderNumberAsync(string number)
+        {
+            return await _dbSet.AnyAsync(x => x.Number == number);
+        }
     }
 }

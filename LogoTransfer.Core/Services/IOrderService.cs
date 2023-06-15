@@ -12,5 +12,6 @@ namespace LogoTransfer.Core.Services
         public Task<CustomResponseDto<List<OrderDto>>> GetAllWithTransactions();
         public Task OrderLog(OrderLog log);
         public Task<string> GetLastPullTimeAsync();
+        public Task AddOrUpdateAsync(List<Order> orders);
     }
 }
