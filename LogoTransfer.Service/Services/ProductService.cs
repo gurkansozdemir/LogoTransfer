@@ -57,5 +57,12 @@ namespace LogoTransfer.Service.Services
             _cacheData.ProductMatches = productMatchDtos;
             return CustomResponseDto<List<ProductMatchDto>>.Success(HttpStatusCode.OK, productMatchDtos);
         }
+
+        public async Task<CustomResponseDto<ProductMatchDto>> GetProductByCodeAsync(string masterCode)
+        {
+            var result = await _productRepository.GetProductByCodeAsync(masterCode);
+            var response = _mapper.Map<ProductMatchDto>(result);
+            return CustomResponseDto<ProductMatchDto>.Success(HttpStatusCode.OK, response);
+        }
     }
 }

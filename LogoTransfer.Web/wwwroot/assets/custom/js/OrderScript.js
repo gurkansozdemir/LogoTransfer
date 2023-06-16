@@ -11,7 +11,7 @@ function getOrders() {
         },
         select: {
             style: 'multi'
-        },        
+        },
         columnDefs: [
             { "className": "dt-center", "targets": "_all" },
             { "width": "20%", "targets": 1 },
@@ -139,7 +139,7 @@ function getOrderDetails(id) {
                 "render": function (data, type, full, meta) {
                     if (full.isProductMatch) {
                         return `<button type="button" class="btn btn-primary disabled">Eşleştir</button>`;
-                    } 
+                    }
                     return `<button type="button" class="btn btn-primary" onclick="openMasterProductListModal('` + full.otherCode + `')">Eşleştir</button>`;
                 }
             }
@@ -159,7 +159,7 @@ async function openMasterProductListModal(otherCode) {
         setTimeout(function () {
             $(".page-loader-wrapper").hide();
         }, 1000);
-    } 
+    }
     $('#masterProductListModal').modal('show');
 }
 
@@ -175,7 +175,8 @@ async function getMasterProducts() {
             dataType: "json"
         },
         "columnDefs": [
-            { "className": "dt-center", "targets": "_all" }
+            { "className": "dt-center", "targets": "_all" },
+            { "width": "50%", "targets": 0 },
         ],
         columns: [
             {
@@ -188,7 +189,7 @@ async function getMasterProducts() {
                 data: 'process',
                 orderable: false,
                 "render": function (data, type, full, meta) {
-                    return `<a class="btn btn-success" onclick="productMatch('` + full.code + `','` + $('#masterProductListModal #otherCode').val() + `')">Seç</a>`;
+                    return `<a class="btn btn-success" onclick="productMatch('` + full.code + `')">Seç</a>`;
                 }
             }
         ],
@@ -278,7 +279,43 @@ function startThisTransfer(id) {
     }
 }
 
-function productMatch(masterCode, otherCode) {
+function productMatch(masterCode) {
+    otherCode = $('#masterProductListModal #otherCode').val();
+    $(".page-loader-wrapper").show();
+    $.ajax({
+        url: baseApiUrl + '/product/GetProductByCode/' + masterCode,
+        type: 'POST',
+        contentType: 'application/json; charset=utf-8',
+        dataType: "json",
+        success: function (data) {
+            if (data.data.otherCode != null) {
+                $(".page-loader-wrapper").hide();
+                Swal.fire({
+                    title: 'Emin misiniz?',
+                    text: "Seçmiş olduğunuz kod daha önce" + data.data.otherCode + " kodu ile eşleştirilmiş. Tüm siparişlerdeki ilgili ürün kodu güncellenecek.",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        productAcceptMatch(masterCode, otherCode);
+                    }
+                })
+            }
+            else {
+                productAcceptMatch(masterCode, otherCode);
+            }
+        },
+        error: function () {
+            $(".page-loader-wrapper").hide();
+        }
+    });
+}
+
+function productAcceptMatch(masterCode, otherCode) {
+    $(".page-loader-wrapper").show();
     let productMathingData = {
         code: masterCode,
         otherCode: otherCode
@@ -298,7 +335,14 @@ function productMatch(masterCode, otherCode) {
             $('#orderDetailTable').DataTable().ajax.reload();
             $('#masterProductListModal').modal('hide');
             swal.fire('Tebrikler!', 'Ürünler Eşleştirildi.', 'success');
-            location.href = location.url.origin + '/Order/UpdateMasterProductsInCache';
+            $.ajax({
+                url: location.origin + '/Order/UpdateMasterProductsInCache',
+                type: 'GET',
+                contentType: 'application/json; charset=utf-8'
+                //success: function () {
+                //    isRun = false;
+                //}
+            });
         },
         error: function () {
             $(".page-loader-wrapper").hide();

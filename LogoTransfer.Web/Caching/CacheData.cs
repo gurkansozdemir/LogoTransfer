@@ -51,11 +51,8 @@ namespace LogoTransfer.Web.Caching
 
         public async Task MasterProductSaveCache()
         {
-            if (MasterProducts == null)
-            {
-                var response = await _httpClient.GetFromJsonAsync<ResponseModel<List<MasterProductModel>>>($"product/getProductMatchesFromCache");
-                MasterProducts = response.Data;
-            }
+            var response = await _httpClient.GetFromJsonAsync<ResponseModel<List<MasterProductModel>>>($"product/getProductMatchesFromCache");
+            MasterProducts = response.Data;
         }
 
         public static List<MasterProductModel> GetMasterProducts()

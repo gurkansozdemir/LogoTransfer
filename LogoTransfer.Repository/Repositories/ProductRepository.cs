@@ -1,4 +1,6 @@
-﻿using LogoTransfer.Core.Entities;
+﻿using LogoTransfer.Core.DTOs.ProductDTOs;
+using LogoTransfer.Core.DTOs;
+using LogoTransfer.Core.Entities;
 using LogoTransfer.Core.Repositories;
 using LogoTransfer.Core.UnitOfWorks;
 using Microsoft.EntityFrameworkCore;
@@ -44,6 +46,11 @@ namespace LogoTransfer.Repository.Repositories
         public async Task<List<ProductMatching>> GetProductMatchesAsync()
         {
             return await _dbsetProductMatch.ToListAsync();
+        }
+
+        public async Task<ProductMatching> GetProductByCodeAsync(string masterCode)
+        {
+            return await _dbsetProductMatch.Where(x => x.Code == masterCode).FirstOrDefaultAsync();
         }
     }
 }

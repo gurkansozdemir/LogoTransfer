@@ -50,6 +50,14 @@ namespace LogoTransfer.API.Controllers
             return CreateActionResult(reulst);
         }
 
+        [HttpPost("[action]/{masterCode}")]
+        public async Task<IActionResult> GetProductByCode(string masterCode)
+        {
+            _logger.LogInformation("{time}: {action} run", DateTime.Now, nameof(GetProductByCode));
+            var reulst = await _productService.GetProductByCodeAsync(masterCode);
 
+            _logger.LogInformation("{time}: {action} end", DateTime.Now, nameof(GetProductByCode));
+            return CreateActionResult(reulst);
+        }
     }
 }

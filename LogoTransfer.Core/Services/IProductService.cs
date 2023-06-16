@@ -10,5 +10,6 @@ namespace LogoTransfer.Core.Services
         public Task MatchAsync(ProductMatchDto productMatch);
         public Task<CustomResponseDto<List<ProductMatchDto>>> GetProductMatchesFromCacheAsync();
         public Task ProductMatchesSaveCacheAsync();
+        public Task<CustomResponseDto<ProductMatchDto>> GetProductByCodeAsync(string masterCode);
     }
 }
