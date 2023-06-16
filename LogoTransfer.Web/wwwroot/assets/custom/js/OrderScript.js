@@ -292,12 +292,13 @@ function productMatch(masterCode) {
                 $(".page-loader-wrapper").hide();
                 Swal.fire({
                     title: 'Emin misiniz?',
-                    text: "Seçmiş olduğunuz kod daha önce" + data.data.otherCode + " kodu ile eşleştirilmiş. Tüm siparişlerdeki ilgili ürün kodu güncellenecek.",
+                    text: "Seçmiş olduğunuz kod daha önce '" + data.data.otherCode + "' kodu ile eşleştirilmiş. Tüm siparişlerdeki ilgili ürün kodu güncellenecek.",
                     icon: 'warning',
                     showCancelButton: true,
                     confirmButtonColor: '#3085d6',
                     cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes, delete it!'
+                    confirmButtonText: 'Devam Et!',
+                    cancelButtonText: 'İptal Et'
                 }).then((result) => {
                     if (result.isConfirmed) {
                         productAcceptMatch(masterCode, otherCode);
