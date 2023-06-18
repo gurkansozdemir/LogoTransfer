@@ -1,4 +1,6 @@
-﻿@{
+﻿@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
+@{
     var currentUser = JsonSerializer.Deserialize<UserModel>(Context.Session.GetString("CurrentUser"));
 }
 <!doctype html>
@@ -22,13 +24,15 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/select/1.6.2/css/select.dataTables.min.css">
     <link rel="stylesheet" href="https://datatables.net/release-datatables/extensions/FixedColumns/css/fixedColumns.dataTables.css">
     <!-- Custom Css -->
-    <link  rel="stylesheet" href="~/assets/custom/css/CustomStyle.css">
-    <link  rel="stylesheet" href="~/assets/css/style.min.css">
+    <link rel="stylesheet" href="~/assets/custom/css/CustomStyle.css">
+    <link rel="stylesheet" href="~/assets/css/style.min.css">
 
     @RenderSection("headArea",false)
-    @*<script>var baseApiUrl = "http://89.19.7.130:81/api/api";</script>*@
-    <script>var baseApiUrl = "https://localhost:7096/api";</script>
-    
+    <script>
+        // var baseApiUrl = @Configuration.GetSection("APIList").GetSection("Base").Value.Remove(Configuration.GetSection("APIList").GetSection("Base").Value.Length - 1)
+        var baseApiUrl = "http://10.34.68.2:81/api"
+    </script>
+
 </head>
 
 <body class="theme-blush right_icon_toggle" style="zoom:75%;">
@@ -77,7 +81,6 @@
     <!-- Jquery Core Js -->
     <script src="~/assets/bundles/libscripts.bundle.js"></script> <!-- Lib Scripts Plugin Js -->
     <script src="~/assets/bundles/vendorscripts.bundle.js"></script> <!-- Lib Scripts Plugin Js -->
-
     <!-- Jquery DataTable Plugin Js -->
     <script src="~/assets/bundles/datatablescripts.bundle.js"></script>
     <script src="https://datatables.net/release-datatables/extensions/FixedColumns/js/dataTables.fixedColumns.js"></script>
