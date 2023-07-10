@@ -80,6 +80,8 @@ namespace LogoTransfer.Service.Services
         public async Task<List<OrderImportResponseDto>> OrderImportAsync(List<OrderImportDto> orderImports)
         {
             var list = orderImports.Where(x => x.Transactions.Any(t => t.MasterCode != "")).ToList();
+            _logger.LogInformation("{time}: {action}: {requestData}", DateTime.Now, nameof(OrderImportAsync), JsonSerializer.Serialize(list));
+            
             var response = await _httpClient.PostAsJsonAsync("order", list);
             _logger.LogInformation("{time}: {action} end with httpclient response: {responseData}", DateTime.Now, nameof(OrderImportAsync), JsonSerializer.Serialize(response));
 
@@ -136,7 +138,10 @@ namespace LogoTransfer.Service.Services
 
         public async Task AutoImportAsync()
         {
+            _logger.LogInformation("Start {action}", nameof(AutoImportAsync));
             var orders = await _orderRepository.GetNotImportedWithTransactions();
+            //_logger.LogInformation("Data: {list}", JsonSerializer.Serialize(orders));
+
             var orderDtos = _mapper.Map<List<OrderImportDto>>(orders);
             if (_cacheData.ProductMatches == null)
             {
@@ -152,6 +157,7 @@ namespace LogoTransfer.Service.Services
             });
 
             var orderableData = orderDtos.Where(x => x.Transactions.All(t => t.IsProductMatch)).ToList();
+            _logger.LogInformation("Data Orderable: {list}", JsonSerializer.Serialize(orderableData));
             await OrderImportAsync(orderableData);
         }
     }

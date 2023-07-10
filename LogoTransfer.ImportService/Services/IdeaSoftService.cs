@@ -89,13 +89,13 @@ namespace LogoTransfer.ImportService.Services
                         ImportedOrderCount = baseOrders.Count,
                         RunTime = DateTime.Now,
                         Status = true
-                    });
-                    await _orderService.AutoImportAsync();
+                    }); 
                 }
                 else
                 {
                     Console.WriteLine("Bu Tarihten İtibaren Oluşturulmuş Sipariş Bulunamadı:" + lastTime);
                 }
+                await _orderService.AutoImportAsync();
                 Console.ReadKey();
             }
             catch (Exception ex)

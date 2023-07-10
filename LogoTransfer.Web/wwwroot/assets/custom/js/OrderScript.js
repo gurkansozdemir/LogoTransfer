@@ -234,7 +234,7 @@ function startThisTransfer(id) {
                 orderTransactionData.masterCode = checkedData[0].transactions[i].masterCode;
                 orderTransactionData.quantity = checkedData[0].transactions[i].quantity;
                 orderTransactionData.price = checkedData[0].transactions[i].price;
-                orderTransactionData.transDescripntion = checkedData[0].transactions[i].transDescription;
+                orderTransactionData.transDescription = checkedData[0].transactions[i].transDescription;
                 orderTransactionData.unitCode = checkedData[0].transactions[i].unitCode;
                 orderTransactionData.unitConv1 = checkedData[0].transactions[i].unitConv1;
                 orderTransactionData.unitConv2 = checkedData[0].transactions[i].unitConv2;

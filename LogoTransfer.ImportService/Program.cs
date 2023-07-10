@@ -10,6 +10,7 @@ using LogoTransfer.Service.Mapping;
 using LogoTransfer.Service.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 
@@ -32,12 +33,16 @@ builder.Services.AddHttpClient("IdeaSoftAPI", x =>
 });
 builder.Services.AddHttpClient("LogoTransferAPI", x =>
 {
-    x.BaseAddress = new Uri("https://localhost:7096/api/");
+    x.BaseAddress = new Uri("http://10.34.68.2:34788/api/");
+});
+builder.Services.AddHttpClient("LOGOAPI", x =>
+{
+    x.BaseAddress = new Uri("http://78.189.111.118:34801/api/");
 });
 
 builder.Services.AddDbContext<AppDbContext>(x =>
 {
-    x.UseSqlServer("Server=94.73.144.17; Database=u8952596_LogoIN; User Id=u8952596_LogoUS; Password=v9P@z7b_W:=jG39U; TrustServerCertificate=True", options =>
+    x.UseSqlServer("Server=78.189.111.118; Database=formaramLogo; User Id=sa; Password=Forma@486%; TrustServerCertificate=True;", options =>
     {
         options.MigrationsAssembly(Assembly.GetAssembly(typeof(AppDbContext)).GetName().Name);
         options.EnableRetryOnFailure();
@@ -48,4 +53,4 @@ var app = builder.Build();
 
 app.Services.GetService<IdeaSoftService>().SaveOrdersAsync();
 
-app.Run();
+app.Run("http://10.34.68.2:34789");

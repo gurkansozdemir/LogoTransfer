@@ -9,11 +9,13 @@ namespace LogoTransfer.Web.Controllers
     [SessionFilter]
     public class OrderController : Controller
     {
+        private readonly HttpClient _httpClient;
         private readonly CacheData _cacheData;
 
-        public OrderController(CacheData cacheData)
+        public OrderController(CacheData cacheData, IHttpClientFactory httpClient)
         {
             _cacheData = cacheData;
+            _httpClient = httpClient.CreateClient("BaseAPI");
         }
 
         [HttpGet]
@@ -33,6 +35,14 @@ namespace LogoTransfer.Web.Controllers
         public async void UpdateMasterProductsInCache()
         {
             await _cacheData.MasterProductSaveCache();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> UpdateMasterProductsInCacheAll()
+        {
+            await _httpClient.GetAsync("Product/ClearProductMatchesFromCache");
+            await _cacheData.MasterProductSaveCache();
+            return RedirectToAction("Index");
         }
     }
 }

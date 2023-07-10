@@ -11,7 +11,7 @@ namespace LogoTransfer.Repository.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.RenameColumn(
-                name: "TransDescripntion",
+                name: "TransDescription",
                 table: "OrderTransactions",
                 newName: "TransDescription");
 
@@ -43,7 +43,7 @@ namespace LogoTransfer.Repository.Migrations
             migrationBuilder.RenameColumn(
                 name: "TransDescription",
                 table: "OrderTransactions",
-                newName: "TransDescripntion");
+                newName: "TransDescription");
 
             migrationBuilder.UpdateData(
                 table: "Roles",

@@ -59,5 +59,12 @@ namespace LogoTransfer.API.Controllers
             _logger.LogInformation("{time}: {action} end", DateTime.Now, nameof(GetProductByCode));
             return CreateActionResult(reulst);
         }
+
+        [HttpGet("[action]")]
+        public async Task<IActionResult> ClearProductMatchesFromCache()
+        {
+            _cacheData.ProductMatches = null;
+            return new ObjectResult(null);
+        }
     }
 }

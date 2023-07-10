@@ -30,7 +30,7 @@
     @RenderSection("headArea",false)
     <script>
         // var baseApiUrl = @Configuration.GetSection("APIList").GetSection("Base").Value.Remove(Configuration.GetSection("APIList").GetSection("Base").Value.Length - 1)
-        var baseApiUrl = "http://10.34.68.2:81/api"
+        var baseApiUrl = "http://10.34.68.2:34788/api"
     </script>
 
 </head>
@@ -65,7 +65,7 @@
                         </div>
                     </div>
                 </li>
-                <li class="active open"><a href="/Home/Index"><i class="zmdi zmdi-home"></i><span>Dashboard</span></a></li>
+                @*<li class="active open"><a href="/Home/Index"><i class="zmdi zmdi-home"></i><span>Dashboard</span></a></li>*@
                 @await Component.InvokeAsync("Menu",currentUser.Role.Name)
             </ul>
         </div>

@@ -105,7 +105,7 @@ namespace LogoTransfer.Repository.Migrations
                     MasterCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Quantity = table.Column<double>(type: "float", nullable: false),
                     Price = table.Column<double>(type: "float", nullable: false),
-                    TransDescripntion = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TransDescription = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     UnitCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     UnitConv1 = table.Column<double>(type: "float", nullable: false),
                     UnitConv2 = table.Column<double>(type: "float", nullable: false),

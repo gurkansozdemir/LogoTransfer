@@ -206,7 +206,7 @@ namespace LogoTransfer.Repository.Migrations
                     b.Property<double>("TcXrate")
                         .HasColumnType("float");
 
-                    b.Property<string>("TransDescripntion")
+                    b.Property<string>("TransDescription")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
