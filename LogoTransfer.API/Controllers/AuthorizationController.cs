@@ -27,7 +27,7 @@ namespace LogoTransfer.API.Controllers
         [HttpGet("[action]")]
         public async Task<IActionResult> GetIdeaSoftTokenFromCache()
         {
-            return new ObjectResult(_authorizationService.GetIdeaSoftTokenFromCache());
+            return CreateActionResult(await _authorizationService.GetIdeaSoftTokenFromCache());
         }
     }
 }

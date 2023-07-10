@@ -1,6 +1,6 @@
-﻿namespace LogoTransfer.Core.DTOs.IdeaSoft
+﻿namespace LogoTransfer.Core.Entities
 {
-    public class TokenDto
+    public class Token : BaseEntity
     {
         public string Access_Token { get; set; }
         public int Expires_In { get; set; }

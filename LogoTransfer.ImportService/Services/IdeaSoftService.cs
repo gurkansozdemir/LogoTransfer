@@ -1,28 +1,24 @@
-﻿using LogoTransfer.Core.DTOs.IntegrationDTOs;
+﻿using LogoTransfer.Core.DTOs;
 using LogoTransfer.Core.Entities;
 using LogoTransfer.Core.Services;
-using LogoTransfer.Service.Caching;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text.Json;
-using System.Text.Json.Nodes;
-using System.Text.Json.Serialization;
 
 namespace LogoTransfer.ImportService.Services
 {
     public class IdeaSoftService
     {
-        private readonly HttpClient _httpClient;
+        private readonly HttpClient _httpClientIdeasoft;
+        private readonly HttpClient _httpClientLogo;
         private readonly IOrderService _orderService;
-        private readonly CacheDataImportService _cacheData;
         private readonly Dictionary<string, string> _orderStatus;
 
-        public IdeaSoftService(IOrderService orderService, IHttpClientFactory httpClient, CacheDataImportService cacheData)
+        public IdeaSoftService(IOrderService orderService, IHttpClientFactory httpClient)
         {
-            _httpClient = httpClient.CreateClient("IdeaSoftAPI");
+            _httpClientIdeasoft = httpClient.CreateClient("IdeaSoftAPI");
+            _httpClientLogo = httpClient.CreateClient("LogoTransferAPI");
             _orderService = orderService;
-            _cacheData = cacheData;
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _cacheData.Token);
             _orderStatus = JsonSerializer.Deserialize<Dictionary<string, string>>("{\"waiting_for_approval\": \"Onay Bekliyor\",\"approved\": \"Onaylandı\",\"fulfilled\": \"Kargoya Verildi\",\"cancelled\": \"İptal Edildi\",\"delivered\": \"Teslim Edildi\",\"on_accumulation\": \"Tedarik Sürecinde\",\"waiting_for_payment\": \"Ödeme Bekleniyor\",\"being_prepared\": \"Hazırlanıyor\",\"refunded\": \"İade Edildi\",\"personal_status_1\": \"Kişisel Sipariş Durumu 1\",\"personal_status_2\": \"Kişisel Sipariş Durumu 2\",\"personal_status_3\": \"Kişisel Sipariş Durumu 3\",\"deleted\": \"Silindi\"}");
         }
         public async void SaveOrdersAsync()
@@ -30,8 +26,11 @@ namespace LogoTransfer.ImportService.Services
             List<Order> baseOrders = new List<Order>();
             try
             {
+                var token = await _httpClientLogo.GetFromJsonAsync<CustomResponseDto<Token>>("authorization/getIdeaSoftTokenFromCache");
+
+                _httpClientIdeasoft.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token.Data.Access_Token);
                 string lastTime = await _orderService.GetLastPullTimeAsync();
-                var orders = await _httpClient.GetFromJsonAsync<List<Core.DTOs.IdeaSoft.Order>>($"api/orders?startDate=" + lastTime);
+                var orders = await _httpClientIdeasoft.GetFromJsonAsync<List<Core.DTOs.IdeaSoft.Order>>($"api/orders?startDate=" + lastTime);
 
                 int i = 1;
                 foreach (Core.DTOs.IdeaSoft.Order order in orders)

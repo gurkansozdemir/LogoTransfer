@@ -1,6 +1,4 @@
-﻿using LogoTransfer.Core.DTOs.ProductDTOs;
-using LogoTransfer.Core.DTOs;
-using LogoTransfer.Core.Entities;
+﻿using LogoTransfer.Core.Entities;
 using LogoTransfer.Core.Repositories;
 using LogoTransfer.Core.UnitOfWorks;
 using Microsoft.EntityFrameworkCore;

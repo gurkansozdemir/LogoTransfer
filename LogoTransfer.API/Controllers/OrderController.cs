@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Azure;
 using LogoTransfer.Core.DTOs;
 using LogoTransfer.Core.DTOs.IntegrationDTOs;
 using LogoTransfer.Core.DTOs.OrderDTOs;

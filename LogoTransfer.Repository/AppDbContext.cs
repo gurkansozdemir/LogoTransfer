@@ -19,6 +19,7 @@ namespace LogoTransfer.Repository
         public DbSet<LogoUser> LogoUsers { get; set; }
         public DbSet<ProductMatching> ProductMatchings { get; set; }
         public DbSet<OrderLog> OrderLogs { get; set; }
+        public DbSet<Token> Tokens { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

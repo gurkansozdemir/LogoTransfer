@@ -7,7 +7,6 @@ using LogoTransfer.Core.Repositories;
 using LogoTransfer.Core.Services;
 using LogoTransfer.Core.UnitOfWorks;
 using LogoTransfer.Service.Caching;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System.Net;
 using System.Net.Http.Json;
