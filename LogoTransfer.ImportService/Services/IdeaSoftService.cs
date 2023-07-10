@@ -1,4 +1,5 @@
-﻿using LogoTransfer.Core.Entities;
+﻿using LogoTransfer.Core.DTOs.IntegrationDTOs;
+using LogoTransfer.Core.Entities;
 using LogoTransfer.Core.Services;
 using LogoTransfer.Service.Caching;
 using System.Net.Http.Headers;
@@ -29,7 +30,7 @@ namespace LogoTransfer.ImportService.Services
             List<Order> baseOrders = new List<Order>();
             try
             {
-                string lastTime = await _orderService.GetLastPullTimeAsync();  
+                string lastTime = await _orderService.GetLastPullTimeAsync();
                 var orders = await _httpClient.GetFromJsonAsync<List<Core.DTOs.IdeaSoft.Order>>($"api/orders?startDate=" + lastTime);
 
                 int i = 1;
@@ -90,6 +91,7 @@ namespace LogoTransfer.ImportService.Services
                         RunTime = DateTime.Now,
                         Status = true
                     });
+                    await _orderService.AutoImportAsync();
                 }
                 else
                 {

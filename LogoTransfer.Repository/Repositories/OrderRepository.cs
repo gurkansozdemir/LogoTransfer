@@ -41,5 +41,15 @@ namespace LogoTransfer.Repository.Repositories
         {
             return await _dbSet.AnyAsync(x => x.Number == number);
         }
+
+        public async Task<List<Order>> GetNotImportedWithTransactions()
+        {
+            return await _dbSet.Where(x => !x.TransferStatus).Include(x => x.Transactions).ToListAsync();
+        }
+
+        public async Task<Order> GetOrderByNumber(string number)
+        {
+            return await _dbSet.Where(x => x.Number == number).FirstOrDefaultAsync();
+        }
     }
 }

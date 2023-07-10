@@ -1,8 +1,12 @@
-﻿namespace LogoTransfer.Core.DTOs.IntegrationDTOs
+﻿using System.Text.Json.Serialization;
+
+namespace LogoTransfer.Core.DTOs.IntegrationDTOs
 {
     public class OrderTransactionImportDto
     {
         public string MasterCode { get; set; }
+        [JsonIgnore]
+        public string OtherCode { get; set; }
         public double Quantity { get; set; }
         public double Price { get; set; }
         public string TransDescripntion { get; set; }
@@ -12,5 +16,7 @@
         public string CurrTrans { get; set; }
         public double TcXrate { get; set; }
         public double VatRate { get; set; }
+        [JsonIgnore]
+        public bool IsProductMatch { get; set; }
     }
 }

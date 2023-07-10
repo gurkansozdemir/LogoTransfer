@@ -9,5 +9,7 @@ namespace LogoTransfer.Core.Repositories
         public Task OrderLog(OrderLog log);
         public Task<DateTime> GetLastPullTimeAsync();
         public Task<bool> CheckOrderNumberAsync(string number);
+        public Task<List<Order>> GetNotImportedWithTransactions();
+        public Task<Order> GetOrderByNumber(string number);
     }
 }

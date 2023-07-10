@@ -68,7 +68,8 @@ namespace LogoTransfer.Service.Services
             if (tokenDto == null)
             {
                 tokenDto = new TokenDto 
-                { Access_Token = _cacheData.Token,
+                { 
+                    Access_Token = _cacheData.Token,
                     Refresh_Token = _cacheData.RefreshToken
                 }; 
             }

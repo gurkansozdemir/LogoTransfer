@@ -302,11 +302,13 @@ function productMatch(masterCode) {
                 }).then((result) => {
                     if (result.isConfirmed) {
                         productAcceptMatch(masterCode, otherCode);
+                        $('#orderTable').DataTable().ajax.reload();
                     }
                 })
             }
             else {
                 productAcceptMatch(masterCode, otherCode);
+                $('#orderTable').DataTable().ajax.reload();
             }
         },
         error: function () {

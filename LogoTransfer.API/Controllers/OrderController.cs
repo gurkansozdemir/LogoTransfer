@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Azure;
 using LogoTransfer.Core.DTOs;
 using LogoTransfer.Core.DTOs.IntegrationDTOs;
 using LogoTransfer.Core.DTOs.OrderDTOs;
@@ -58,6 +59,12 @@ namespace LogoTransfer.API.Controllers
         {
             return new ObjectResult(await _orderService.GetLastPullTimeAsync());
         }
-        
+
+        [HttpGet("[action]")]
+        public async Task<IActionResult> AutoImport()
+        {
+            await _orderService.AutoImportAsync();
+            return new ObjectResult("");
+        }
     }
 }

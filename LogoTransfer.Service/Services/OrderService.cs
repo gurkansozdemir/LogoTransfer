@@ -108,10 +108,17 @@ namespace LogoTransfer.Service.Services
 
         public async Task SetIntegratedNo(OrderImportResponseDto importedOrder)
         {
-            var orders = _orderRepository.GetAll();
-            var order = await orders.Where(x => x.Number == importedOrder.Number).SingleAsync();
-            order.Integration = importedOrder.ReturnNumber;
-            order.TransferStatus = true;
+            var order = await _orderRepository.GetOrderByNumber(importedOrder.Number);
+            if (String.IsNullOrEmpty(importedOrder.ReturnError))
+            {
+                order.Integration = importedOrder.ReturnNumber;
+                order.TransferStatus = true;
+            }
+            else
+            {
+                order.Integration = importedOrder.ReturnError;
+                order.TransferStatus = false;
+            }
             _orderRepository.Update(order);
             await _unitOfWork.CommitAsync();
         }
@@ -126,6 +133,27 @@ namespace LogoTransfer.Service.Services
                 }
             }
             await _unitOfWork.CommitAsync();
+        }
+
+        public async Task AutoImportAsync()
+        {
+            var orders = await _orderRepository.GetNotImportedWithTransactions();
+            var orderDtos = _mapper.Map<List<OrderImportDto>>(orders);
+            if (_cacheData.ProductMatches == null)
+            {
+                await _productService.ProductMatchesSaveCacheAsync();
+            }
+            orderDtos.ForEach(o =>
+            {
+                o.Transactions.ForEach(t =>
+                {
+                    t.MasterCode = _cacheData.ProductMatches.Where(x => x.OtherCode == t.OtherCode).Select(x => x.Code).DefaultIfEmpty("").First();
+                    t.IsProductMatch = _cacheData.ProductMatches.Where(x => x.OtherCode == t.OtherCode).Select(x => x.Code).DefaultIfEmpty("").First() != "" ? true : false;
+                });
+            });
+
+            var orderableData = orderDtos.Where(x => x.Transactions.All(t => t.IsProductMatch)).ToList();
+            await OrderImportAsync(orderableData);
         }
     }
 }
