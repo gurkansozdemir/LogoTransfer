@@ -4,6 +4,7 @@ using LogoTransfer.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LogoTransfer.Repository.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230719095208_orderUpdate")]
+    partial class orderUpdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -108,17 +111,11 @@ namespace LogoTransfer.Repository.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Address")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<double>("Amount")
                         .HasColumnType("float");
 
                     b.Property<string>("AuxilCode")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("City")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedAt")
@@ -169,18 +166,18 @@ namespace LogoTransfer.Repository.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("TaxNo")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("TaxOffice")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<double>("TcXrate")
                         .HasColumnType("float");
 
                     b.Property<string>("TckNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Town")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("TransferStatus")
@@ -330,7 +327,7 @@ namespace LogoTransfer.Repository.Migrations
                         new
                         {
                             Id = new Guid("45456c11-f1f1-447b-a55d-c8f4110da3fe"),
-                            CreatedOn = new DateTime(2023, 7, 19, 22, 27, 43, 659, DateTimeKind.Local).AddTicks(2250),
+                            CreatedOn = new DateTime(2023, 7, 19, 12, 52, 8, 90, DateTimeKind.Local).AddTicks(2473),
                             Description = "Full Authorize",
                             IsDeleted = false,
                             Name = "Supervisor"
@@ -338,7 +335,7 @@ namespace LogoTransfer.Repository.Migrations
                         new
                         {
                             Id = new Guid("7e212bbe-3059-464f-be67-ec8064063f6b"),
-                            CreatedOn = new DateTime(2023, 7, 19, 22, 27, 43, 659, DateTimeKind.Local).AddTicks(2252),
+                            CreatedOn = new DateTime(2023, 7, 19, 12, 52, 8, 90, DateTimeKind.Local).AddTicks(2475),
                             Description = "Default User",
                             IsDeleted = false,
                             Name = "StandartUser"
@@ -462,7 +459,7 @@ namespace LogoTransfer.Repository.Migrations
                         new
                         {
                             Id = new Guid("b2f9cba8-d1ab-477d-91cf-caf4ba435b83"),
-                            CreatedOn = new DateTime(2023, 7, 19, 22, 27, 43, 659, DateTimeKind.Local).AddTicks(2367),
+                            CreatedOn = new DateTime(2023, 7, 19, 12, 52, 8, 90, DateTimeKind.Local).AddTicks(2593),
                             EMail = "admin@logo.com.tr",
                             FirstName = "Super",
                             IsDeleted = false,

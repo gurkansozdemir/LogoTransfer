@@ -38,7 +38,7 @@ namespace LogoTransfer.ImportService.Services
                     var tmp = JsonSerializer.Deserialize<Dictionary<string, double[]>>(order.CurrencyRates);
                     Order baseOrder = new Order()
                     {
-                        Amount = order.Amount,
+                        Amount = order.GeneralAmount,
                         CreatedAt = order.CreatedAt,
                         CurrTransaction = order.Currency,
                         CustomerName = order.CustomerFirstname,
@@ -52,6 +52,12 @@ namespace LogoTransfer.ImportService.Services
                         Date_ = order.CreatedAt,
                         Email = order.CustomerEmail,
                         PhoneNumber = order.CustomerPhone,
+                        TaxNo = order.BillingAddress.TaxNo,
+                        TaxOffice = order.BillingAddress.TaxOffice,
+                        TckNumber = order.BillingAddress.IdentityRegistrationNumber,
+                        Town = order.BillingAddress.SubLocation,
+                        City = order.BillingAddress.Location,
+                        Address = order.BillingAddress.Address,
                         RcXrate = tmp["USD"] != null ? tmp["USD"][0] : 1,
                         TcXrate = tmp[order.Currency][0],
                         Status = _orderStatus[order.Status]
@@ -65,7 +71,7 @@ namespace LogoTransfer.ImportService.Services
                             OtherCode = item.ProductSku,
                             Quantity = item.ProductQuantity,
                             Order = baseOrder,
-                            Price = item.ProductPrice,
+                            Price = item.ProductPrice * (1 + (item.ProductTax / 100)),
                             TransDescription = order.TransactionId,
                             UnitCode = item.ProductStockTypeLabel,
                             UnitConv1 = 1,
@@ -96,12 +102,12 @@ namespace LogoTransfer.ImportService.Services
                     Console.WriteLine("Bu Tarihten İtibaren Oluşturulmuş Sipariş Bulunamadı:" + lastTime);
                 }
                 await _orderService.AutoImportAsync();
-                Console.ReadKey();
+              
             }
             catch (Exception ex)
             {
                 Console.WriteLine("Siparişler Aktarılırken Hata Oluştur: " + ex.Message);
-                Console.ReadKey();
+                
                 await _orderService.OrderLog(new OrderLog()
                 {
                     ImportedOrderCount = baseOrders.Count,
@@ -111,6 +117,7 @@ namespace LogoTransfer.ImportService.Services
                 });
                 throw;
             }
+            System.Environment.Exit(1);
         }
     }
 }

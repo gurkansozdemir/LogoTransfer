@@ -12,6 +12,12 @@
         public double RcXrate { get; set; }
         public string CurrTransaction { get; set; }
         public double TcXrate { get; set; }
+        public string? TaxNo { get; set; }
+        public string? TaxOffice { get; set; }
+        public string? TckNumber { get; set; }
+        public string? City { get; set; }
+        public string? Town { get; set; }
+        public string? Address { get; set; }
         public List<OrderTransactionImportDto> Transactions { get; set; } = new List<OrderTransactionImportDto>();
     }
 }

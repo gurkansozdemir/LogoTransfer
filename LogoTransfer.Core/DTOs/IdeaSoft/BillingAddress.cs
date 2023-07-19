@@ -13,8 +13,8 @@
         public string MobilePhoneNumber { get; set; }
         public object ZipCode { get; set; }
         public string InvoiceType { get; set; }
-        public object TaxNo { get; set; }
-        public object TaxOffice { get; set; }
+        public string TaxNo { get; set; }
+        public string TaxOffice { get; set; }
         public string IdentityRegistrationNumber { get; set; }
     }
 }

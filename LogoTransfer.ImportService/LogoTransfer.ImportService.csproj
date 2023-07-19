@@ -5,6 +5,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>disable</Nullable>
+    <BaseOutputPath>D:\_Developer\Gurkan\Publish\WindowsService</BaseOutputPath>
   </PropertyGroup>
 
   <ItemGroup>

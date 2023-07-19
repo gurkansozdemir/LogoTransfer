@@ -227,6 +227,12 @@ function startThisTransfer(id) {
             orderData.rcXrate = checkedData[0].rcXrate;
             orderData.currTransaction = checkedData[0].currTransaction;
             orderData.tcXrate = checkedData[0].tcXrate;
+            orderData.taxNo = checkedData[0].taxNo;
+            orderData.taxOffice = checkedData[0].taxOffice;
+            orderData.tckNumber = checkedData[0].tckNumber; 
+            orderData.town = checkedData[0].town; 
+            orderData.city = checkedData[0].city; 
+            orderData.address = checkedData[0].address; 
             orderData.transactions = [];
 
             for (var i = 0; i < checkedData[0].transactions.length; i++) {
